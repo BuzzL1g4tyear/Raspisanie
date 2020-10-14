@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
             Elements tables = doc.getElementsByTag("tbody");
             Element allDaysTable = tables.get(0);
             Elements elementsFromTable = allDaysTable.children();
-            Element FirstStr = elementsFromTable.get(0);
-            Elements elementsFromNumb = FirstStr.children();
+            Element Str = elementsFromTable.get(0);// зациклить Str
+            Elements elementsFromNumb = Str.children();
 
             Element Numb = elementsFromNumb.get(0);
             Element TimeR = elementsFromNumb.get(1);
