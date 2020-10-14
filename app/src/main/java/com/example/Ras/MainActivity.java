@@ -39,14 +39,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void getWeb(){
         try {
-            doc = Jsoup.connect("http://mgke.minsk.edu.by/ru/main.aspx?guid=3831").get();
+            doc = Jsoup.connect("http://mgke.minsk.edu.by/ru/main.aspx?guid=2631").get();//brings
             Elements tables = doc.getElementsByTag("tbody");
-            Element ourTable = tables.get(1);
-            Elements elementsFromTable = ourTable.children();
-            Element group = elementsFromTable.get(2);
+            Element allDaysTable = tables.get(0);
+            Elements elementsFromTable = allDaysTable.children();
+            Element FirstStr = elementsFromTable.get(0);
+            Elements elementsFromNumb = FirstStr.children();
 
-            Log.d("MyLog",elementsFromTable.get(0).text());
-            Log.d("MyLog",elementsFromTable.get(1).text());
+            Element Numb = elementsFromNumb.get(0);
+            Element TimeR = elementsFromNumb.get(1);
+
+            Log.d("MyLog", String.valueOf(allDaysTable.childrenSize()));
+            Log.d("MyLog",Numb.text());
+            Log.d("MyLog",TimeR.text());
             Log.d("MyLog","_______________");
 
         } catch (IOException e) {
