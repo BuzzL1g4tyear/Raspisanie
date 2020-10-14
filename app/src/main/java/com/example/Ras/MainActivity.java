@@ -41,22 +41,23 @@ public class MainActivity extends AppCompatActivity {
         try {
             doc = Jsoup.connect("http://mgke.minsk.edu.by/ru/main.aspx?guid=2631").get();//brings
             Elements tables = doc.getElementsByTag("tbody");
-            Element allDaysTable = tables.get(0);
-            Elements elementsFromTable = allDaysTable.children();
-            Element Str = elementsFromTable.get(0);// зациклить Str
-            Elements elementsFromNumb = Str.children();
+            for (int q = 1; q <=tables.size()-2;q++) {
+                Element allDaysTable = tables.get(q-1);
+                Elements elementsFromTable = allDaysTable.children();
+                for (int i = 1; i <= elementsFromTable.size(); i++) {
+                    Element Str = elementsFromTable.get(i - 1);// зациклить Str
+                    Elements elementsFromNumb = Str.children();
 
-            Element Numb = elementsFromNumb.get(0);
-            Element TimeR = elementsFromNumb.get(1);
+                    Element Numb = elementsFromNumb.get(0);
+                    Element TimeR = elementsFromNumb.get(1);
 
-            Log.d("MyLog", String.valueOf(allDaysTable.childrenSize()));
-            Log.d("MyLog",Numb.text());
-            Log.d("MyLog",TimeR.text());
-            Log.d("MyLog","_______________");
-
+                    Log.d("MyLog", Numb.text());
+                    Log.d("MyLog", TimeR.text());
+                }
+                Log.d("MyLog", "_______________");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
