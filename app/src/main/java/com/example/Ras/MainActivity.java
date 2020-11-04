@@ -69,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
             doc = Jsoup.connect("http://mgke.minsk.edu.by/ru/main.aspx?guid=56631").get();
             Elements tables = doc.getElementsByTag("tbody");
             Elements tr = tables.select("tr");
-            for(int u =0;u<=tr.size();u++) {
-                Element row = tr.get(u);
+            for(int u =1;u<=tr.size();u++) {
+                Element row = tr.get(u-1);
                 Elements rowC = row.children();
                 Log.d("MyLog", String.valueOf(rowC.size()));
                 for (int i = 1; i <= rowC.size(); i++) {
