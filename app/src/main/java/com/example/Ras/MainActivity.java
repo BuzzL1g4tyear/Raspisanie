@@ -30,22 +30,24 @@ public class MainActivity extends AppCompatActivity {
         runnable = new Runnable() {
             @Override
             public void run() {
-                getWeb();
+                //getBrings();
+                getLessons();
             }
         };
         secThread = new Thread(runnable);
         secThread.start();
     }
 
-    private void getWeb(){
+    private void getBrings(){
         try {
-            doc = Jsoup.connect("http://mgke.minsk.edu.by/ru/main.aspx?guid=2631").get();//brings
+            //brings
+            doc = Jsoup.connect("http://mgke.minsk.edu.by/ru/main.aspx?guid=2631").get();
             Elements tables = doc.getElementsByTag("tbody");
             for (int q = 1; q <=tables.size()-2;q++) {
                 Element allDaysTable = tables.get(q-1);
                 Elements elementsFromTable = allDaysTable.children();
                 for (int i = 1; i <= elementsFromTable.size(); i++) {
-                    Element Str = elementsFromTable.get(i - 1);// зациклить Str
+                    Element Str = elementsFromTable.get(i - 1);
                     Elements elementsFromNumb = Str.children();
 
                     Element Numb = elementsFromNumb.get(0);
@@ -55,6 +57,27 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("MyLog", TimeR.text());
                 }
                 Log.d("MyLog", "_______________");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getLessons(){
+        //lessons
+        try {
+            doc = Jsoup.connect("http://mgke.minsk.edu.by/ru/main.aspx?guid=56631").get();
+            Elements tables = doc.getElementsByTag("tbody");
+            Elements tr = tables.select("tr");
+            for(int u =0;u<=tr.size();u++) {
+                Element row = tr.get(u);
+                Elements rowC = row.children();
+                Log.d("MyLog", String.valueOf(rowC.size()));
+                for (int i = 1; i <= rowC.size(); i++) {
+                    String data = rowC.get(i - 1).text();
+
+                    Log.d("MyLog", data);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
