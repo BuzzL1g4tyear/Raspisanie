@@ -9,13 +9,52 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private Document doc;
     private Thread secThread;
     private Runnable runnable;
+    public static Elements elements;
 
     private ListView lv;
+
+    static class Week{
+
+        private static Document doc;
+
+        public static Elements getWeek() {
+            try {
+                doc = Jsoup.connect("http://mgke.minsk.edu.by/ru/main.aspx?guid=56631").get();
+                elements = doc.getElementsByTag("tbody");//вся таблица
+                elements = elements.select("tr");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return elements;
+        }
+        static class Day extends Week{
+            public static ArrayList<ArrayList<Element>> getDays() {
+                Elements Days;
+                Days = getWeek();
+                ArrayList<ArrayList<Element>> days =
+                        new ArrayList<ArrayList<Element>>();
+
+                for (int i = 2; i < Days.size(); i++) {
+                    if (Days.get(i).childrenSize() == 12) {
+                        days.add(new ArrayList<Element>());
+                    }
+                    days.get(days.size() - 1).add(Days.get(i));
+                }
+                return days;
+            }
+        }
+        public void getDay(ArrayList<ArrayList<Element>> days) {
+            for (ArrayList<Element> day : days) {
+                Log.d("MyLog", day.get(0).children().get(0).text());
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         runnable = new Runnable() {
             @Override
             public void run() {
-                //getBrings();
+                getBrings();
                 getLessons();
             }
         };
@@ -64,23 +103,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getLessons(){
-        //lessons
-        try {
-            doc = Jsoup.connect("http://mgke.minsk.edu.by/ru/main.aspx?guid=56631").get();
-            Elements tables = doc.getElementsByTag("tbody");
-            Elements tr = tables.select("tr");
-            for(int u =1;u<=tr.size();u++) {
-                Element row = tr.get(u-1);
-                Elements rowC = row.children();
-                Log.d("MyLog", String.valueOf(rowC.size()));
-                for (int i = 1; i <= rowC.size(); i++) {
-                    String data = rowC.get(i - 1).text();
-
-                    Log.d("MyLog", data);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ArrayList<ArrayList<Element>> days =
+                Week.Day.getDays();
+        Week.Day day = new Week.Day();
+        day.getDay(days);
     }
 }
