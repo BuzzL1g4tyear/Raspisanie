@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "98891819083",
+    "firebase_url": "https://datatimetable-eb22c-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "datatimetable-eb22c",
+    "storage_bucket": "datatimetable-eb22c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98891819083:android:aead83b517a11ac4be45ce",
+        "android_client_info": {
+          "package_name": "com.example.Ras"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "98891819083-g3856v2q0rg5vfmvkpgh9lq5rt9to0s2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2xm-niJcP15UL7cTX3JbY14fvXfQEUPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "98891819083-g3856v2q0rg5vfmvkpgh9lq5rt9to0s2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
