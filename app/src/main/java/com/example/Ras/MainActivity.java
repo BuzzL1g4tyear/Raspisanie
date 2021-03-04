@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
 //            collector.getDayLessons();
 //            collector.getAllGroups();
-            collector.get155();
+            collector.getSplitInfo();
         }
     };
 
