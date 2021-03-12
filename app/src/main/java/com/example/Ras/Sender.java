@@ -2,20 +2,30 @@ package com.example.Ras;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jsoup.nodes.Element;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Sender {
 
     public String id;
-    private final String LESSON = "LESSON";
 
     public String numbGroup;
     public List<String> lessonsOfTheDay;
@@ -33,14 +43,13 @@ public class Sender {
 
     public void send() {
         ArrayList<ArrayList<Element>> days = Collector.Week.Day.getDays();
-
         final int columnsToSkip = 1;
         final int rowsToSkip = 3;
         final int groupRowIndex = 1;
-        int i = 0;
-
+//TODO добавление двух дней
         StringBuilder dayOfWeek = new StringBuilder(days.get(0).get(0).text());
-        List<String> lessons = new ArrayList<>();
+
+        List<String> lessons;
         String groups;
 
         Pattern p = Pattern.compile("-?\\d+");
@@ -53,8 +62,8 @@ public class Sender {
         }
 
         dayOfWeek.deleteCharAt(dayOfWeek.length() - 1);
-
-        dt_lessons = FirebaseDatabase.getInstance().getReference(String.valueOf(dayOfWeek));
+        dt_lessons = FirebaseDatabase.getInstance().
+                getReference(String.valueOf(dayOfWeek));
         id = dt_lessons.getKey();
 
         for (int table = 0; table < days.size(); table++) {
@@ -68,7 +77,6 @@ public class Sender {
                 }
                 Sender sender = new Sender(id, groups, lessons);
                 dt_lessons.push().setValue(sender);
-                i++;
             }
         }
     }

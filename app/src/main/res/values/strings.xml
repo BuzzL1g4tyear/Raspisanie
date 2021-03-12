@@ -2,4 +2,5 @@
     <string name="app_name">Расписание</string>
     <string name="today">Сегодня:</string>
     <string name="Group">Группа №:</string>
+    <string name="Calendar">Календарь</string>
 </resources>
