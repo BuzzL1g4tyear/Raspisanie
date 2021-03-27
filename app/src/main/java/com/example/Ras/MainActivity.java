@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Date = SetDate();
 
         textView = findViewById(R.id.textView2);
@@ -127,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
 //                    Sender sender = new Sender();
 //                    sender.send();
-                    Toast.makeText(MainActivity.this, "Sent", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "Sent", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -174,6 +175,9 @@ public class MainActivity extends AppCompatActivity {
                         dateSetListener, lastSelectedYear, lastSelectedMonth, lastSelectedDayOfMonth);
                 datePickerDialog.show();
                 return true;
+            case R.id.missing:
+                Intent intent = new Intent(MainActivity.this, MissingActivity.class);
+                startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
         }
