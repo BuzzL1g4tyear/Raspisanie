@@ -1,25 +1,12 @@
 package com.example.Ras;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import org.jsoup.nodes.Element;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,8 +16,6 @@ public class Sender {
 
     public String numbGroup;
     public List<String> lessonsOfTheDay;
-
-    private DatabaseReference dt_lessons;
 
     public Sender() {
     }
@@ -50,12 +35,11 @@ public class Sender {
         List<String> lessons;
         String groups;
 
+        DatabaseReference dt_lessons;
         if (days.size() > 3) {
             for (int table = 0; table < days.size(); table++) {
-                StringBuilder dayOfWeek = new StringBuilder(days.get(table).get(0).text());
-                dayOfWeek.deleteCharAt(dayOfWeek.length() - 1);
                 dt_lessons = FirebaseDatabase.getInstance().
-                        getReference(getDate(dayOfWeek.toString()));
+                        getReference(getDate(days.get(table).get(0).text()));
 
                 id = dt_lessons.getKey();
                 table += 3;
@@ -73,10 +57,9 @@ public class Sender {
             }
         } else {
             for (int table = 0; table < days.size(); table++) {
-                StringBuilder dayOfWeek = new StringBuilder(days.get(table).get(0).text());
-                dayOfWeek.deleteCharAt(dayOfWeek.length() - 1);
+
                 dt_lessons = FirebaseDatabase.getInstance().
-                        getReference(getDate(dayOfWeek.toString()));
+                        getReference(getDate(days.get(table).get(0).text()));
 
                 id = dt_lessons.getKey();
                 for (int column = columnsToSkip; column < days.get(table).get(rowsToSkip).childrenSize() - 1; column += 2) {
@@ -92,10 +75,11 @@ public class Sender {
                 }
             }
         }
+
     }
 
     private String getDate(String data) {
-        StringBuffer date = new StringBuffer();
+        StringBuilder date = new StringBuilder();
 
         Pattern p = Pattern.compile("-?\\d+");
         Matcher m = p.matcher(data);
@@ -105,6 +89,8 @@ public class Sender {
         while (m.find()) {
             date.append(m.group()).append(":");
         }
+
+        date.deleteCharAt(date.length() - 1);
 
         return date.toString();
     }

@@ -100,6 +100,14 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    Runnable runnable1 = new Runnable() {
+        @Override
+        public void run() {
+            Sender sender = new Sender();
+            sender.send();
+        }
+    };
+
     @NonNull
     public String SetDate() {
         String dateText;
@@ -110,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         return dateText;
     }
 
-    private void getData(String Date) {
+    private void getData(final String Date) {
         Query query = dt_lessons.child(Date);
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -125,17 +133,12 @@ public class MainActivity extends AppCompatActivity {
                         temp.add(sender);
                     }
                     listAdapter.notifyDataSetChanged();
-                } else {
-                    Runnable runnable1 = new Runnable() {
-                        @Override
-                        public void run() {
-                            Sender sender = new Sender();
-                            sender.send();
-                        }
-                    };
+                } else if (!snapshot.exists()) {
                     Thread thread = new Thread(runnable1);
                     thread.start();
                     Toast.makeText(MainActivity.this, "Sent", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Такого дня нет", Toast.LENGTH_SHORT).show();
                 }
             }
 
