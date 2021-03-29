@@ -5,4 +5,5 @@ android:id="@+id/chip"
 app:chipBackgroundColor="@color/colorAccent"
 app:chipIcon="@drawable/ic_person_24"
 app:closeIconEnabled="true"
-    app:closeIconTint="@android:color/white"/>
+app:closeIconTint="@android:color/white"
+style = "style/Widget.MaterialComponents.Chip.Entry"/>

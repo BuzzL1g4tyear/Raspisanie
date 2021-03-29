@@ -46,38 +46,66 @@ public class Sender {
         final int columnsToSkip = 1;
         final int rowsToSkip = 3;
         final int groupRowIndex = 1;
-//TODO добавление двух дней
-        StringBuilder dayOfWeek = new StringBuilder(days.get(0).get(0).text());
-
+//TODO проверить добавление двух дней
         List<String> lessons;
         String groups;
 
-        Pattern p = Pattern.compile("-?\\d+");
-        Matcher m = p.matcher(dayOfWeek.toString());
+        if (days.size() > 3) {
+            for (int table = 0; table < days.size(); table++) {
+                StringBuilder dayOfWeek = new StringBuilder(days.get(table).get(0).text());
+                dayOfWeek.deleteCharAt(dayOfWeek.length() - 1);
+                dt_lessons = FirebaseDatabase.getInstance().
+                        getReference(getDate(dayOfWeek.toString()));
 
-        dayOfWeek.delete(0, dayOfWeek.length());
+                id = dt_lessons.getKey();
+                table += 3;
+                for (int column = columnsToSkip; column < days.get(table).get(rowsToSkip).childrenSize() - 1; column += 2) {
+                    groups = days.get(table).get(groupRowIndex).children().get(column / 2 + 1).text();
+                    lessons = new ArrayList<>();
 
-        while (m.find()) {
-            dayOfWeek.append(m.group()).append(":");
-        }
-
-        dayOfWeek.deleteCharAt(dayOfWeek.length() - 1);
-        dt_lessons = FirebaseDatabase.getInstance().
-                getReference(String.valueOf(dayOfWeek));
-        id = dt_lessons.getKey();
-
-        for (int table = 0; table < days.size(); table++) {
-            for (int column = columnsToSkip; column < days.get(table).get(rowsToSkip).childrenSize() - 1; column += 2) {
-                groups = days.get(table).get(groupRowIndex).children().get(column / 2 + 1).text();
-                lessons = new ArrayList<>();
-
-                for (int row = rowsToSkip; row < days.get(table).size(); row++) {
-                    lessons.add(days.get(table).get(row).children().get(column).text() +
-                            (days.get(table).get(row).children().get(column + 1).text()));
+                    for (int row = rowsToSkip; row < days.get(table).size(); row++) {
+                        lessons.add(days.get(table).get(row).children().get(column).text() +
+                                (days.get(table).get(row).children().get(column + 1).text()));
+                    }
+                    Sender sender = new Sender(id, groups, lessons);
+                    dt_lessons.push().setValue(sender);
                 }
-                Sender sender = new Sender(id, groups, lessons);
-                dt_lessons.push().setValue(sender);
+            }
+        } else {
+            for (int table = 0; table < days.size(); table++) {
+                StringBuilder dayOfWeek = new StringBuilder(days.get(table).get(0).text());
+                dayOfWeek.deleteCharAt(dayOfWeek.length() - 1);
+                dt_lessons = FirebaseDatabase.getInstance().
+                        getReference(getDate(dayOfWeek.toString()));
+
+                id = dt_lessons.getKey();
+                for (int column = columnsToSkip; column < days.get(table).get(rowsToSkip).childrenSize() - 1; column += 2) {
+                    groups = days.get(table).get(groupRowIndex).children().get(column / 2 + 1).text();
+                    lessons = new ArrayList<>();
+
+                    for (int row = rowsToSkip; row < days.get(table).size(); row++) {
+                        lessons.add(days.get(table).get(row).children().get(column).text() +
+                                (days.get(table).get(row).children().get(column + 1).text()));
+                    }
+                    Sender sender = new Sender(id, groups, lessons);
+                    dt_lessons.push().setValue(sender);
+                }
             }
         }
+    }
+
+    private String getDate(String data) {
+        StringBuffer date = new StringBuffer();
+
+        Pattern p = Pattern.compile("-?\\d+");
+        Matcher m = p.matcher(data);
+
+        date.delete(0, data.length());
+
+        while (m.find()) {
+            date.append(m.group()).append(":");
+        }
+
+        return date.toString();
     }
 }

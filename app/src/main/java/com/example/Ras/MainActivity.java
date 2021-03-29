@@ -126,9 +126,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                     listAdapter.notifyDataSetChanged();
                 } else {
-//                    Sender sender = new Sender();
-//                    sender.send();
-//                    Toast.makeText(MainActivity.this, "Sent", Toast.LENGTH_SHORT).show();
+                    Runnable runnable1 = new Runnable() {
+                        @Override
+                        public void run() {
+                            Sender sender = new Sender();
+                            sender.send();
+                        }
+                    };
+                    Thread thread = new Thread(runnable1);
+                    thread.start();
+                    Toast.makeText(MainActivity.this, "Sent", Toast.LENGTH_SHORT).show();
                 }
             }
 
