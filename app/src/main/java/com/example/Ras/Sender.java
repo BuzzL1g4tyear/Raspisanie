@@ -1,7 +1,15 @@
 package com.example.Ras;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jsoup.nodes.Element;
 
@@ -17,6 +25,10 @@ public class Sender {
     public String numbGroup;
     public List<String> lessonsOfTheDay;
 
+    DatabaseReference dt_lessons = FirebaseDatabase.getInstance().getReference();
+
+    ArrayList<ArrayList<Element>> days ;
+
     public Sender() {
     }
 
@@ -26,8 +38,10 @@ public class Sender {
         this.lessonsOfTheDay = lessonsOfTheDay;
     }
 
+
     public void send() {
-        ArrayList<ArrayList<Element>> days = Collector.Week.Day.getDays();
+        days = Collector.Week.Day.getDays();
+
         final int columnsToSkip = 1;
         final int rowsToSkip = 3;
         final int groupRowIndex = 1;
@@ -35,7 +49,6 @@ public class Sender {
         List<String> lessons;
         String groups;
 
-        DatabaseReference dt_lessons;
         if (days.size() > 3) {
             for (int table = 0; table < days.size(); table++) {
                 dt_lessons = FirebaseDatabase.getInstance().

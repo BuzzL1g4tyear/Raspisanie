@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                         temp.add(sender);
                     }
                     listAdapter.notifyDataSetChanged();
-                } else if (!snapshot.exists()) {
+                } else if (snapshot.child(Date).exists()) {
                     Thread thread = new Thread(runnable1);
                     thread.start();
                     Toast.makeText(MainActivity.this, "Sent", Toast.LENGTH_SHORT).show();
