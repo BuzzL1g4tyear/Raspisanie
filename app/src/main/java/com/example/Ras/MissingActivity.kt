@@ -7,10 +7,9 @@ import android.text.TextWatcher
 import android.text.style.ImageSpan
 import android.util.Log
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
+import kotlinx.android.synthetic.main.activity_missing.*
 
 class MissingActivity : AppCompatActivity() {
 
@@ -23,8 +22,6 @@ class MissingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_missing)
 
         var editText: EditText? = null
-
-        editText = findViewById(R.id.editText)
 
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -40,7 +37,7 @@ class MissingActivity : AppCompatActivity() {
                     chip.setBounds(0, 0, chip.intrinsicWidth, chip.intrinsicHeight)
 
                     val span = ImageSpan(chip)
-                    val text = editText.text!!
+                    val text = editText?.text!!
                     text.setSpan(span, 0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
                 } else {
@@ -52,7 +49,7 @@ class MissingActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
             }
         }
-        editText.addTextChangedListener(textWatcher)
+        editText?.addTextChangedListener(textWatcher)
     }
 
 }
