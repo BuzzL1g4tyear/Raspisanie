@@ -23,6 +23,7 @@ class MissingActivity : AppCompatActivity() {
 
         var editText: EditText? = null
 
+        editText = findViewById(R.id.editText)
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 lastLength = s!!.length
