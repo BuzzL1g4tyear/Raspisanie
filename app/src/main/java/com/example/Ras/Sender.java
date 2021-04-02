@@ -27,7 +27,7 @@ public class Sender {
 
     DatabaseReference dt_lessons = FirebaseDatabase.getInstance().getReference();
 
-    ArrayList<ArrayList<Element>> days ;
+
 
     public Sender() {
     }
@@ -38,14 +38,21 @@ public class Sender {
         this.lessonsOfTheDay = lessonsOfTheDay;
     }
 
+    public static String dateFromSite(ArrayList<ArrayList<Element>> days){
+        String dateFromSite;
 
-    public void send() {
+        dateFromSite = days.get(0).get(0).text();
+
+        return dateFromSite;
+    }
+
+    public void send(ArrayList<ArrayList<Element>> days) {
         days = Collector.Week.Day.getDays();
 
         final int columnsToSkip = 1;
         final int rowsToSkip = 3;
         final int groupRowIndex = 1;
-//TODO проверить добавление двух дней
+
         List<String> lessons;
         String groups;
 
@@ -55,7 +62,6 @@ public class Sender {
                         getReference(getDate(days.get(table).get(0).text()));
 
                 id = dt_lessons.getKey();
-                table += 3;
                 for (int column = columnsToSkip; column < days.get(table).get(rowsToSkip).childrenSize() - 1; column += 2) {
                     groups = days.get(table).get(groupRowIndex).children().get(column / 2 + 1).text();
                     lessons = new ArrayList<>();
@@ -91,7 +97,7 @@ public class Sender {
 
     }
 
-    private String getDate(String data) {
+    public static String getDate(String data) {
         StringBuilder date = new StringBuilder();
 
         Pattern p = Pattern.compile("-?\\d+");

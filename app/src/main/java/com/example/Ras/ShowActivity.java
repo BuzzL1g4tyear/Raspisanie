@@ -19,7 +19,7 @@ public class ShowActivity extends AppCompatActivity {
         textViewLessons = findViewById(R.id.textViewLessons);
         textViewDate = findViewById(R.id.textViewDate);
 
-        textViewDate.setText(MainActivity.Date);
+        textViewDate.setText(MainActivity.date);
 
         Intent intent = getIntent();
         if (intent != null) {

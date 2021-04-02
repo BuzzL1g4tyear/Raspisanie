@@ -16,7 +16,7 @@ class MissingActivity : AppCompatActivity() {
     var lastLength: Int = 0
     var finishRow: String = ""
     val SPACE: Char = 32.toChar()
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_missing)

@@ -5,7 +5,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.jsoup.nodes.Element;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private ListView lv;
+
+    public ArrayList<ArrayList<Element>> days ;
     private ArrayList<String> list;
     private ArrayList<Sender> temp;
     private ArrayAdapter<String> listAdapter;
@@ -45,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
     final Calendar c = Calendar.getInstance();
     Toolbar toolbarDate;
 
-    public static String Date;
+    public static String date;
+    public String dateFromSite;
     private int lastSelectedYear;
     private int lastSelectedMonth;
     private int lastSelectedDayOfMonth;
@@ -57,10 +61,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Date = SetDate();
+        date = SetDate();
 
         textView = findViewById(R.id.textView2);
-        textView.setText(Date);
+        textView.setText(date);
 
         lastSelectedYear = c.get(Calendar.YEAR);
         lastSelectedMonth = c.get(Calendar.MONTH);
@@ -96,7 +100,9 @@ public class MainActivity extends AppCompatActivity {
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            getData(Date);
+            getData(date);
+            days = Collector.Week.Day.getDays();
+            dateFromSite = Sender.getDate(Sender.dateFromSite(days)) ;
         }
     };
 
@@ -104,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             Sender sender = new Sender();
-            sender.send();
+            sender.send(days);
         }
     };
 
@@ -117,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
         return dateText;
     }
-
+//сравнить дату с сайта с выбронной датой
     private void getData(final String Date) {
         Query query = dt_lessons.child(Date);
         ValueEventListener valueEventListener = new ValueEventListener() {
@@ -133,9 +139,9 @@ public class MainActivity extends AppCompatActivity {
                         temp.add(sender);
                     }
                     listAdapter.notifyDataSetChanged();
-                } else if (snapshot.child(Date).exists()) {
-                    Thread thread = new Thread(runnable1);
-                    thread.start();
+                } else if (!snapshot.hasChild(dateFromSite)) {
+//                    Thread thread = new Thread(runnable1);
+//                    thread.start();
                     Toast.makeText(MainActivity.this, "Sent", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MainActivity.this, "Такого дня нет", Toast.LENGTH_SHORT).show();
@@ -165,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                     @SuppressLint("SetTextI18n")
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        Date = dayOfMonth + ":" + (monthOfYear + 1) + ":" + year;
+                        date = dayOfMonth + ":" + (monthOfYear + 1) + ":" + year;
 
                         lastSelectedYear = year;
                         lastSelectedMonth = monthOfYear;
@@ -173,9 +179,9 @@ public class MainActivity extends AppCompatActivity {
 
                         c.set(lastSelectedYear, lastSelectedMonth, lastSelectedDayOfMonth);
                         SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy", Locale.getDefault());
-                        Date = dateFormat.format(c.getTime());
+                        date = dateFormat.format(c.getTime());
 
-                        textView.setText(Date);
+                        textView.setText(date);
 
                         Thread thread = new Thread(runnable);
                         thread.start();
