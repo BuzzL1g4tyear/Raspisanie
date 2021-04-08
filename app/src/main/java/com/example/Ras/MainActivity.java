@@ -123,9 +123,11 @@ public class MainActivity extends AppCompatActivity {
 
         return dateText;
     }
-//сравнить дату с сайта с выбронной датой
+//сравнить дату с сайта с датой в бд
     private void getData(final String Date) {
-        Query query = dt_lessons.child(Date);
+        Query queryForShow = dt_lessons.child(Date);
+        Query queryForCheck = dt_lessons;
+        final boolean[] isShow = {true};
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -139,12 +141,7 @@ public class MainActivity extends AppCompatActivity {
                         temp.add(sender);
                     }
                     listAdapter.notifyDataSetChanged();
-                } else if (!snapshot.hasChild(dateFromSite)) {
-//                    Thread thread = new Thread(runnable1);
-//                    thread.start();
-                    Toast.makeText(MainActivity.this, "Sent", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Такого дня нет", Toast.LENGTH_SHORT).show();
+                    isShow[0] = false;
                 }
             }
 
@@ -153,7 +150,27 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
-        query.addListenerForSingleValueEvent(valueEventListener);
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.hasChild(dateFromSite)) {
+                    Thread thread = new Thread(runnable1);
+                    thread.start();
+                    Toast.makeText(MainActivity.this, "Sent", Toast.LENGTH_SHORT).show();
+                }
+                else if(isShow[0]){
+                    Toast.makeText(MainActivity.this, "Такого дня нет", Toast.LENGTH_SHORT).show();
+                    isShow[0] = true;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        queryForCheck.addListenerForSingleValueEvent(listener);
+        queryForShow.addListenerForSingleValueEvent(valueEventListener);
     }
 
     @Override
