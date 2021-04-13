@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -64,33 +65,58 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
+    <com.hootsuite.nachos.NachoTextView
+        android:id="@+id/chipText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="328dp"
-        android:ems="10"
-        android:inputType="textPersonName"
+        app:chipHeight="30dp"
+        app:chipTextSize="16dp"
+        app:chipVerticalSpacing="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="0.557" />
-
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroup"
-        android:layout_width="211dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="12dp"
-        app:singleLine="false"
-        app:layout_constraintBottom_toBottomOf="@+id/editText"
-        app:layout_constraintEnd_toEndOf="@+id/editText"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/editText"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:chipBackground="@color/colorBlue" />
 
-    </com.google.android.material.chip.ChipGroup>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/Sent_FB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:tint="@color/colorWhite"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/Cancel_FB"
+        app:layout_constraintEnd_toEndOf="@+id/Cancel_FB"
+        app:srcCompat="@drawable/ic_send_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/Cancel_FB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:tint="@color/colorWhite"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/Add_FB"
+        app:layout_constraintEnd_toEndOf="@+id/Add_FB"
+        app:srcCompat="@drawable/ic_remove_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/Add_FB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:tint="@color/colorWhite"
+        app:backgroundTint="@color/design_default_color_primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_add_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
