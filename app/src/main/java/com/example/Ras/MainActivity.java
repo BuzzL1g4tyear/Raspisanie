@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView lv;
 
-    public ArrayList<ArrayList<Element>> days ;
+    public ArrayList<ArrayList<Element>> days;
     private ArrayList<String> list;
     private ArrayList<Sender> temp;
     private ArrayAdapter<String> listAdapter;
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             getData(date);
             days = Collector.Week.Day.getDays();
-            dateFromSite = Sender.getDate(Sender.dateFromSite(days)) ;
+            dateFromSite = Sender.getDate(Sender.dateFromSite(days));
         }
     };
 
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
         return dateText;
     }
-//сравнить дату с сайта с датой в бд
+
     private void getData(final String Date) {
         Query queryForShow = dt_lessons.child(Date);
         Query queryForCheck = dt_lessons;
@@ -157,8 +157,7 @@ public class MainActivity extends AppCompatActivity {
                     Thread thread = new Thread(runnable1);
                     thread.start();
                     Toast.makeText(MainActivity.this, "Sent", Toast.LENGTH_SHORT).show();
-                }
-                else if(isShow[0]){
+                } else if (isShow[0]) {
                     Toast.makeText(MainActivity.this, "Такого дня нет", Toast.LENGTH_SHORT).show();
                     isShow[0] = true;
                 }

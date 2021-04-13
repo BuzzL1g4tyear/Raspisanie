@@ -27,8 +27,6 @@ public class Sender {
 
     DatabaseReference dt_lessons = FirebaseDatabase.getInstance().getReference();
 
-
-
     public Sender() {
     }
 
@@ -38,7 +36,7 @@ public class Sender {
         this.lessonsOfTheDay = lessonsOfTheDay;
     }
 
-    public static String dateFromSite(ArrayList<ArrayList<Element>> days){
+    public static String dateFromSite(ArrayList<ArrayList<Element>> days) {
         String dateFromSite;
 
         dateFromSite = days.get(0).get(0).text();
