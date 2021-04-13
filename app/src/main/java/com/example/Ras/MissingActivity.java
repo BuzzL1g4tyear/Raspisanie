@@ -38,6 +38,7 @@ public class MissingActivity extends AppCompatActivity {
     NachoTextView textChip;
     FloatingActionButton add_btn, sent_btn, cancel_btn;
     private boolean clicked = false;
+    private String group;
     private List<String> dataChips = new ArrayList<>();
     private List<String> groupNumber = new ArrayList<>();
     MainActivity mainActivity = new MainActivity();
@@ -46,6 +47,7 @@ public class MissingActivity extends AppCompatActivity {
     Animation rotateClose;
     Animation fromBottom;
     Animation toBottom;
+    public static final String MISSING_PERSONS = "MISSING_PERSONS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +107,10 @@ public class MissingActivity extends AppCompatActivity {
         sent_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                group = autoTextView.getText().toString();
                 dataChips.addAll(textChip.getChipValues());
                 Log.d("MyLog", String.valueOf(dataChips.size()));
+                Log.d("MyLog", group);
                 for (int i = 0; i <= dataChips.size()-1; i++) {
                     Log.d("MyLog", String.valueOf(dataChips.get(i)));
                 }
