@@ -35,7 +35,7 @@ public class MissingActivity extends AppCompatActivity {
     private DatabaseReference dt_lessons;
 
     AutoCompleteTextView autoTextView;
-    NachoTextView textChip;
+    NachoTextView orderChips, diseaseChips, statementChips, validReasonChips;
     FloatingActionButton add_btn, sent_btn, cancel_btn;
     private boolean clicked = false;
     private String group;
@@ -53,7 +53,10 @@ public class MissingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_missing);
-        textChip = findViewById(R.id.chipText);
+        orderChips = findViewById(R.id.chipTextOrder);
+        diseaseChips = findViewById(R.id.chipTextDisease);
+        statementChips = findViewById(R.id.chipTextStatement);
+        validReasonChips = findViewById(R.id.chipTextValidReason);
         add_btn = findViewById(R.id.Add_FB);
         sent_btn = findViewById(R.id.Sent_FB);
         cancel_btn = findViewById(R.id.Upd_FB);
@@ -66,7 +69,7 @@ public class MissingActivity extends AppCompatActivity {
         fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim);
         toBottom = AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim);
 
-        textChip.setChipTokenizer(new SpanChipTokenizer<>(this, new ChipSpanChipCreator() {
+        orderChips.setChipTokenizer(new SpanChipTokenizer<>(this, new ChipSpanChipCreator() {
 
             @Override
             public ChipSpan createChip(@NonNull Context context, @NonNull CharSequence text, Object data) {
@@ -81,8 +84,8 @@ public class MissingActivity extends AppCompatActivity {
 
         }, ChipSpan.class));
 
-        textChip.addChipTerminator(' ', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_TO_TERMINATOR);
-        textChip.enableEditChipOnTouch(false, false);
+        orderChips.addChipTerminator(' ', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_TO_TERMINATOR);
+        orderChips.enableEditChipOnTouch(false, false);
 
         Thread thread = new Thread(runnable);
         thread.start();
@@ -108,7 +111,7 @@ public class MissingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 group = autoTextView.getText().toString();
-                dataChips.addAll(textChip.getChipValues());
+                dataChips.addAll(orderChips.getChipValues());
                 Log.d("MyLog", String.valueOf(dataChips.size()));
                 Log.d("MyLog", group);
                 for (int i = 0; i <= dataChips.size()-1; i++) {
