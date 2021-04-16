@@ -15,10 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity android:name=".MissingActivity"></activity>
+        <activity android:name=".MessengerActivity" />
+        <activity android:name=".MissingActivity" />
         <activity
             android:name=".ShowActivity"
-            android:label="@string/Group" />
+            android:label="@string/Group"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

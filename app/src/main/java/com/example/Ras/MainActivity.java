@@ -26,7 +26,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jsoup.nodes.Element;
 
 import java.text.DateFormat;
@@ -38,7 +47,10 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private AccountHeader mHeader = null;
+    private Drawer mDrawer = null;
     private ListView lv;
+    Toolbar toolbarDate;
 
     public ArrayList<ArrayList<Element>> days;
     private ArrayList<String> list;
@@ -46,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> listAdapter;
     private TextView textView;
     final Calendar c = Calendar.getInstance();
-    Toolbar toolbarDate;
 
     public static String date;
     public String dateFromSite;
@@ -63,6 +74,21 @@ public class MainActivity extends AppCompatActivity {
 
         date = SetDate();
 
+        dt_lessons = FirebaseDatabase.getInstance().getReference();
+
+        Thread thread = new Thread(runnable);
+        thread.start();
+
+        toolbarDate = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbarDate);
+
+        showHeader();
+        showDrawer();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         textView = findViewById(R.id.textView2);
         textView.setText(date);
 
@@ -70,18 +96,10 @@ public class MainActivity extends AppCompatActivity {
         lastSelectedMonth = c.get(Calendar.MONTH);
         lastSelectedDayOfMonth = c.get(Calendar.DAY_OF_MONTH);
 
-        dt_lessons = FirebaseDatabase.getInstance().getReference();
-
         list = new ArrayList<>();
         temp = new ArrayList<>();
         listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
         lv = findViewById(R.id.lessons_ListVeiw);
-
-        toolbarDate = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbarDate);
-
-        Thread thread = new Thread(runnable);
-        thread.start();
 
         lv.setAdapter(listAdapter);
 
@@ -97,12 +115,56 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void showDrawer() {
+        mDrawer = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbarDate)
+                .withActionBarDrawerToggle(true)
+                .withSelectedItem(-1)
+                .withAccountHeader(mHeader)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName(R.string.timetable).withIcon(R.drawable.ic_schedule_24).withIdentifier(1),
+                        new PrimaryDrawerItem().withName(R.string.messenger).withIcon(R.drawable.ic_message_24).withIdentifier(2),
+                        new PrimaryDrawerItem().withName(R.string.missing).withIcon(R.drawable.ic_report_24).withIdentifier(3)
+                ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(@Nullable View view, int i, @NotNull IDrawerItem<?> iDrawerItem) {
+                        Intent intent;
+                        switch (i) {
+                            case 1:
+                                intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                            case 2:
+                                intent = new Intent(getApplicationContext(), MessengerActivity.class);
+                                startActivity(intent);
+                            case 3:
+                                intent = new Intent(getApplicationContext(), MissingActivity.class);
+                                startActivity(intent);
+                        }
+                        return false;
+                    }
+                })
+                .build();
+    }
+
+    public void showHeader() {
+        mHeader = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.header)
+                .addProfiles(
+                        new ProfileDrawerItem().withName("Valentin")
+                                .withEmail("123")
+                                .withIcon(R.drawable.ic_school_24)
+                )
+                .build();
+    }
+
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            getData(date);
             days = Collector.Week.Day.getDays();
             dateFromSite = Sender.getDate(Sender.dateFromSite(days));
+            getData(date);
         }
     };
 
@@ -142,6 +204,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                     listAdapter.notifyDataSetChanged();
                     isShow[0] = false;
+                } else {
+                    listAdapter.clear();
+                    listAdapter.notifyDataSetChanged();
+//todo picture
                 }
             }
 
@@ -150,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
+
         ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

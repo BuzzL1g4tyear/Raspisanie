@@ -1,13 +1,18 @@
 <resources>
     <string name="app_name">Расписание</string>
     <string name="today">Сегодня:</string>
-    <string name="Group">Группа №:</string>
+    <string name="Group">Группа №</string>
     <string name="Calendar">Календарь</string>
-    
-<!--    missing activity-->
+
+    <!--    missing activity-->
     <string name="order">Приказ</string>
     <string name="petition">Заявление</string>
     <string name="disease">Болезнь</string>
     <string name="disrespectful">Не уважительная причина</string>
+    <string name="image">image</string>
 
+<!--    Navigation Drawer-->
+    <string name="messenger">Мессенджер</string>
+    <string name="timetable">Расписание</string>
+    <string name="missing">Отсутствующие</string>
 </resources>
