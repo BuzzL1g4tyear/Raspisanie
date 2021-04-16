@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void showDrawer() {
+    private void showDrawer() {
         mDrawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbarDate)
@@ -129,17 +129,18 @@ public class MainActivity extends AppCompatActivity {
                 ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(@Nullable View view, int i, @NotNull IDrawerItem<?> iDrawerItem) {
-                        Intent intent;
+
                         switch (i) {
-                            case 1:
-                                intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
                             case 2:
-                                intent = new Intent(getApplicationContext(), MessengerActivity.class);
-                                startActivity(intent);
+                                Intent intent2 = new Intent(getApplicationContext(), MessengerActivity.class);
+                                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent2);
+                                break;
                             case 3:
-                                intent = new Intent(getApplicationContext(), MissingActivity.class);
-                                startActivity(intent);
+                                Intent intent3 = new Intent(getApplicationContext(), MissingActivity.class);
+                                intent3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent3);
+                                break;
                         }
                         return false;
                     }
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
     }
 
-    public void showHeader() {
+    private void showHeader() {
         mHeader = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.header)
@@ -274,9 +275,6 @@ public class MainActivity extends AppCompatActivity {
                         dateSetListener, lastSelectedYear, lastSelectedMonth, lastSelectedDayOfMonth);
                 datePickerDialog.show();
                 return true;
-            case R.id.missing:
-                Intent intent = new Intent(MainActivity.this, MissingActivity.class);
-                startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
         }

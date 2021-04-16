@@ -1,6 +1,7 @@
 package com.example.Ras;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,6 +28,16 @@ import com.hootsuite.nachos.chip.ChipSpan;
 import com.hootsuite.nachos.chip.ChipSpanChipCreator;
 import com.hootsuite.nachos.terminator.ChipTerminatorHandler;
 import com.hootsuite.nachos.tokenizer.SpanChipTokenizer;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +53,11 @@ public class MissingActivity extends AppCompatActivity {
     private String group;
     private List<String> dataChips = new ArrayList<>();
     private List<String> groupNumber = new ArrayList<>();
+    Toolbar toolbar;
+
+    private AccountHeader mHeader = null;
+    private Drawer mDrawer = null;
+
     MainActivity mainActivity = new MainActivity();
 
     Animation rotateOpen;
@@ -61,6 +78,11 @@ public class MissingActivity extends AppCompatActivity {
         sent_btn = findViewById(R.id.Sent_FB);
         cancel_btn = findViewById(R.id.Upd_FB);
         autoTextView = findViewById(R.id.autoTextView);
+
+        toolbar = findViewById(R.id.toolbarMissing);
+        setSupportActionBar(toolbar);
+        showHeader();
+        showDrawer();
 
         dt_lessons = FirebaseDatabase.getInstance().getReference();
 
@@ -114,12 +136,57 @@ public class MissingActivity extends AppCompatActivity {
                 dataChips.addAll(orderChips.getChipValues());
                 Log.d("MyLog", String.valueOf(dataChips.size()));
                 Log.d("MyLog", group);
-                for (int i = 0; i <= dataChips.size()-1; i++) {
+                for (int i = 0; i <= dataChips.size() - 1; i++) {
                     Log.d("MyLog", String.valueOf(dataChips.get(i)));
                 }
                 dataChips.clear();
             }
         });
+    }
+
+    public void showDrawer() {
+        mDrawer = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .withActionBarDrawerToggle(true)
+                .withSelectedItem(-1)
+                .withAccountHeader(mHeader)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName(R.string.timetable).withIcon(R.drawable.ic_schedule_24).withIdentifier(1),
+                        new PrimaryDrawerItem().withName(R.string.messenger).withIcon(R.drawable.ic_message_24).withIdentifier(2),
+                        new PrimaryDrawerItem().withName(R.string.missing).withIcon(R.drawable.ic_report_24).withIdentifier(3)
+                ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(@Nullable View view, int i, @NotNull IDrawerItem<?> iDrawerItem) {
+
+                        switch (i) {
+                            case 1:
+                                Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
+                                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);;
+                                startActivity(intent1);
+                                break;
+                            case 3:
+                                Intent intent3 = new Intent(getApplicationContext(), MissingActivity.class);
+                                intent3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent3);
+                                break;
+                        }
+                        return false;
+                    }
+                })
+                .build();
+    }
+
+    public void showHeader() {
+        mHeader = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.header)
+                .addProfiles(
+                        new ProfileDrawerItem().withName("Valentin")
+                                .withEmail("123")
+                                .withIcon(R.drawable.ic_school_24)
+                )
+                .build();
     }
 
     Runnable runnable = new Runnable() {
@@ -129,7 +196,7 @@ public class MissingActivity extends AppCompatActivity {
         }
     };
 
-    private void getDate(String date){
+    private void getDate(String date) {
         Query query = dt_lessons.child(date);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

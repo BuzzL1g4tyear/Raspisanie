@@ -15,8 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity android:name=".MessengerActivity" />
-        <activity android:name=".MissingActivity" />
+        <activity android:name=".MessengerActivity"
+            android:label="@string/messenger"/>
+        <activity android:name=".MissingActivity"
+            android:label="@string/missing"/>
         <activity
             android:name=".ShowActivity"
             android:label="@string/Group"
