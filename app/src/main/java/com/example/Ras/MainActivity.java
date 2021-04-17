@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.Ras.objects.AppDrawer;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,10 +48,10 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AccountHeader mHeader = null;
-    private Drawer mDrawer = null;
+    private AppDrawer mAppDrawer = null;
     private ListView lv;
-    Toolbar toolbarDate;
+    private Toast backToast;
+    private Toolbar toolbarDate;
 
     public ArrayList<ArrayList<Element>> days;
     private ArrayList<String> list;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private int lastSelectedYear;
     private int lastSelectedMonth;
     private int lastSelectedDayOfMonth;
+    private long timeBackPress;
 
     private DatabaseReference dt_lessons;
 
@@ -79,11 +81,31 @@ public class MainActivity extends AppCompatActivity {
         Thread thread = new Thread(runnable);
         thread.start();
 
+        initFunc();
+        initFields();
+    }
+
+    private void initFunc() {
         toolbarDate = findViewById(R.id.toolbar);
         setSupportActionBar(toolbarDate);
+        mAppDrawer = new AppDrawer(this, toolbarDate);
+    }
 
-        showHeader();
-        showDrawer();
+    private void initFields() {
+        mAppDrawer.create();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (timeBackPress + 2000 > System.currentTimeMillis()) {
+            backToast.cancel();
+            super.onBackPressed();
+            return;
+        } else {
+            backToast = Toast.makeText(getBaseContext(), "Для выхода нажмите ещё раз", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        timeBackPress = System.currentTimeMillis();
     }
 
     @Override
@@ -113,51 +135,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    private void showDrawer() {
-        mDrawer = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(toolbarDate)
-                .withActionBarDrawerToggle(true)
-                .withSelectedItem(-1)
-                .withAccountHeader(mHeader)
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.timetable).withIcon(R.drawable.ic_schedule_24).withIdentifier(1),
-                        new PrimaryDrawerItem().withName(R.string.messenger).withIcon(R.drawable.ic_message_24).withIdentifier(2),
-                        new PrimaryDrawerItem().withName(R.string.missing).withIcon(R.drawable.ic_report_24).withIdentifier(3)
-                ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(@Nullable View view, int i, @NotNull IDrawerItem<?> iDrawerItem) {
-
-                        switch (i) {
-                            case 2:
-                                Intent intent2 = new Intent(getApplicationContext(), MessengerActivity.class);
-                                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent2);
-                                break;
-                            case 3:
-                                Intent intent3 = new Intent(getApplicationContext(), MissingActivity.class);
-                                intent3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent3);
-                                break;
-                        }
-                        return false;
-                    }
-                })
-                .build();
-    }
-
-    private void showHeader() {
-        mHeader = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.drawable.header)
-                .addProfiles(
-                        new ProfileDrawerItem().withName("Valentin")
-                                .withEmail("123")
-                                .withIcon(R.drawable.ic_school_24)
-                )
-                .build();
     }
 
     Runnable runnable = new Runnable() {

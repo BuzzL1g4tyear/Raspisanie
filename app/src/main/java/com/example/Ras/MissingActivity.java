@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import com.example.Ras.objects.AppDrawer;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,6 +45,7 @@ import java.util.List;
 
 public class MissingActivity extends AppCompatActivity {
 
+    private AppDrawer mAppDrawer = null;
     private DatabaseReference dt_lessons;
 
     AutoCompleteTextView autoTextView;
@@ -70,26 +72,10 @@ public class MissingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_missing);
-        orderChips = findViewById(R.id.chipTextOrder);
-        diseaseChips = findViewById(R.id.chipTextDisease);
-        statementChips = findViewById(R.id.chipTextStatement);
-        validReasonChips = findViewById(R.id.chipTextValidReason);
-        add_btn = findViewById(R.id.Add_FB);
-        sent_btn = findViewById(R.id.Sent_FB);
-        cancel_btn = findViewById(R.id.Upd_FB);
-        autoTextView = findViewById(R.id.autoTextView);
 
-        toolbar = findViewById(R.id.toolbarMissing);
-        setSupportActionBar(toolbar);
-        showHeader();
-        showDrawer();
-
-        dt_lessons = FirebaseDatabase.getInstance().getReference();
-
-        rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim);
-        rotateClose = AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim);
-        fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim);
-        toBottom = AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim);
+        initFunc();
+        initFields();
+        initAnim();
 
         orderChips.setChipTokenizer(new SpanChipTokenizer<>(this, new ChipSpanChipCreator() {
 
@@ -144,49 +130,32 @@ public class MissingActivity extends AppCompatActivity {
         });
     }
 
-    public void showDrawer() {
-        mDrawer = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(toolbar)
-                .withActionBarDrawerToggle(true)
-                .withSelectedItem(-1)
-                .withAccountHeader(mHeader)
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.timetable).withIcon(R.drawable.ic_schedule_24).withIdentifier(1),
-                        new PrimaryDrawerItem().withName(R.string.messenger).withIcon(R.drawable.ic_message_24).withIdentifier(2),
-                        new PrimaryDrawerItem().withName(R.string.missing).withIcon(R.drawable.ic_report_24).withIdentifier(3)
-                ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(@Nullable View view, int i, @NotNull IDrawerItem<?> iDrawerItem) {
-
-                        switch (i) {
-                            case 1:
-                                Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
-                                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);;
-                                startActivity(intent1);
-                                break;
-                            case 3:
-                                Intent intent3 = new Intent(getApplicationContext(), MissingActivity.class);
-                                intent3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent3);
-                                break;
-                        }
-                        return false;
-                    }
-                })
-                .build();
+    private void initFunc() {
+        toolbar = findViewById(R.id.toolbarMissing);
+        setSupportActionBar(toolbar);
+        mAppDrawer = new AppDrawer(this, toolbar);
     }
 
-    public void showHeader() {
-        mHeader = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.drawable.header)
-                .addProfiles(
-                        new ProfileDrawerItem().withName("Valentin")
-                                .withEmail("123")
-                                .withIcon(R.drawable.ic_school_24)
-                )
-                .build();
+    private void initFields() {
+        orderChips = findViewById(R.id.chipTextOrder);
+        diseaseChips = findViewById(R.id.chipTextDisease);
+        statementChips = findViewById(R.id.chipTextStatement);
+        validReasonChips = findViewById(R.id.chipTextValidReason);
+        add_btn = findViewById(R.id.Add_FB);
+        sent_btn = findViewById(R.id.Sent_FB);
+        cancel_btn = findViewById(R.id.Upd_FB);
+        autoTextView = findViewById(R.id.autoTextView);
+        dt_lessons = FirebaseDatabase.getInstance().getReference();
+
+
+        mAppDrawer.create();
+    }
+
+    private void initAnim() {
+        rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim);
+        rotateClose = AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim);
+        fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim);
+        toBottom = AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim);
     }
 
     Runnable runnable = new Runnable() {
