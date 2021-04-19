@@ -3,7 +3,7 @@ package com.example.Ras
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
-import com.example.Ras.messUI.ChatFragment
+import com.example.Ras.UI.messUI.ChatFragment
 import kotlinx.android.synthetic.main.activity_messenger.*
 
 class MessengerActivity : AppCompatActivity() {

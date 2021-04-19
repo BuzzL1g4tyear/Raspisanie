@@ -15,14 +15,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity android:name=".MessengerActivity"
-            android:label="@string/messenger"/>
-        <activity android:name=".MissingActivity"
-            android:label="@string/missing"/>
+        <activity android:name=".AuthorizationActivity"></activity>
+        <activity
+            android:name=".MessengerActivity"
+            android:label="@string/messenger" />
+        <activity
+            android:name=".UI.missingUI.MissingActivity"
+            android:label="@string/missing" />
         <activity
             android:name=".ShowActivity"
             android:label="@string/Group"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

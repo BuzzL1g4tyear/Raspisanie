@@ -1,13 +1,11 @@
 package com.example.Ras.objects
 
-import android.app.Activity
 import android.content.Intent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat.startActivity
 import com.example.Ras.MessengerActivity
-import com.example.Ras.MissingActivity
+import com.example.Ras.UI.missingUI.MissingActivity
 import com.example.Ras.R
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder

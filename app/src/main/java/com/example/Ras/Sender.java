@@ -1,15 +1,7 @@
 package com.example.Ras;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import org.jsoup.nodes.Element;
 
@@ -39,8 +31,11 @@ public class Sender {
     public static String dateFromSite(ArrayList<ArrayList<Element>> days) {
         String dateFromSite;
 
-        dateFromSite = days.get(0).get(0).text();
-
+        if (days.size() > 3) {
+            dateFromSite = days.get(4).get(0).text();
+        } else {
+            dateFromSite = days.get(0).get(0).text();
+        }
         return dateFromSite;
     }
 

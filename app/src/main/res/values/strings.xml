@@ -15,4 +15,6 @@
     <string name="messenger">Мессенджер</string>
     <string name="timetable">Расписание</string>
     <string name="missing">Отсутствующие</string>
+    <!--    hints-->
+    <string name="hint_auth_login">Логин</string>
 </resources>

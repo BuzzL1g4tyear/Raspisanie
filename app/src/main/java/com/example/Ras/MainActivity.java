@@ -27,16 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jsoup.nodes.Element;
 
 import java.text.DateFormat;
@@ -141,10 +132,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             days = Collector.Week.Day.getDays();
-            dateFromSite = Sender.getDate(Sender.dateFromSite(days));
+            dateFromSite(days);
             getData(date);
         }
     };
+
+    private void dateFromSite(ArrayList<ArrayList<Element>> days) {
+        dateFromSite = Sender.getDate(Sender.dateFromSite(days));
+    }
 
     Runnable runnable1 = new Runnable() {
         @Override
