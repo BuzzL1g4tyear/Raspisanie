@@ -14,17 +14,39 @@
         style="@style/floating_btnNext" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
+        android:id="@+id/loginInputLayout"
         style="@style/inputTextLayout"
-        android:hint="@string/hint_auth_login"
+        android:layout_marginLeft="16dp"
 
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:hint="@string/hint_auth_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/auth_loginTXT"
-            style="@style/inputText" />
+            android:id="@+id/auth_Login"
+            style="@style/inputText"
+            android:inputType="textEmailAddress"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passInputLayout"
+        style="@style/inputTextLayout"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:hint="@string/auth_Pass"
+        app:endIconMode="password_toggle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loginInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/auth_Pass"
+            style="@style/inputText"
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

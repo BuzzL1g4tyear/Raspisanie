@@ -15,7 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity android:name=".AuthorizationActivity"></activity>
+        <activity
+            android:name=".AuthorizationActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".MessengerActivity"
             android:label="@string/messenger" />
