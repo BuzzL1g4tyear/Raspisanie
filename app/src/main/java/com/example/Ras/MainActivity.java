@@ -38,9 +38,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.example.Ras.Utils.FirebaseHelperKt.NODE_LESSONS;
+import static com.example.Ras.Utils.FirebaseHelperKt.initDatabase;
+
 public class MainActivity extends AppCompatActivity {
 
-    private AppDrawer mAppDrawer = null;
+    public AppDrawer mAppDrawer = null;
     private ListView lv;
     private Toast backToast;
     private Toolbar toolbarDate;
@@ -73,18 +76,19 @@ public class MainActivity extends AppCompatActivity {
         Thread thread = new Thread(runnable);
         thread.start();
 
-        initFunc();
         initFields();
+        initFunc();
     }
 
     private void initFunc() {
-        toolbarDate = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbarDate);
-        mAppDrawer = new AppDrawer(this, toolbarDate);
+        mAppDrawer.create();
+        initDatabase();
     }
 
     private void initFields() {
-        mAppDrawer.create();
+        toolbarDate = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbarDate);
+        mAppDrawer = new AppDrawer(this, toolbarDate);
     }
 
     @Override
@@ -104,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         textView = findViewById(R.id.textView2);
+        // TODO: нормально сделать дату
         textView.setText(date);
 
         lastSelectedYear = c.get(Calendar.YEAR);
@@ -161,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getData(final String Date) {
-        Query queryForShow = dt_lessons.child(Date);
+        Query queryForShow = dt_lessons.child(NODE_LESSONS).child(Date);
         Query queryForCheck = dt_lessons;
         final boolean[] isShow = {true};
         ValueEventListener valueEventListener = new ValueEventListener() {
@@ -194,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.hasChild(dateFromSite)) {
+                if (!snapshot.child(NODE_LESSONS).hasChild(dateFromSite)) {
                     Thread thread = new Thread(runnable1);
                     thread.start();
                     Toast.makeText(MainActivity.this, "Sent", Toast.LENGTH_SHORT).show();

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.Ras.UI.messUI.ChatFragment
 import com.example.Ras.Utils.AUTH
+import com.example.Ras.Utils.actId
 import com.example.Ras.Utils.replaceActivity
 import com.example.Ras.Utils.replaceFragment
 import com.example.Ras.databinding.ActivityMessengerBinding
@@ -15,13 +16,14 @@ import kotlinx.android.synthetic.main.activity_messenger.*
 class MessengerActivity : AppCompatActivity() {
 
     private lateinit var toolbar: Toolbar
-    private lateinit var mAppDrawer: AppDrawer
+    lateinit var mAppDrawer: AppDrawer
     private lateinit var mBinding: ActivityMessengerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMessengerBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
+        actId = 1
     }
 
     override fun onStart() {

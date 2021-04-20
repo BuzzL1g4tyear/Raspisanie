@@ -1,19 +1,17 @@
 package com.example.Ras.UI.missingUI;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 
+import com.example.Ras.AuthorizationActivity;
 import com.example.Ras.MainActivity;
 import com.example.Ras.R;
 import com.example.Ras.Sender;
@@ -25,17 +23,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.hootsuite.nachos.ChipConfiguration;
 import com.hootsuite.nachos.NachoTextView;
-import com.hootsuite.nachos.chip.ChipSpan;
-import com.hootsuite.nachos.chip.ChipSpanChipCreator;
-import com.hootsuite.nachos.terminator.ChipTerminatorHandler;
-import com.hootsuite.nachos.tokenizer.SpanChipTokenizer;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.Drawer;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.Ras.Utils.FirebaseHelperKt.AUTH;
+import static com.example.Ras.Utils.FunsKt.*;
 
 public class MissingActivity extends AppCompatActivity {
 
@@ -49,10 +43,7 @@ public class MissingActivity extends AppCompatActivity {
     private String group;
     private List<String> dataChips = new ArrayList<>();
     private List<String> groupNumber = new ArrayList<>();
-    Toolbar toolbar;
-
-    private AccountHeader mHeader = null;
-    private Drawer mDrawer = null;
+    Toolbar toolbar_Missing;
 
     MainActivity mainActivity = new MainActivity();
 
@@ -60,74 +51,43 @@ public class MissingActivity extends AppCompatActivity {
     Animation rotateClose;
     Animation fromBottom;
     Animation toBottom;
-    public static final String MISSING_PERSONS = "MISSING_PERSONS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_missing);
+        setActId(2);
+    }
 
-        initFunc();
+    @Override
+    protected void onStart() {
+        super.onStart();
         initFields();
+        checkUser();
         initAnim();
-
-        orderChips.setChipTokenizer(new SpanChipTokenizer<>(this, new ChipSpanChipCreator() {
-
-            @Override
-            public ChipSpan createChip(@NonNull Context context, @NonNull CharSequence text, Object data) {
-                return new ChipSpan(context, text, ContextCompat.getDrawable(MissingActivity.this, R.drawable.ic_person_24), data);
-            }
-
-            @Override
-            public void configureChip(@NonNull ChipSpan chip, @NonNull ChipConfiguration chipConfiguration) {
-                super.configureChip(chip, chipConfiguration);
-                chip.setShowIconOnLeft(true);
-            }
-
-        }, ChipSpan.class));
-
-        orderChips.addChipTerminator(' ', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_TO_TERMINATOR);
-        orderChips.enableEditChipOnTouch(false, false);
-
-        Thread thread = new Thread(runnable);
-        thread.start();
-        ArrayAdapter adapter = new ArrayAdapter(this, R.layout.group_number, groupNumber);
-        adapter.notifyDataSetChanged();
-        autoTextView.setAdapter(adapter);
-
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onAddClicked();
             }
         });
+    }
 
-        cancel_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    private void checkUser() {
+        if (AUTH.getCurrentUser() != null) {
 
-            }
-        });
+            initFunc();
 
-        sent_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                group = autoTextView.getText().toString();
-                dataChips.addAll(orderChips.getChipValues());
-                Log.d("MyLog", String.valueOf(dataChips.size()));
-                Log.d("MyLog", group);
-                for (int i = 0; i <= dataChips.size() - 1; i++) {
-                    Log.d("MyLog", String.valueOf(dataChips.get(i)));
-                }
-                dataChips.clear();
-            }
-        });
+        } else {
+            Intent intent = new Intent(this, AuthorizationActivity.class);
+            startActivity(intent);
+            this.finish();
+        }
     }
 
     private void initFunc() {
-        toolbar = findViewById(R.id.toolbarMissing);
-        setSupportActionBar(toolbar);
-        mAppDrawer = new AppDrawer(this, toolbar);
+        setSupportActionBar(toolbar_Missing);
+        mAppDrawer.create();
     }
 
     private void initFields() {
@@ -140,9 +100,8 @@ public class MissingActivity extends AppCompatActivity {
         cancel_btn = findViewById(R.id.Upd_FB);
         autoTextView = findViewById(R.id.autoTextView);
         dt_lessons = FirebaseDatabase.getInstance().getReference();
-
-
-        mAppDrawer.create();
+        toolbar_Missing = (Toolbar) findViewById(R.id.toolbarMissing);
+        mAppDrawer = new AppDrawer(this, toolbar_Missing);
     }
 
     private void initAnim() {

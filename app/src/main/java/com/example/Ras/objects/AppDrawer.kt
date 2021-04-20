@@ -1,19 +1,16 @@
 package com.example.Ras.objects
 
 import android.content.Intent
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.example.Ras.AuthorizationActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.Ras.MainActivity
 import com.example.Ras.MessengerActivity
-import com.example.Ras.UI.missingUI.MissingActivity
 import com.example.Ras.R
+import com.example.Ras.UI.missingUI.MissingActivity
 import com.example.Ras.Utils.AUTH
 import com.example.Ras.Utils.replaceActivity
-import com.google.firebase.auth.FirebaseAuth
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
@@ -23,16 +20,29 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
 import com.mikepenz.materialdrawer.model.SectionDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
-import java.lang.System.exit
 
-class AppDrawer (val activity: AppCompatActivity,val toolbar: Toolbar) {
+class AppDrawer(val activity: AppCompatActivity, val toolbar: Toolbar) {
 
     private lateinit var mHeader: AccountHeader
     private lateinit var mDrawer: Drawer
+    private lateinit var mDrawerLayout: DrawerLayout
 
     fun create() {
         showHeader()
         showDrawer()
+        mDrawerLayout = mDrawer.drawerLayout
+    }
+
+    fun disableDrawer() {
+        mDrawer.actionBarDrawerToggle?.isDrawerIndicatorEnabled = false
+        activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+    }
+
+    fun enableDrawer() {
+        activity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        mDrawer.actionBarDrawerToggle?.isDrawerIndicatorEnabled = true
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
     }
 
     private fun showDrawer() {
@@ -51,7 +61,7 @@ class AppDrawer (val activity: AppCompatActivity,val toolbar: Toolbar) {
                 ).withOnDrawerItemClickListener(object : Drawer.OnDrawerItemClickListener {
                     override fun onItemClick(view: View?, i: Int, drawerItem: IDrawerItem<*>): Boolean {
                         when (i) {
-                            1->{
+                            1 -> {
                                 val intent1 = Intent(activity, MainActivity::class.java)
                                 intent1.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                 activity.startActivity(intent1)

@@ -8,11 +8,11 @@ import com.example.Ras.databinding.ActivityAuthorizationBinding
 import com.example.Ras.objects.AppDrawer
 import kotlinx.android.synthetic.main.activity_authorization.*
 
-class AuthorizationActivity : AppCompatActivity() {
+class AuthorizationActivity() : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityAuthorizationBinding
     private lateinit var mToolbarAuth: Toolbar
-    private lateinit var mAppDrawer: AppDrawer
+    lateinit var mAppDrawer: AppDrawer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,5 +33,6 @@ class AuthorizationActivity : AppCompatActivity() {
 
     private fun initFields() {
         mAppDrawer = AppDrawer(this, mToolbarAuth)
+        mAppDrawer.create()
     }
 }

@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.example.Ras.Utils.FirebaseHelperKt.NODE_LESSONS;
+
 public class Sender {
 
     public String id;
@@ -52,7 +54,7 @@ public class Sender {
         if (days.size() > 3) {
             for (int table = 0; table < days.size(); table++) {
                 dt_lessons = FirebaseDatabase.getInstance().
-                        getReference(getDate(days.get(table).get(0).text()));
+                        getReference().child(NODE_LESSONS);
 
                 id = dt_lessons.getKey();
                 for (int column = columnsToSkip; column < days.get(table).get(rowsToSkip).childrenSize() - 1; column += 2) {
@@ -64,14 +66,14 @@ public class Sender {
                                 (days.get(table).get(row).children().get(column + 1).text()));
                     }
                     Sender sender = new Sender(id, groups, lessons);
-                    dt_lessons.push().setValue(sender);
+                    dt_lessons.child(getDate(days.get(table).get(0).text())).push().setValue(sender);
                 }
             }
         } else {
             for (int table = 0; table < days.size(); table++) {
 
                 dt_lessons = FirebaseDatabase.getInstance().
-                        getReference(getDate(days.get(table).get(0).text()));
+                        getReference().child(NODE_LESSONS);
 
                 id = dt_lessons.getKey();
                 for (int column = columnsToSkip; column < days.get(table).get(rowsToSkip).childrenSize() - 1; column += 2) {
@@ -83,11 +85,10 @@ public class Sender {
                                 (days.get(table).get(row).children().get(column + 1).text()));
                     }
                     Sender sender = new Sender(id, groups, lessons);
-                    dt_lessons.push().setValue(sender);
+                    dt_lessons.child(getDate(days.get(0).get(0).text())).push().setValue(sender);
                 }
             }
         }
-
     }
 
     public static String getDate(String data) {
