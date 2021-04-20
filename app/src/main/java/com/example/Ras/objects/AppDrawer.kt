@@ -3,12 +3,16 @@ package com.example.Ras.objects
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.Ras.AuthorizationActivity
+import com.example.Ras.MainActivity
 import com.example.Ras.MessengerActivity
 import com.example.Ras.UI.missingUI.MissingActivity
 import com.example.Ras.R
 import com.example.Ras.Utils.AUTH
+import com.example.Ras.Utils.replaceActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
@@ -47,6 +51,11 @@ class AppDrawer (val activity: AppCompatActivity,val toolbar: Toolbar) {
                 ).withOnDrawerItemClickListener(object : Drawer.OnDrawerItemClickListener {
                     override fun onItemClick(view: View?, i: Int, drawerItem: IDrawerItem<*>): Boolean {
                         when (i) {
+                            1->{
+                                val intent1 = Intent(activity, MainActivity::class.java)
+                                intent1.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                activity.startActivity(intent1)
+                            }
                             2 -> {
                                 val intent2 = Intent(activity, MessengerActivity::class.java)
                                 intent2.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -57,7 +66,10 @@ class AppDrawer (val activity: AppCompatActivity,val toolbar: Toolbar) {
                                 intent3.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                 activity.startActivity(intent3)
                             }
-
+                            5 -> {
+                                AUTH.signOut()
+                                activity.replaceActivity(MainActivity())
+                            }
                         }
                         return false
                     }

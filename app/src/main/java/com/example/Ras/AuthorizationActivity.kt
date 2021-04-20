@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.Ras.UI.messUI.AuthFragment
 import com.example.Ras.databinding.ActivityAuthorizationBinding
+import com.example.Ras.objects.AppDrawer
 import kotlinx.android.synthetic.main.activity_authorization.*
 
 class AuthorizationActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityAuthorizationBinding
     private lateinit var mToolbarAuth: Toolbar
+    private lateinit var mAppDrawer: AppDrawer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,5 +28,10 @@ class AuthorizationActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().addToBackStack(null)
                 .add(R.id.authData_container, AuthFragment())
                 .commit()
+        initFields()
+    }
+
+    private fun initFields() {
+        mAppDrawer = AppDrawer(this, mToolbarAuth)
     }
 }

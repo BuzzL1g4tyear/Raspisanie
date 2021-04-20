@@ -35,7 +35,7 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
         AUTH.signInWithEmailAndPassword(mLogin, mPass).addOnCompleteListener(){ task ->
             if(task.isSuccessful){
                 fragmentManager?.beginTransaction()?.addToBackStack(null)
-                        ?.add(R.id.data_container, ChatFragment())
+                        ?.replace(R.id.authData_container, ChatFragment())
                         ?.commit()
             }
         }
