@@ -1,6 +1,8 @@
 package com.example.Ras
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.Ras.UI.messUI.ChatFragment
@@ -42,9 +44,24 @@ class MessengerActivity : AppCompatActivity() {
         if (AUTH.currentUser != null) {
             setSupportActionBar(toolbar)
             mAppDrawer.create()
-            replaceFragment(ChatFragment())
+            replaceFragment(ChatFragment(), false)
         } else {
             replaceActivity(AuthorizationActivity())
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        this.menuInflater.inflate(R.menu.items_messenger_toolbar, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_change_name -> {
+                data_container.removeAllViews()
+                replaceFragment(ChangeNameFragment(), false)
+            }
+        }
+        return true
     }
 }

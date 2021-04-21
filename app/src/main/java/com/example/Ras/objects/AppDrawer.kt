@@ -57,7 +57,8 @@ class AppDrawer(val activity: AppCompatActivity, val toolbar: Toolbar) {
                         PrimaryDrawerItem().withName(R.string.messenger).withIcon(R.drawable.ic_message_24).withIdentifier(2),
                         PrimaryDrawerItem().withName(R.string.missing).withIcon(R.drawable.ic_report_24).withIdentifier(3),
                         SectionDrawerItem().withName(R.string.additionally),
-                        SecondaryDrawerItem().withName(R.string.exit).withIcon(R.drawable.ic_logout_24).withIdentifier(4)
+//                        SecondaryDrawerItem().withName(R.string.settings).withIcon(R.drawable.ic_settings_24).withIdentifier(4),
+                        SecondaryDrawerItem().withName(R.string.exit).withIcon(R.drawable.ic_logout_24).withIdentifier(5)
                 ).withOnDrawerItemClickListener(object : Drawer.OnDrawerItemClickListener {
                     override fun onItemClick(view: View?, i: Int, drawerItem: IDrawerItem<*>): Boolean {
                         when (i) {

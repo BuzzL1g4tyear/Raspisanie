@@ -1,10 +1,16 @@
 <resources>
+
+    <string-array name="settings_array">
+        <item>Изменить имя</item>
+    </string-array>
+
     <string name="app_name">Расписание</string>
     <string name="today">Сегодня:</string>
     <string name="pickedDate">Выбранная дата:</string>
     <string name="Group">Группа №</string>
     <string name="Calendar">Календарь</string>
-
+    <string name="settings_account">Настройки аккаунта</string>
+    <string name="change_name_title">Изменение имени</string>
     <!--    missing activity-->
     <string name="order">Приказ</string>
     <string name="petition">Заявление</string>
@@ -18,10 +24,14 @@
     <string name="messenger">Мессенджер</string>
     <string name="timetable">Расписание</string>
     <string name="missing">Отсутствующие</string>
+    <string name="settings">Настройки</string>
+
     <!--    hints-->
     <string name="hint_auth_login">Логин</string>
     <string name="auth_eEmpty_text">Пустое поле</string>
     <string name="auth_Pass">Пароль</string>
     <string name="additionally">Дополнительно</string>
     <string name="exit">Выйти из аккаунта</string>
+    <string name="change_name">Новое имя</string>
+    <string name="change_surname">Новая фамилия</string>
 </resources>
