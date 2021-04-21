@@ -23,7 +23,7 @@ public class ShowActivity extends AppCompatActivity {
         textViewLessons = findViewById(R.id.textViewLessons);
         textViewDate = findViewById(R.id.textViewDate);
 
-        textViewDate.setText(MainActivity.date);
+        textViewDate.setText(MainActivity.showingDate);
         setSupportActionBar(toolbarShow);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 

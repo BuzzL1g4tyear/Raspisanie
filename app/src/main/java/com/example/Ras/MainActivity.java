@@ -21,7 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.Ras.objects.AppDrawer;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -52,10 +51,11 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> list;
     private ArrayList<Sender> temp;
     private ArrayAdapter<String> listAdapter;
-    private TextView textView;
+    private TextView textViewToday, textViewPickedDate, textViewText;
     final Calendar c = Calendar.getInstance();
 
-    public static String date;
+    public String date;
+    public static String showingDate = "";
     public String dateFromSite;
     private int lastSelectedYear;
     private int lastSelectedMonth;
@@ -69,15 +69,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        date = SetDate();
-
+        initFields();
         dt_lessons = FirebaseDatabase.getInstance().getReference();
 
         Thread thread = new Thread(runnable);
         thread.start();
+        date = SetDate();
+        if (showingDate.isEmpty()) {
+            showingDate = date;
 
-        initFields();
+            textViewText.setVisibility(View.INVISIBLE);
+            textViewPickedDate.setVisibility(View.INVISIBLE);
+        } else if (!date.equals(showingDate)){
+            textViewText.setVisibility(View.VISIBLE);
+            textViewPickedDate.setVisibility(View.VISIBLE);
+            textViewPickedDate.setText(showingDate);
+        }
+
         initFunc();
+        textViewToday.setText(date);
     }
 
     private void initFunc() {
@@ -86,6 +96,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initFields() {
+        textViewToday = findViewById(R.id.textViewToday);
+        textViewPickedDate = findViewById(R.id.textViewPickedDate);
+        textViewText = findViewById(R.id.textView4);
+
+        lastSelectedYear = c.get(Calendar.YEAR);
+        lastSelectedMonth = c.get(Calendar.MONTH);
+        lastSelectedDayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+
+        list = new ArrayList<>();
+        temp = new ArrayList<>();
         toolbarDate = findViewById(R.id.toolbar);
         setSupportActionBar(toolbarDate);
         mAppDrawer = new AppDrawer(this, toolbarDate);
@@ -107,16 +127,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        textView = findViewById(R.id.textView2);
-        // TODO: нормально сделать дату
-        textView.setText(date);
 
-        lastSelectedYear = c.get(Calendar.YEAR);
-        lastSelectedMonth = c.get(Calendar.MONTH);
-        lastSelectedDayOfMonth = c.get(Calendar.DAY_OF_MONTH);
-
-        list = new ArrayList<>();
-        temp = new ArrayList<>();
         listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
         lv = findViewById(R.id.lessons_ListVeiw);
 
@@ -139,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             days = Collector.Week.Day.getDays();
             dateFromSite(days);
-            getData(date);
+            getData(showingDate);
         }
     };
 
@@ -227,34 +238,38 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.calendar_picker:
-                DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-                    @SuppressLint("SetTextI18n")
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        date = dayOfMonth + ":" + (monthOfYear + 1) + ":" + year;
+        if (item.getItemId() == R.id.calendar_picker) {
+            DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+                @SuppressLint("SetTextI18n")
+                public void onDateSet(DatePicker view, int year,
+                                      int monthOfYear, int dayOfMonth) {
+                    showingDate = dayOfMonth + ":" + (monthOfYear + 1) + ":" + year;
 
-                        lastSelectedYear = year;
-                        lastSelectedMonth = monthOfYear;
-                        lastSelectedDayOfMonth = dayOfMonth;
+                    lastSelectedYear = year;
+                    lastSelectedMonth = monthOfYear;
+                    lastSelectedDayOfMonth = dayOfMonth;
 
-                        c.set(lastSelectedYear, lastSelectedMonth, lastSelectedDayOfMonth);
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy", Locale.getDefault());
-                        date = dateFormat.format(c.getTime());
+                    c.set(lastSelectedYear, lastSelectedMonth, lastSelectedDayOfMonth);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy", Locale.getDefault());
+                    showingDate = dateFormat.format(c.getTime());
 
-                        textView.setText(date);
-
-                        Thread thread = new Thread(runnable);
-                        thread.start();
+                    if (!date.equals(showingDate)) {
+                        textViewText.setVisibility(View.VISIBLE);
+                        textViewPickedDate.setVisibility(View.VISIBLE);
+                        textViewPickedDate.setText(showingDate);
+                    } else {
+                        textViewText.setVisibility(View.INVISIBLE);
+                        textViewPickedDate.setVisibility(View.INVISIBLE);
                     }
-                };
-                DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                        dateSetListener, lastSelectedYear, lastSelectedMonth, lastSelectedDayOfMonth);
-                datePickerDialog.show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+                    Thread thread = new Thread(runnable);
+                    thread.start();
+                }
+            };
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                    dateSetListener, lastSelectedYear, lastSelectedMonth, lastSelectedDayOfMonth);
+            datePickerDialog.show();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }
