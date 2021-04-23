@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import com.example.Ras.AuthorizationActivity
 import com.example.Ras.MainActivity
 import com.example.Ras.MessengerActivity
 import com.example.Ras.R
@@ -37,12 +38,38 @@ class AppDrawer(val activity: AppCompatActivity, val toolbar: Toolbar) {
         mDrawer.actionBarDrawerToggle?.isDrawerIndicatorEnabled = false
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        toolbar.setNavigationOnClickListener {
+            when (activity) {
+                is MessengerActivity -> {
+                    activity.supportFragmentManager.popBackStack()
+                }
+                is MissingActivity -> {
+                    activity.supportFragmentManager.popBackStack()
+                }
+                is AuthorizationActivity -> {
+                    activity.supportFragmentManager.popBackStack()
+                }
+            }
+        }
     }
 
     fun enableDrawer() {
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
         mDrawer.actionBarDrawerToggle?.isDrawerIndicatorEnabled = true
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        toolbar.setNavigationOnClickListener {
+            when (activity) {
+                is MessengerActivity -> {
+                    mDrawer.openDrawer()
+                }
+                is MissingActivity -> {
+                    mDrawer.openDrawer()
+                }
+                is AuthorizationActivity -> {
+                    mDrawer.openDrawer()
+                }
+            }
+        }
     }
 
     private fun showDrawer() {

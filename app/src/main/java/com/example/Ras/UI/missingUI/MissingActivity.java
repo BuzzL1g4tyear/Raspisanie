@@ -32,7 +32,7 @@ import static com.example.Ras.Utils.FunsKt.setActId;
 
 public class MissingActivity extends AppCompatActivity {
 
-    private AppDrawer mAppDrawer = null;
+    public AppDrawer mAppDrawer = null;
 
     AutoCompleteTextView dropDownMenu;
     NachoTextView orderChips, diseaseChips, statementChips, validReasonChips;
