@@ -7,7 +7,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -15,6 +17,8 @@ import com.example.Ras.AuthorizationActivity;
 import com.example.Ras.MainActivity;
 import com.example.Ras.R;
 import com.example.Ras.objects.AppDrawer;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hootsuite.nachos.NachoTextView;
 import com.hootsuite.nachos.chip.Chip;
@@ -93,7 +97,19 @@ public class MissingActivity extends AppCompatActivity {
         group = dropDownMenu.getText().toString();
         REF_DATABASE.child(MISSING_PERSONS).child(date).child(group)
                 .child(CHILD_ORDER)
-                .push().setValue(dataOrderChip);
+                .push().setValue(dataOrderChip).addOnCompleteListener(new OnCompleteListener(){
+
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(MissingActivity.this, "data sent", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        dataOrderChip.clear();
+        dataDiseaseChip.clear();
+        dataStatementChip.clear();
+        dataReasonChip.clear();
     }
 
     private void getChipsText() {
