@@ -29,6 +29,8 @@
     <!--    hints-->
     <string name="hint_auth_login">Логин</string>
     <string name="auth_eEmpty_text">Пустое поле</string>
+    <string name="change_eEmpty_Name_text">Пустое поле для имени</string>
+    <string name="changedData">Данные изменены</string>
     <string name="auth_Pass">Пароль</string>
     <string name="additionally">Дополнительно</string>
     <string name="exit">Выйти из аккаунта</string>

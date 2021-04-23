@@ -49,19 +49,4 @@ class MessengerActivity : AppCompatActivity() {
             replaceActivity(AuthorizationActivity())
         }
     }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        this.menuInflater.inflate(R.menu.items_messenger_toolbar, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_change_name -> {
-                data_container.removeAllViews()
-                replaceFragment(ChangeNameFragment(), false)
-            }
-        }
-        return true
-    }
 }
