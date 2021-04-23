@@ -3,10 +3,8 @@ package com.example.Ras
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.Ras.Utils.*
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_change_name.*
 
 class ChangeNameFragment : Fragment(R.layout.fragment_change_name) {
@@ -15,7 +13,7 @@ class ChangeNameFragment : Fragment(R.layout.fragment_change_name) {
         super.onStart()
         (activity as MessengerActivity).mAppDrawer.disableDrawer()
         setHasOptionsMenu(true)
-        val fullNameList = USER.fullname.split(" ")
+        val fullNameList = USER.FullName.split(" ")
         change_name.setText(fullNameList[0])
         change_surname.setText(fullNameList[1])
     }
@@ -49,7 +47,7 @@ class ChangeNameFragment : Fragment(R.layout.fragment_change_name) {
                     .setValue(fullName).addOnCompleteListener {
                         if (it.isSuccessful) {
                             createToast(getString(R.string.changedData))
-                            USER.fullname = fullName
+                            USER.FullName = fullName
                             fragmentManager?.popBackStack()
                         }
                     }
