@@ -72,7 +72,7 @@
         app:startIconDrawable="@drawable/ic_group_24">
 
         <AutoCompleteTextView
-            android:id="@+id/autoTextView"
+            android:id="@+id/dropDownMenu"
             android:layout_width="match_parent"
             android:layout_height="53dp"
             android:layout_weight="1"

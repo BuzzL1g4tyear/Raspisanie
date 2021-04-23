@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbarDate;
 
     public ArrayList<ArrayList<Element>> days;
-    private ArrayList<String> list;
+    public static ArrayList<String> list;
     private ArrayList<Sender> temp;
     private ArrayAdapter<String> listAdapter;
     private TextView textViewToday, textViewPickedDate, textViewText;
