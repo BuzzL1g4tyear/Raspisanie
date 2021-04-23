@@ -36,4 +36,6 @@
     <string name="exit">Выйти из аккаунта</string>
     <string name="change_name">Новое имя</string>
     <string name="change_surname">Новая фамилия</string>
+    <string name="databaseError">Проблемы с базой данных</string>
+    <string name="invalid_name">Изначально некорректное имя</string>
 </resources>

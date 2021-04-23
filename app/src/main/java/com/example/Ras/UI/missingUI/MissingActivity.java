@@ -2,7 +2,6 @@ package com.example.Ras.UI.missingUI;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -41,6 +40,9 @@ public class MissingActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter = null;
     private String group, date;
     private List<String> dataOrderChip = new ArrayList<>();
+    private List<String> dataDiseaseChip = new ArrayList<>();
+    private List<String> dataStatementChip = new ArrayList<>();
+    private List<String> dataReasonChip = new ArrayList<>();
     private List<String> groupNumber = new ArrayList<>();
     Toolbar toolbar_Missing;
 
@@ -58,7 +60,7 @@ public class MissingActivity extends AppCompatActivity {
         setActId(2);
     }
 
-    // TODO: picture
+    // TODO: chip - picture
     @Override
     protected void onStart() {
         super.onStart();
@@ -87,6 +89,7 @@ public class MissingActivity extends AppCompatActivity {
     }
 
     private void sentToDatabase() {
+        // TODO: 23.04.2021 проверка на то, чтобы нельзя было добавить данные ещё раз (нужно пользоваться edit_btn), отправка/редактирование после 10 утра запрещена
         group = dropDownMenu.getText().toString();
         REF_DATABASE.child(MISSING_PERSONS).child(date).child(group)
                 .child(CHILD_ORDER)
@@ -98,12 +101,22 @@ public class MissingActivity extends AppCompatActivity {
         for (Chip chip : orderChips.getAllChips()) {
             CharSequence text = chip.getText();
             dataOrderChip.add(text.toString());
-            Log.d("MyLog", "getChipsText: "+dataOrderChip.size());
         }
 
-//        dataDiseaseChip.addAll(diseaseChips.getChipValues());
-//        dataStatementChip.addAll(statementChips.getChipValues());
-//        dateReasonChip.addAll(validReasonChips.getChipValues());
+        for (Chip chip : diseaseChips.getAllChips()) {
+            CharSequence text = chip.getText();
+            dataDiseaseChip.add(text.toString());
+        }
+
+        for (Chip chip : statementChips.getAllChips()) {
+            CharSequence text = chip.getText();
+            dataStatementChip.add(text.toString());
+        }
+
+        for (Chip chip : validReasonChips.getAllChips()) {
+            CharSequence text = chip.getText();
+            dataReasonChip.add(text.toString());
+        }
     }
 
     private void checkUser() {
@@ -122,6 +135,9 @@ public class MissingActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<String>(this, R.layout.group_number, groupNumber);
         dropDownMenu.setAdapter(adapter);
         initTrigger(orderChips);
+        initTrigger(diseaseChips);
+        initTrigger(statementChips);
+        initTrigger(validReasonChips);
     }
 
     private void initTrigger(NachoTextView textView) {
@@ -139,7 +155,7 @@ public class MissingActivity extends AppCompatActivity {
         sent_btn = findViewById(R.id.Sent_FB);
         edit_btn = findViewById(R.id.Upd_FB);
         dropDownMenu = findViewById(R.id.dropDownMenu);
-        toolbar_Missing = (Toolbar) findViewById(R.id.toolbarMissing);
+        toolbar_Missing = findViewById(R.id.toolbarMissing);
         mAppDrawer = new AppDrawer(this, toolbar_Missing);
         groupNumber = MainActivity.list;
     }

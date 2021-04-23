@@ -14,8 +14,18 @@ class ChangeNameFragment : Fragment(R.layout.fragment_change_name) {
         (activity as MessengerActivity).mAppDrawer.disableDrawer()
         setHasOptionsMenu(true)
         val fullNameList = USER.FullName.split(" ")
-        change_name.setText(fullNameList[0])
-        change_surname.setText(fullNameList[1])
+        when {
+            fullNameList.size == 2 -> {
+                change_name.setText(fullNameList[0])
+                change_surname.setText(fullNameList[1])
+            }
+            fullNameList.isEmpty() -> {
+                createToast(getString(R.string.databaseError))
+            }
+            fullNameList.size == 1 -> {
+                createToast(getString(R.string.invalid_name))
+            }
+        }
     }
 
     override fun onStop() {
