@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.Ras.models.User;
 import com.example.Ras.objects.AppDrawer;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,6 +39,10 @@ import java.util.Date;
 import java.util.Locale;
 
 import static com.example.Ras.Utils.FirebaseHelperKt.NODE_LESSONS;
+import static com.example.Ras.Utils.FirebaseHelperKt.NODE_USERS;
+import static com.example.Ras.Utils.FirebaseHelperKt.REF_DATABASE;
+import static com.example.Ras.Utils.FirebaseHelperKt.UID;
+import static com.example.Ras.Utils.FirebaseHelperKt.USER;
 import static com.example.Ras.Utils.FirebaseHelperKt.initDatabase;
 
 public class MainActivity extends AppCompatActivity {
@@ -109,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         toolbarDate = findViewById(R.id.toolbar);
         setSupportActionBar(toolbarDate);
         mAppDrawer = new AppDrawer(this, toolbarDate);
+
     }
 
     @Override

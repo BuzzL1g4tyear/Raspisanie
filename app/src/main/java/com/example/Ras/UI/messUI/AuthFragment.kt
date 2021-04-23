@@ -48,7 +48,7 @@ class AuthFragment() : BaseFragment(R.layout.fragment_auth) {
                 val dataMap = mutableMapOf<String, Any>()
                 dataMap[CHILD_ID] = uId
                 dataMap[CHILD_EMAIL] = mLogin
-                dataMap[CHILD_USERNAME] = uId
+                dataMap[CHILD_FULLNAME] = mLogin
                 REF_DATABASE.child(NODE_USERS).child(uId).updateChildren(dataMap)
                         .addOnCompleteListener { task2 ->
                             if (task2.isSuccessful) {
@@ -56,9 +56,6 @@ class AuthFragment() : BaseFragment(R.layout.fragment_auth) {
                                 (activity as AuthorizationActivity).replaceActivity(activityQ)
                             } else createToast("Boom ${task2.exception?.message.toString()}")
                         }
-                fragmentManager?.beginTransaction()?.addToBackStack(null)
-                        ?.replace(R.id.authData_container, ChatFragment())
-                        ?.commit()
             }
         }
     }

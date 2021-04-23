@@ -15,6 +15,9 @@ class ChangeNameFragment : Fragment(R.layout.fragment_change_name) {
         super.onStart()
         (activity as MessengerActivity).mAppDrawer.disableDrawer()
         setHasOptionsMenu(true)
+        val fullNameList = USER.fullname.split(" ")
+        change_name.setText(fullNameList[0])
+        change_surname.setText(fullNameList[1])
     }
 
     override fun onStop() {

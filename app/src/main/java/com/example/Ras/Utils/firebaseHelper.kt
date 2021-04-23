@@ -15,7 +15,6 @@ const val NODE_LESSONS = "LESSONS"
 const val MISSING_PERSONS = "MISSING_PERSONS"
 
 const val CHILD_ID = "id"
-const val CHILD_USERNAME = "UserName"
 const val CHILD_FULLNAME = "FullName"
 const val CHILD_EMAIL = "Email"
 const val CHILD_ORDER = "Order"

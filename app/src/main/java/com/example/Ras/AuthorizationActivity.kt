@@ -26,7 +26,7 @@ class AuthorizationActivity() : AppCompatActivity() {
         setSupportActionBar(mToolbarAuth)
         title = getString(R.string.auth_title)
         supportFragmentManager.beginTransaction().addToBackStack(null)
-                .add(R.id.authData_container, AuthFragment())
+                .add(R.id.data_container, AuthFragment())
                 .commit()
         initFields()
     }
