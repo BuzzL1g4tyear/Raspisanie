@@ -95,17 +95,24 @@ public class MissingActivity extends AppCompatActivity {
     private void sentToDatabase() {
         // TODO: 23.04.2021 проверка на то, чтобы нельзя было добавить данные ещё раз (нужно пользоваться edit_btn), отправка/редактирование после 10 утра запрещена
         group = dropDownMenu.getText().toString();
-        REF_DATABASE.child(MISSING_PERSONS).child(date).child(group)
-                .child(CHILD_ORDER)
-                .push().setValue(dataOrderChip).addOnCompleteListener(new OnCompleteListener(){
+        if (group.isEmpty()) {
+            Toast.makeText(MissingActivity.this, "Группа не выбранна", Toast.LENGTH_SHORT).show();
+        } else if (dataOrderChip.isEmpty() && dataDiseaseChip.isEmpty()
+                && dataStatementChip.isEmpty() && dataReasonChip.isEmpty()) {
+            Toast.makeText(MissingActivity.this, "Нет ни одной записи", Toast.LENGTH_SHORT).show();
+        } else {
+            REF_DATABASE.child(MISSING_PERSONS).child(date).child(group)
+                    .child(CHILD_ORDER)
+                    .setValue(dataOrderChip).addOnCompleteListener(new OnCompleteListener() {
 
-            @Override
-            public void onComplete(@NonNull Task task) {
-                if (task.isSuccessful()){
-                    Toast.makeText(MissingActivity.this, "data sent", Toast.LENGTH_SHORT).show();
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(MissingActivity.this, "data sent", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }
         dataOrderChip.clear();
         dataDiseaseChip.clear();
         dataStatementChip.clear();
