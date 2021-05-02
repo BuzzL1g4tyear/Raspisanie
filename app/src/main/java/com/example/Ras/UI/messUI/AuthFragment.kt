@@ -1,13 +1,12 @@
 package com.example.Ras.UI.messUI
 
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.example.Ras.AuthorizationActivity
 import com.example.Ras.MessengerActivity
 import com.example.Ras.R
+import com.example.Ras.RegisterFragment
 import com.example.Ras.UI.missingUI.MissingActivity
 import com.example.Ras.Utils.*
 import kotlinx.android.synthetic.main.fragment_auth.*
@@ -29,10 +28,10 @@ class AuthFragment() : BaseFragment(R.layout.fragment_auth) {
                 || auth_Pass.text.toString().isEmpty()) {
             Toast.makeText(activity, getString(R.string.auth_eEmpty_text), Toast.LENGTH_SHORT).show()
         } else {
-            if (actId == 1) {
-                activityQ = MessengerActivity()
+            activityQ = if (actId == 1) {
+                MessengerActivity()
             } else {
-                activityQ = MissingActivity()
+                MissingActivity()
             }
             authUser()
         }

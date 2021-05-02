@@ -5,13 +5,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.Ras.AuthorizationActivity
-import com.example.Ras.MainActivity
-import com.example.Ras.MessengerActivity
-import com.example.Ras.R
+import com.example.Ras.*
 import com.example.Ras.UI.missingUI.MissingActivity
 import com.example.Ras.Utils.AUTH
 import com.example.Ras.Utils.replaceActivity
+import com.example.Ras.Utils.replaceFragment
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
@@ -84,11 +82,10 @@ class AppDrawer(val activity: AppCompatActivity, val toolbar: Toolbar) {
                         PrimaryDrawerItem().withName(R.string.messenger).withIcon(R.drawable.ic_message_24).withIdentifier(2),
                         PrimaryDrawerItem().withName(R.string.missing).withIcon(R.drawable.ic_report_24).withIdentifier(3),
                         SectionDrawerItem().withName(R.string.additionally),
-//                        SecondaryDrawerItem().withName(R.string.settings).withIcon(R.drawable.ic_settings_24).withIdentifier(4),
                         SecondaryDrawerItem().withName(R.string.exit).withIcon(R.drawable.ic_logout_24).withIdentifier(5)
                 ).withOnDrawerItemClickListener(object : Drawer.OnDrawerItemClickListener {
-                    override fun onItemClick(view: View?, i: Int, drawerItem: IDrawerItem<*>): Boolean {
-                        when (i) {
+                    override fun onItemClick(view: View?, position: Int, drawerItem: IDrawerItem<*>): Boolean {
+                        when (position) {
                             1 -> {
                                 val intent1 = Intent(activity, MainActivity::class.java)
                                 intent1.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

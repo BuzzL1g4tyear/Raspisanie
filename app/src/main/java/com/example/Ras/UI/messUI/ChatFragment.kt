@@ -25,7 +25,6 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_change_name -> {
-                //data_container.removeAllViews()
                 replaceFragment(ChangeNameFragment())
             }
         }

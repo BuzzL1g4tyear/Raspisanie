@@ -5,12 +5,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.Ras.R
-import com.example.Ras.UI.messUI.AuthFragment
+import com.example.Ras.models.User
 
 var actId: Int = 0
-    get() {
-        return field
-    }
 
 fun Fragment.createToast(message: String) {
     Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
@@ -24,12 +21,13 @@ fun AppCompatActivity.replaceActivity(activity: AppCompatActivity) {
 
 fun AppCompatActivity.replaceFragment(fragment: Fragment, addStack: Boolean = true) {
     if (addStack) {
-        supportFragmentManager.beginTransaction().addToBackStack(null)
-                .add(R.id.data_container, fragment)
+        supportFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.data_container, fragment)
                 .commit()
     } else {
         supportFragmentManager.beginTransaction()
-                .add(R.id.data_container, fragment)
+                .replace(R.id.data_container, fragment)
                 .commit()
     }
 }

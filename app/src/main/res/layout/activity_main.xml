@@ -48,7 +48,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/lessons_ListVeiw"
+        app:layout_constraintBottom_toTopOf="@+id/data_container"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -59,18 +59,27 @@
         android:layout_marginEnd="48dp"
         android:textSize="14sp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/lessons_ListVeiw"
+        app:layout_constraintBottom_toTopOf="@+id/data_container"
         app:layout_constraintEnd_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-    <ListView
-        android:id="@+id/lessons_ListVeiw"
-        android:layout_width="0dp"
-        android:layout_height="564dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/data_container"
+        android:layout_width="407dp"
+        android:layout_height="596dp"
+        android:layout_marginTop="64dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
+        <ListView
+            android:id="@+id/lessons_ListVeiw"
+            android:layout_width="0dp"
+            android:layout_height="564dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

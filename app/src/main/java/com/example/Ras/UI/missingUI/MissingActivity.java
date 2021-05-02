@@ -29,7 +29,7 @@ import java.util.List;
 
 import static com.example.Ras.Utils.FirebaseHelperKt.AUTH;
 import static com.example.Ras.Utils.FirebaseHelperKt.CHILD_ORDER;
-import static com.example.Ras.Utils.FirebaseHelperKt.MISSING_PERSONS;
+import static com.example.Ras.Utils.FirebaseHelperKt.NODE_MISSING;
 import static com.example.Ras.Utils.FirebaseHelperKt.REF_DATABASE;
 import static com.example.Ras.Utils.FunsKt.setActId;
 
@@ -101,7 +101,7 @@ public class MissingActivity extends AppCompatActivity {
                 && dataStatementChip.isEmpty() && dataReasonChip.isEmpty()) {
             Toast.makeText(MissingActivity.this, "Нет ни одной записи", Toast.LENGTH_SHORT).show();
         } else {
-            REF_DATABASE.child(MISSING_PERSONS).child(date).child(group)
+            REF_DATABASE.child(NODE_MISSING).child(date).child(group)
                     .child(CHILD_ORDER)
                     .setValue(dataOrderChip).addOnCompleteListener(new OnCompleteListener() {
 

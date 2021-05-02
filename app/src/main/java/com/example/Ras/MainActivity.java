@@ -19,8 +19,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.example.Ras.models.User;
 import com.example.Ras.objects.AppDrawer;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,9 +40,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import static com.example.Ras.Utils.FirebaseHelperKt.NODE_LESSONS;
-import static com.example.Ras.Utils.FirebaseHelperKt.NODE_USERS;
-import static com.example.Ras.Utils.FirebaseHelperKt.REF_DATABASE;
-import static com.example.Ras.Utils.FirebaseHelperKt.UID;
 import static com.example.Ras.Utils.FirebaseHelperKt.USER;
 import static com.example.Ras.Utils.FirebaseHelperKt.initDatabase;
 
@@ -76,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
         initFields();
         dt_lessons = FirebaseDatabase.getInstance().getReference();
-
         Thread thread = new Thread(runnable);
         thread.start();
         date = SetDate();
@@ -85,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
             textViewText.setVisibility(View.INVISIBLE);
             textViewPickedDate.setVisibility(View.INVISIBLE);
-        } else if (!date.equals(showingDate)){
+        } else if (!date.equals(showingDate)) {
             textViewText.setVisibility(View.VISIBLE);
             textViewPickedDate.setVisibility(View.VISIBLE);
             textViewPickedDate.setText(showingDate);
@@ -114,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
         toolbarDate = findViewById(R.id.toolbar);
         setSupportActionBar(toolbarDate);
         mAppDrawer = new AppDrawer(this, toolbarDate);
-
     }
 
     @Override
@@ -221,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
                     thread.start();
                     Toast.makeText(MainActivity.this, "Sent", Toast.LENGTH_SHORT).show();
                 } else if (isShow[0]) {
-                    Toast.makeText(MainActivity.this, "Такого дня нет", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.noDay), Toast.LENGTH_SHORT).show();
                     isShow[0] = true;
                 }
             }
@@ -275,6 +271,11 @@ public class MainActivity extends AppCompatActivity {
                     dateSetListener, lastSelectedYear, lastSelectedMonth, lastSelectedDayOfMonth);
             datePickerDialog.show();
             return true;
+        } else if (item.getItemId() == R.id.createUser) {
+            Fragment fragment = new RegisterFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.data_container, fragment);
+            transaction.commit();
         }
         return super.onOptionsItemSelected(item);
     }

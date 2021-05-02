@@ -27,6 +27,7 @@ class MessengerActivity : AppCompatActivity() {
         actId = 1
     }
 
+    //todo 2 тулбара, показывать взависимости от прав юзера
     override fun onStart() {
         super.onStart()
         initFields()
@@ -50,7 +51,7 @@ class MessengerActivity : AppCompatActivity() {
         }
     }
 
-    private fun initUser() {
+    fun initUser() {
         REF_DATABASE.child(NODE_USERS).child(UID)
                 .addListenerForSingleValueEvent(AppValueEventListener {
                      USER = it.getValue(User::class.java) ?: User()

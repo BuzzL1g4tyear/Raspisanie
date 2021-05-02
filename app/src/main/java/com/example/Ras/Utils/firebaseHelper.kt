@@ -12,11 +12,12 @@ lateinit var USER: User
 
 const val NODE_USERS = "USERS"
 const val NODE_LESSONS = "LESSONS"
-const val MISSING_PERSONS = "MISSING_PERSONS"
+const val NODE_MISSING = "MISSING_PERSONS"
 
 const val CHILD_ID = "id"
 const val CHILD_FULLNAME = "FullName"
 const val CHILD_EMAIL = "Email"
+const val CHILD_STATUS = "Status"
 const val CHILD_ORDER = "Order"
 const val CHILD_DISEASE = "Disease"
 const val CHILD_STATEMENT = "Statement"

@@ -14,7 +14,6 @@ import com.example.Ras.databinding.FragmentChatBinding
 open class BaseFragment(var layout: Int) : Fragment() {
     private lateinit var mRootView: View
 
-    private lateinit var mBinding: FragmentChatBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
 
