@@ -1,5 +1,6 @@
 package com.example.Ras.Utils
 
+import android.util.Log
 import com.example.Ras.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -28,4 +29,13 @@ fun initDatabase() {
     REF_DATABASE = FirebaseDatabase.getInstance().reference
     USER = User()
     UID = AUTH.currentUser?.uid.toString()
+}
+
+inline fun initUser(crossinline function: () -> Unit) {
+    REF_DATABASE.child(NODE_USERS).child(UID)
+        .addListenerForSingleValueEvent(AppValueEventListener {
+            USER = it.getValue(User::class.java) ?: User()
+            function()
+            Log.d("MyLog", "messAct: ${USER.id}")
+        })
 }

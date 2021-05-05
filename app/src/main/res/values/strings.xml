@@ -25,6 +25,7 @@
     <string name="timetable">Расписание</string>
     <string name="missing">Отсутствующие</string>
     <string name="settings">Настройки</string>
+    <string name="welcome">Вы вошли</string>
 
     <!--    hints-->
     <string name="hint_auth_login">Логин</string>
@@ -39,5 +40,6 @@
     <string name="databaseError">Проблемы с базой данных</string>
     <string name="invalid_name">Изначально некорректное имя</string>
     <string name="noDay">Данный день отсутствует в базе данных</string>
+    <string name="addNewUser">Добавление нового пользователя</string>
 
 </resources>

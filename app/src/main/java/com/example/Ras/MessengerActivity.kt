@@ -6,12 +6,8 @@ import androidx.appcompat.widget.Toolbar
 import com.example.Ras.UI.messUI.ChatFragment
 import com.example.Ras.Utils.*
 import com.example.Ras.databinding.ActivityMessengerBinding
-import com.example.Ras.models.User
 import com.example.Ras.objects.AppDrawer
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_messenger.*
 
 class MessengerActivity : AppCompatActivity() {
@@ -27,18 +23,19 @@ class MessengerActivity : AppCompatActivity() {
         actId = 1
     }
 
-    //todo 2 тулбара, показывать взависимости от прав юзера
     override fun onStart() {
         super.onStart()
-        initFields()
-        initFunc()
+        initDatabase()
+        initUser {
+            initFields()
+            initFunc()
+        }
     }
 
     private fun initFields() {
         toolbar = toolbarMessenger as Toolbar
         mAppDrawer = AppDrawer(this, toolbar)
         AUTH = FirebaseAuth.getInstance()
-        initUser()
     }
 
     private fun initFunc() {
@@ -46,15 +43,10 @@ class MessengerActivity : AppCompatActivity() {
             setSupportActionBar(toolbar)
             mAppDrawer.create()
             replaceFragment(ChatFragment(), false)
+
         } else {
             replaceActivity(AuthorizationActivity())
         }
     }
 
-    fun initUser() {
-        REF_DATABASE.child(NODE_USERS).child(UID)
-                .addListenerForSingleValueEvent(AppValueEventListener {
-                     USER = it.getValue(User::class.java) ?: User()
-                })
-    }
 }

@@ -54,13 +54,13 @@ class ChangeNameFragment : Fragment(R.layout.fragment_change_name) {
         } else {
             val fullName = "$name $surname"
             REF_DATABASE.child(NODE_USERS).child(UID).child(CHILD_FULLNAME)
-                    .setValue(fullName).addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            createToast(getString(R.string.changedData))
-                            USER.FullName = fullName
-                            fragmentManager?.popBackStack()
-                        }
+                .setValue(fullName).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        createToast(getString(R.string.changedData))
+                        USER.FullName = fullName
+                        fragmentManager?.popBackStack()
                     }
+                }
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.Ras.UI.messUI
 
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import com.example.Ras.R
 import com.example.Ras.RegisterFragment
 import com.example.Ras.UI.missingUI.MissingActivity
 import com.example.Ras.Utils.*
+import com.example.Ras.models.User
 import kotlinx.android.synthetic.main.fragment_auth.*
 
 class AuthFragment() : BaseFragment(R.layout.fragment_auth) {
@@ -18,9 +20,9 @@ class AuthFragment() : BaseFragment(R.layout.fragment_auth) {
     private lateinit var activityQ: AppCompatActivity
     override fun onStart() {
         super.onStart()
-        auth_action_btx.setOnClickListener(View.OnClickListener {
+        auth_action_btx.setOnClickListener {
             checkData()
-        })
+        }
     }
 
     private fun checkData() {
@@ -40,22 +42,12 @@ class AuthFragment() : BaseFragment(R.layout.fragment_auth) {
     private fun authUser() {
         mLogin = auth_Login.text.toString()
         mPass = auth_Pass.text.toString()
-
         AUTH.signInWithEmailAndPassword(mLogin, mPass).addOnCompleteListener() { task ->
             if (task.isSuccessful) {
-                val uId = AUTH.currentUser?.uid.toString()
-                val dataMap = mutableMapOf<String, Any>()
-                dataMap[CHILD_ID] = uId
-                dataMap[CHILD_EMAIL] = mLogin
-                dataMap[CHILD_FULLNAME] = mLogin
-                REF_DATABASE.child(NODE_USERS).child(uId).updateChildren(dataMap)
-                        .addOnCompleteListener { task2 ->
-                            if (task2.isSuccessful) {
-                                createToast("ok")
-                                (activity as AuthorizationActivity).replaceActivity(activityQ)
-                            } else createToast("Boom ${task2.exception?.message.toString()}")
-                        }
-            }
+                createToast(getString(R.string.welcome))
+                (activity as AuthorizationActivity).replaceActivity(activityQ)
+            } else createToast("Boom ${task.exception?.message.toString()}")
+
         }
     }
 }

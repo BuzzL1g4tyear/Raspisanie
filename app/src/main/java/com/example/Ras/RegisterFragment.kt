@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.fragment_register.*
 class RegisterFragment() : BaseFragment(R.layout.fragment_register) {
     override fun onStart() {
         super.onStart()
+        (activity as MessengerActivity).title = getString(R.string.addNewUser)
         button.setOnClickListener {
             m()
         }

@@ -1,10 +1,13 @@
 package com.example.Ras
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.Ras.UI.messUI.AuthFragment
+import com.example.Ras.Utils.*
 import com.example.Ras.databinding.ActivityAuthorizationBinding
+import com.example.Ras.models.User
 import com.example.Ras.objects.AppDrawer
 import kotlinx.android.synthetic.main.activity_authorization.*
 
@@ -25,9 +28,9 @@ class AuthorizationActivity() : AppCompatActivity() {
         mToolbarAuth = toolbarAuth as Toolbar
         setSupportActionBar(mToolbarAuth)
         title = getString(R.string.auth_title)
-        supportFragmentManager.beginTransaction().addToBackStack(null)
-                .add(R.id.data_container, AuthFragment())
-                .commit()
+        supportFragmentManager.beginTransaction()
+            .add(R.id.data_container, AuthFragment())
+            .commit()
         initFields()
     }
 
@@ -35,4 +38,5 @@ class AuthorizationActivity() : AppCompatActivity() {
         mAppDrawer = AppDrawer(this, mToolbarAuth)
         mAppDrawer.create()
     }
+
 }

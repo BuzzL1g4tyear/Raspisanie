@@ -40,7 +40,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import static com.example.Ras.Utils.FirebaseHelperKt.NODE_LESSONS;
-import static com.example.Ras.Utils.FirebaseHelperKt.USER;
 import static com.example.Ras.Utils.FirebaseHelperKt.initDatabase;
 
 public class MainActivity extends AppCompatActivity {

@@ -67,7 +67,7 @@
         android:id="@+id/data_container"
         android:layout_width="407dp"
         android:layout_height="596dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
