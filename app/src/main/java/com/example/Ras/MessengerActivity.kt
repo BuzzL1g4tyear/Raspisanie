@@ -2,6 +2,7 @@ package com.example.Ras
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -91,17 +92,22 @@ class MessengerActivity : AppCompatActivity() {
             }
         }
 
-        builder.setPositiveButton("DONE") { dialogInterface, i ->
+        builder.setPositiveButton("OK") { dialogInterface, i ->
             val selectedStrings = ArrayList<String>()
 
             for (j in selectedList.indices) {
                 selectedStrings.add(items[selectedList[j]])
-            }
 
-            Toast.makeText(
-                applicationContext, "Items selected are: " + selectedStrings.toTypedArray()
-                    .contentToString(), Toast.LENGTH_SHORT
-            ).show()
+            }
+            for (k in selectedList.indices) {
+                val onlyPhone = selectedStrings[k].removeRange(13, selectedStrings[k].length)
+                REF_DATABASE.child(NODE_PHONES).child(onlyPhone).setValue(UID)
+                    .addOnSuccessListener {
+                        createToast(getString(R.string.addedData))
+                    }.addOnFailureListener {
+                        Log.d("MyLog", "phonePick: $k bad")
+                    }
+            }
         }
 
         builder.show()

@@ -12,6 +12,9 @@ var actId: Int = 0
 fun Fragment.createToast(message: String) {
     Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
 }
+fun AppCompatActivity.createToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
 
 fun AppCompatActivity.replaceActivity(activity: AppCompatActivity) {
     val intent = Intent(this, activity::class.java)

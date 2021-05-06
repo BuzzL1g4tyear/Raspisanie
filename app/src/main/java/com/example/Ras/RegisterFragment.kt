@@ -10,23 +10,24 @@ class RegisterFragment() : BaseFragment(R.layout.fragment_register) {
         super.onStart()
         (activity as MessengerActivity).title = getString(R.string.addNewUser)
         button.setOnClickListener {
-            m()
+            creteUserWithEmail()
         }
     }
 
-    private fun m() {
-        val a: String = ed1.text.toString()
-        val b: String = ed2.text.toString()
-        val s: String = ed3.text.toString()
-        AUTH.createUserWithEmailAndPassword(a, b)
+    // TODO: 06.05.2021 красивый вью
+    private fun creteUserWithEmail() {
+        val email: String = ed1.text.toString()
+        val password: String = ed2.text.toString()
+        val status: String = ed3.text.toString()
+        AUTH.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
                         val uId = AUTH.currentUser?.uid.toString()
                         val dataMap = mutableMapOf<String, Any>()
                         dataMap[CHILD_ID] = uId
-                        dataMap[CHILD_EMAIL] = a
-                        dataMap[CHILD_FULLNAME] = a
-                        dataMap[CHILD_STATUS] = s
+                        dataMap[CHILD_EMAIL] = email
+                        dataMap[CHILD_FULLNAME] = email
+                        dataMap[CHILD_STATUS] = status
                         REF_DATABASE.child(NODE_USERS).child(uId).updateChildren(dataMap)
                     } else {
                         Log.d("MyLog", "Boom ${task.exception?.message.toString()} ")
