@@ -10,14 +10,14 @@ import androidx.core.content.ContextCompat
 const val READ_CONT = Manifest.permission.READ_CONTACTS
 const val REQ_CODE = 200
 
-fun checkPermission(activity: AppCompatActivity, permission: String): Boolean {
+fun checkPermission( permission: String): Boolean {
     return if (Build.VERSION.SDK_INT >= 23
         && ContextCompat.checkSelfPermission(
-            activity,
+            MESS_ACTIVITY,
             permission
         ) != PackageManager.PERMISSION_GRANTED
     ) {
-        ActivityCompat.requestPermissions(activity, arrayOf(permission), REQ_CODE)
+        ActivityCompat.requestPermissions(MESS_ACTIVITY, arrayOf(permission), REQ_CODE)
         false
     } else true
 }

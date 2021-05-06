@@ -1,6 +1,10 @@
 package com.example.Ras.Utils
 
+import android.provider.ContactsContract
 import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.Ras.models.PhoneUser
 import com.example.Ras.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -10,10 +14,12 @@ lateinit var AUTH: FirebaseAuth
 lateinit var UID: String
 lateinit var REF_DATABASE: DatabaseReference
 lateinit var USER: User
+lateinit var arrayCont: ArrayList<PhoneUser>
 
 const val NODE_USERS = "USERS"
 const val NODE_LESSONS = "LESSONS"
 const val NODE_MISSING = "MISSING_PERSONS"
+const val NODE_PHONES = "PHONES"
 
 const val CHILD_ID = "id"
 const val CHILD_FULLNAME = "FullName"
@@ -38,4 +44,42 @@ inline fun initUser(crossinline function: () -> Unit) {
             function()
             Log.d("MyLog", "messAct: ${USER.id}")
         })
+}
+
+fun initContacts() {
+    if (checkPermission(READ_CONT)) {
+        arrayCont = arrayListOf()
+        val cursor = MESS_ACTIVITY.contentResolver.query(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            null,
+            null,
+            null,
+            null
+        )
+        cursor?.let {
+            while (it.moveToNext()) {
+                val fullName =
+                    it.getString(it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+                val phone =
+                    it.getString(it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                val newPhoneUser = PhoneUser()
+                newPhoneUser.name = fullName
+                newPhoneUser.phone = phone.replace(Regex("[\\s,-]"), "")
+                arrayCont.add(newPhoneUser)
+
+            }
+        }
+        cursor?.close()
+        getPickedNumbers(arrayCont)
+    }
+}
+
+fun getPickedNumbers(arrayCont: ArrayList<PhoneUser>): Array<String> {
+    val array: Array<String> = Array((arrayCont.size)) { arrayCont[1].toString() }
+    var i = 0
+    arrayCont.forEach { contact ->
+        array[i] = "${contact.phone} (${contact.name})"
+        i += 1
+    }
+    return array
 }

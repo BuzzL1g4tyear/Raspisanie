@@ -9,6 +9,7 @@ import com.example.Ras.ChangeNameFragment
 import com.example.Ras.MessengerActivity
 import com.example.Ras.R
 import com.example.Ras.RegisterFragment
+import com.example.Ras.Utils.MESS_ACTIVITY
 import com.example.Ras.Utils.USER
 import com.example.Ras.Utils.initDatabase
 import com.example.Ras.Utils.replaceFragment
@@ -31,10 +32,17 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (status.equals("4", true)) {
-            (activity as MessengerActivity).menuInflater.inflate(R.menu.items_admin, menu)
-        } else (activity as MessengerActivity)
-            .menuInflater.inflate(R.menu.items_messenger_toolbar, menu)
+        when {
+            status.equals("4", true) -> {
+                (activity as MessengerActivity).menuInflater.inflate(R.menu.items_admin, menu)
+            }
+            status.equals("3", true) -> {
+                MESS_ACTIVITY
+                    .menuInflater.inflate(R.menu.items_curator, menu)
+            }
+            else -> MESS_ACTIVITY
+                .menuInflater.inflate(R.menu.items_messenger_toolbar, menu)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -44,6 +52,9 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
             }
             R.id.createUser -> {
                 replaceFragment(RegisterFragment())
+            }
+            R.id.addUser -> {
+                MESS_ACTIVITY.phonePick()
             }
         }
         return true

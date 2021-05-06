@@ -5,6 +5,8 @@
     </string-array>
 
     <string name="app_name">Расписание</string>
+
+    <string name="pickTitle">Выберите контакты, которые хотите добавить</string>
     <string name="today">Сегодня:</string>
     <string name="pickedDate">Выбранная дата:</string>
     <string name="Group">Группа №</string>

@@ -3,6 +3,7 @@ package com.example.Ras
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -11,6 +12,9 @@ import com.example.Ras.Utils.*
 import com.example.Ras.databinding.ActivityMessengerBinding
 import com.example.Ras.objects.AppDrawer
 import kotlinx.android.synthetic.main.activity_messenger.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MessengerActivity : AppCompatActivity() {
 
@@ -27,17 +31,15 @@ class MessengerActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        MESS_ACTIVITY = this
         initDatabase()
         initUser {
-            initContacts()
+            CoroutineScope(Dispatchers.IO).launch {
+                initContacts()
+
+            }
             initFields()
             initFunc()
-        }
-    }
-
-    private fun initContacts() {
-        if (checkPermission(this,READ_CONT)) {
-            Toast.makeText(this, "Contact", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -70,5 +72,38 @@ class MessengerActivity : AppCompatActivity() {
         ) {
             initContacts()
         }
+    }
+
+    fun phonePick() {
+
+        val items = getPickedNumbers(arrayCont)
+        val selectedList = ArrayList<Int>()
+        val builder = AlertDialog.Builder(this)
+
+        builder.setTitle(R.string.pickTitle)
+        builder.setMultiChoiceItems(
+            items, null
+        ) { dialog, which, isChecked ->
+            if (isChecked) {
+                selectedList.add(which)
+            } else if (selectedList.contains(which)) {
+                selectedList.remove(Integer.valueOf(which))
+            }
+        }
+
+        builder.setPositiveButton("DONE") { dialogInterface, i ->
+            val selectedStrings = ArrayList<String>()
+
+            for (j in selectedList.indices) {
+                selectedStrings.add(items[selectedList[j]])
+            }
+
+            Toast.makeText(
+                applicationContext, "Items selected are: " + selectedStrings.toTypedArray()
+                    .contentToString(), Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        builder.show()
     }
 }
