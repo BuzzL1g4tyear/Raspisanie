@@ -1,19 +1,17 @@
 package com.example.Ras.UI.messUI
 
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.isDigitsOnly
 import com.example.Ras.AuthorizationActivity
 import com.example.Ras.MessengerActivity
 import com.example.Ras.R
-import com.example.Ras.RegisterFragment
 import com.example.Ras.UI.missingUI.MissingActivity
 import com.example.Ras.Utils.*
-import com.example.Ras.models.User
 import kotlinx.android.synthetic.main.fragment_auth.*
 
-class AuthFragment() : BaseFragment(R.layout.fragment_auth) {
+class AuthFragment : BaseFragment(R.layout.fragment_auth) {
 
     private lateinit var mLogin: String
     private lateinit var mPass: String
@@ -26,20 +24,39 @@ class AuthFragment() : BaseFragment(R.layout.fragment_auth) {
     }
 
     private fun checkData() {
-        if (auth_Login.text.toString().isEmpty()
-                || auth_Pass.text.toString().isEmpty()) {
-            Toast.makeText(activity, getString(R.string.auth_eEmpty_text), Toast.LENGTH_SHORT).show()
-        } else {
-            activityQ = if (actId == 1) {
-                MessengerActivity()
-            } else {
-                MissingActivity()
+        when {
+            auth_Login.text.toString().isEmpty() -> {
+                createToast(getString(R.string.auth_eEmpty_text))
             }
-            authUser()
+            auth_Login.text.toString().replace(Regex("[+]"), "")
+                .isDigitsOnly() -> {
+                authUserWithPhone()
+            }
+            auth_Pass.text.toString().isNotEmpty() -> {
+                activityQ = if (actId == 1) {
+                    MessengerActivity()
+                } else {
+                    MissingActivity()
+                }
+                authUserWithEmail()
+            }
         }
     }
 
-    private fun authUser() {
+    private fun authUserWithPhone() {
+        mLogin = auth_Login.text.toString()
+
+        REF_DATABASE.child(NODE_PHONES).child(mLogin)
+            .addListenerForSingleValueEvent(AppValueEventListener { snapshot ->
+                if (snapshot.exists()) {
+                    Log.d("MyLog", "authUserWithPhone: yes")
+                } else {
+                    Log.d("MyLog", "authUserWithPhone: no")
+                }
+            })
+    }
+
+    private fun authUserWithEmail() {
         mLogin = auth_Login.text.toString()
         mPass = auth_Pass.text.toString()
         AUTH.signInWithEmailAndPassword(mLogin, mPass).addOnCompleteListener() { task ->
@@ -47,7 +64,6 @@ class AuthFragment() : BaseFragment(R.layout.fragment_auth) {
                 createToast(getString(R.string.welcome))
                 (activity as AuthorizationActivity).replaceActivity(activityQ)
             } else createToast("Boom ${task.exception?.message.toString()}")
-
         }
     }
 }
