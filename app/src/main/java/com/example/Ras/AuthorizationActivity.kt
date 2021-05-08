@@ -1,17 +1,15 @@
 package com.example.Ras
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.Ras.UI.messUI.AuthFragment
-import com.example.Ras.Utils.*
+import com.example.Ras.Utils.AUTH_ACTIVITY
 import com.example.Ras.databinding.ActivityAuthorizationBinding
-import com.example.Ras.models.User
 import com.example.Ras.objects.AppDrawer
 import kotlinx.android.synthetic.main.activity_authorization.*
 
-class AuthorizationActivity() : AppCompatActivity() {
+class AuthorizationActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityAuthorizationBinding
     private lateinit var mToolbarAuth: Toolbar
@@ -21,6 +19,7 @@ class AuthorizationActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityAuthorizationBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
+        AUTH_ACTIVITY = this
     }
 
     override fun onStart() {
