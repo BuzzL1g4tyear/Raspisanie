@@ -44,7 +44,6 @@
     <string name="invalid_name">Изначально некорректное имя</string>
     <string name="noDay">Данный день отсутствует в базе данных</string>
     <string name="addNewUser">Добавление нового пользователя</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_message">Сообщение</string>
 
 </resources>

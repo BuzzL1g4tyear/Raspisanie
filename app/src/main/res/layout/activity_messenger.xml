@@ -16,6 +16,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <include
+        android:id="toolbar_info"
+        android:visibility="gone"
+        layout="@layout/toolbar_chat_info"
+        />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/data_container"
         android:layout_width="match_parent"
