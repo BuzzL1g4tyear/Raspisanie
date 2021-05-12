@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <include
-        android:id="toolbar_info"
+        android:id="@+id/toolbar_info"
         android:visibility="gone"
         layout="@layout/toolbar_chat_info"
         />

@@ -1,7 +1,9 @@
 <resources>
 
-    <string-array name="settings_array">
-        <item>Изменить имя</item>
+    <string-array name="status_array">
+        <item>Староста</item>
+        <item>Куратор</item>
+        <item>Администратор</item>
     </string-array>
 
     <string name="app_name">Расписание</string>
@@ -45,5 +47,8 @@
     <string name="noDay">Данный день отсутствует в базе данных</string>
     <string name="addNewUser">Добавление нового пользователя</string>
     <string name="hint_message">Сообщение</string>
+    <string name="register_email">Почта</string>
+    <string name="register_pas">Пароль</string>
+    <string name="register_status">Статус</string>
 
 </resources>
