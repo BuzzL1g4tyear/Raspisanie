@@ -50,5 +50,6 @@
     <string name="register_email">Почта</string>
     <string name="register_pas">Пароль</string>
     <string name="register_status">Статус</string>
+    <string name="register_btn_create">Создать пользователя</string>
 
 </resources>

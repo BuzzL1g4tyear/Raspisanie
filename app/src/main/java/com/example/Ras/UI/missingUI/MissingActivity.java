@@ -2,6 +2,7 @@ package com.example.Ras.UI.missingUI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -31,6 +32,7 @@ import static com.example.Ras.Utils.FirebaseHelperKt.AUTH;
 import static com.example.Ras.Utils.FirebaseHelperKt.CHILD_ORDER;
 import static com.example.Ras.Utils.FirebaseHelperKt.NODE_MISSING;
 import static com.example.Ras.Utils.FirebaseHelperKt.REF_DATABASE;
+import static com.example.Ras.Utils.FirebaseHelperKt.USER;
 import static com.example.Ras.Utils.FunsKt.setActId;
 
 public class MissingActivity extends AppCompatActivity {
@@ -62,6 +64,8 @@ public class MissingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_missing);
         setActId(2);
+        String sPi = USER.getStatus() +" / "+ USER.getId();
+        Log.d("MyLog", "onCreateMiss:" + sPi);
     }
 
     // TODO: chip - picture

@@ -11,9 +11,7 @@ import com.example.Ras.R
 import com.example.Ras.RegisterFragment
 import com.example.Ras.Utils.MESS_ACTIVITY
 import com.example.Ras.Utils.USER
-import com.example.Ras.Utils.initDatabase
 import com.example.Ras.Utils.replaceFragment
-import kotlinx.android.synthetic.main.activity_messenger.*
 
 class ChatFragment : Fragment(R.layout.fragment_chat) {
 
@@ -23,6 +21,7 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
         super.onResume()
         activity?.title = getString(R.string.messenger)
         setHasOptionsMenu(true)
+
     }
 
     override fun onStart() {

@@ -26,6 +26,10 @@ const val CHILD_FULLNAME = "FullName"
 const val CHILD_EMAIL = "Email"
 const val CHILD_GROUP = "Group"
 const val CHILD_PHONE = "Phone"
+const val CHILD_TEXT = "Text"
+const val CHILD_TYPE = "Type"
+const val CHILD_FROM = "From"
+const val CHILD_TIME = "TimeStamp"
 const val CHILD_STATUS = "Status"
 const val CHILD_ORDER = "Order"
 const val CHILD_DISEASE = "Disease"
@@ -44,7 +48,6 @@ inline fun initUser(crossinline function: () -> Unit) {
         .addListenerForSingleValueEvent(AppValueEventListener {
             USER = it.getValue(User::class.java) ?: User()
             function()
-            Log.d("MyLog", "messAct: ${USER.id}")
         })
 }
 

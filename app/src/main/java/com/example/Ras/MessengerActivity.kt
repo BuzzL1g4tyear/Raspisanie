@@ -37,11 +37,17 @@ class MessengerActivity : AppCompatActivity() {
         initUser {
             CoroutineScope(Dispatchers.IO).launch {
                 initContacts()
-
+                Log.d("MyLog", "onStartMessA: start")
+                Log.d("MyLog", "onStartMessA: ${USER.id}")
             }
             initFields()
             initFunc()
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("MyLog", "onStartMessA: stop")
     }
 
     private fun initFields() {
