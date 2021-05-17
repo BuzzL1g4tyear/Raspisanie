@@ -13,7 +13,7 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register) {
         setSpinner()
         Log.d("MyLog", "onStart:${USER.id} ")
         Log.d("MyLog", "onStart:${USER.Status} ")
-        (activity as MessengerActivity).title = getString(R.string.addNewUser)
+        MESS_ACTIVITY.title = getString(R.string.addNewUser)
         button.setOnClickListener {
             creteUserWithEmail()
         }
@@ -25,7 +25,6 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register) {
         status_spinner.setAdapter(adapter)
     }
 
-    // TODO: 06.05.2021 красивый вью, group
     private fun creteUserWithEmail() {
         val group = ed3.text.toString()
         val email = ed1.text.toString()
@@ -43,7 +42,7 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register) {
                 statusID = "4"
             }
         }
-        // TODO: 14.05.2021 просто сделать дабовление в бд, а потом проверку на наличие
+
         AUTH.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
