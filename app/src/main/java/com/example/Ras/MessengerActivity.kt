@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 
 class MessengerActivity : AppCompatActivity() {
 
-    private lateinit var toolbar: Toolbar
+    lateinit var mToolbar: Toolbar
     lateinit var mAppDrawer: AppDrawer
     private lateinit var mBinding: ActivityMessengerBinding
 
@@ -51,13 +51,13 @@ class MessengerActivity : AppCompatActivity() {
     }
 
     private fun initFields() {
-        toolbar = toolbarMessenger as Toolbar
-        mAppDrawer = AppDrawer(this, toolbar)
+        mToolbar = toolbarMessenger as Toolbar
+        mAppDrawer = AppDrawer(this, mToolbar)
     }
 
     private fun initFunc() {
         if (AUTH.currentUser != null) {
-            setSupportActionBar(toolbar)
+            setSupportActionBar(mToolbar)
             mAppDrawer.create()
             replaceFragment(ChatFragment(), false)
 

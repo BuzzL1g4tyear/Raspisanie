@@ -18,17 +18,16 @@
 
     <include
         android:id="@+id/toolbar_info"
-        android:visibility="gone"
         layout="@layout/toolbar_chat_info"
-        />
+        android:visibility="gone" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/data_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarMessenger"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMessenger" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

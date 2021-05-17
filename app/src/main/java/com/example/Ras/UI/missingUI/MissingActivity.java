@@ -97,7 +97,7 @@ public class MissingActivity extends AppCompatActivity {
     }
 
     private void sentToDatabase() {
-        // TODO: 23.04.2021 проверка на то, чтобы нельзя было добавить данные ещё раз (нужно пользоваться edit_btn), отправка/редактирование после 10 утра запрещена
+        // TODO: 17.05.2021 логика для остальных кнопок
         group = dropDownMenu.getText().toString();
         if (group.isEmpty()) {
             Toast.makeText(MissingActivity.this, "Группа не выбранна", Toast.LENGTH_SHORT).show();
