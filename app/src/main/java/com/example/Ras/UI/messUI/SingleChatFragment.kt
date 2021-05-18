@@ -24,12 +24,20 @@ class SingleChatFragment(private val contact: User) : BaseFragment(R.layout.frag
         mToolbarInfo = MESS_ACTIVITY.mToolbar.toolbar_info
         mToolbarInfo.visibility = View.VISIBLE
 
-        mListenerInfoToolbar = AppValueEventListener{
+        mListenerInfoToolbar = AppValueEventListener {
             mReceivingUser = it.getUserModel()
             initInfoToolbar()
         }
         mRefUser = REF_DATABASE.child(NODE_USERS).child(contact.id)
         mRefUser.addValueEventListener(mListenerInfoToolbar)
+        chat_send_message.setOnClickListener {
+            val message = message_chat.text.toString()
+            if (message.isNotEmpty()) {
+                sendMessage(message, contact.id, TYPE_TEXT) {
+                    message_chat.setText("")
+                }
+            }
+        }
     }
 
     private fun initInfoToolbar() {

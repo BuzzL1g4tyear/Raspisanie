@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewToday, textViewPickedDate, textViewText;
     final Calendar c = Calendar.getInstance();
 
-    public String date;
+    public static String date = "";
     public static String showingDate = "";
     public String dateFromSite;
     private int lastSelectedYear;

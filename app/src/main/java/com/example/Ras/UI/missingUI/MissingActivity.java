@@ -28,11 +28,15 @@ import com.hootsuite.nachos.terminator.ChipTerminatorHandler;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.Unit;
+
 import static com.example.Ras.Utils.FirebaseHelperKt.AUTH;
 import static com.example.Ras.Utils.FirebaseHelperKt.CHILD_ORDER;
 import static com.example.Ras.Utils.FirebaseHelperKt.NODE_MISSING;
 import static com.example.Ras.Utils.FirebaseHelperKt.REF_DATABASE;
 import static com.example.Ras.Utils.FirebaseHelperKt.USER;
+import static com.example.Ras.Utils.FirebaseHelperKt.initMissingPers;
+import static com.example.Ras.Utils.FirebaseHelperKt.initUser;
 import static com.example.Ras.Utils.FunsKt.setActId;
 
 public class MissingActivity extends AppCompatActivity {
@@ -64,7 +68,7 @@ public class MissingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_missing);
         setActId(2);
-        String sPi = USER.getStatus() +" / "+ USER.getId();
+        String sPi = USER.getStatus() + " / " + USER.getId();
         Log.d("MyLog", "onCreateMiss:" + sPi);
     }
 
@@ -76,19 +80,9 @@ public class MissingActivity extends AppCompatActivity {
         checkUser();
         initAnim();
 
-        add_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onAddClicked();
-            }
-        });
+        add_btn.setOnClickListener(v -> onAddClicked());
 
-        sent_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onSentClicked();
-            }
-        });
+        sent_btn.setOnClickListener(v -> onSentClicked());
     }
 
     private void onSentClicked() {
@@ -148,6 +142,7 @@ public class MissingActivity extends AppCompatActivity {
 
     private void checkUser() {
         if (AUTH.getCurrentUser() != null) {
+//            initMissingPers(() -> initToolbar());
             initFunc();
         } else {
             Intent intent = new Intent(this, AuthorizationActivity.class);
@@ -156,10 +151,13 @@ public class MissingActivity extends AppCompatActivity {
         }
     }
 
+    private void initToolbar() {
+    }
+
     private void initFunc() {
         setSupportActionBar(toolbar_Missing);
         mAppDrawer.create();
-        adapter = new ArrayAdapter<String>(this, R.layout.group_number, groupNumber);
+        adapter = new ArrayAdapter<>(this, R.layout.group_number, groupNumber);
         dropDownMenu.setAdapter(adapter);
         initTrigger(orderChips);
         initTrigger(diseaseChips);
