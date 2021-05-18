@@ -9,8 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.example.Ras.UI.messUI.ChatFragment
+import com.example.Ras.UI.messUI.SingleChatFragment
 import com.example.Ras.Utils.*
 import com.example.Ras.databinding.ActivityMessengerBinding
+import com.example.Ras.models.User
 import com.example.Ras.objects.AppDrawer
 import kotlinx.android.synthetic.main.activity_messenger.*
 import kotlinx.coroutines.CoroutineScope
@@ -52,7 +54,7 @@ class MessengerActivity : AppCompatActivity() {
         if (AUTH.currentUser != null) {
             setSupportActionBar(mToolbar)
             mAppDrawer.create()
-            replaceFragment(ChatFragment(), false)
+            replaceFragment(SingleChatFragment(User()), false)
 
         } else {
             replaceActivity(AuthorizationActivity())

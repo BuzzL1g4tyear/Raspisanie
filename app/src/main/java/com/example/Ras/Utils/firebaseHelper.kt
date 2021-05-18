@@ -28,6 +28,7 @@ const val NODE_LESSONS = "LESSONS"
 const val NODE_MISSING = "MISSING_PERSONS"
 const val NODE_PHONES = "PHONES"
 const val NODE_MESSAGES = "MESSAGES"
+const val NODE_GROUP_CHAT = "GROUP_CHAT"
 
 const val CHILD_ID = "id"
 const val CHILD_FULLNAME = "FullName"
@@ -109,17 +110,19 @@ fun getPickedNumbers(arrayCont: ArrayList<PhoneUser>): Array<String> {
 
 fun sendMessage(message: String, receivingUserID: String, typeText: String, function: () -> Unit) {
     val refDialogUser = "$NODE_MESSAGES/${AUTH.currentUser}/$receivingUserID"
+    val refReceivingUser = "$NODE_MESSAGES/$receivingUserID/${AUTH.currentUser}"
 
     val messageKey = REF_DATABASE.child(refDialogUser).push().key
 
     val mapMessage = hashMapOf<String, Any>()
-    mapMessage[CHILD_FROM] = AUTH.currentUser!!
+    mapMessage[CHILD_FROM] = UID
     mapMessage[CHILD_TYPE] = typeText
     mapMessage[CHILD_TEXT] = message
     mapMessage[CHILD_TIME] = ServerValue.TIMESTAMP
 
     val mapDialog = hashMapOf<String, Any>()
     mapDialog["$refDialogUser/$messageKey"] = mapMessage
+    mapDialog["$refReceivingUser/$messageKey"] = mapMessage
 
     REF_DATABASE
         .updateChildren(mapDialog)
