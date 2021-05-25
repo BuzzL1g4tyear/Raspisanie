@@ -11,5 +11,5 @@ data class User(
     var Text: String = "",
     var Type: String = "",
     var From: String = "",
-    var TimeStamp: String = ""
+    var TimeStamp: Any = ""
 )

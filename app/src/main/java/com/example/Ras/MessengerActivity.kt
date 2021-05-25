@@ -40,6 +40,8 @@ class MessengerActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 initContacts()
             }
+            Log.d("MyLog", ".id: ${User().id}")
+            Log.d("MyLog", "UID: $UID")
             initFields()
             initFunc()
         }
@@ -54,8 +56,7 @@ class MessengerActivity : AppCompatActivity() {
         if (AUTH.currentUser != null) {
             setSupportActionBar(mToolbar)
             mAppDrawer.create()
-            replaceFragment(SingleChatFragment(User()), false)
-
+            replaceFragment(ChatFragment(), false)
         } else {
             replaceActivity(AuthorizationActivity())
         }

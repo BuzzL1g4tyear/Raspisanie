@@ -12,6 +12,7 @@ import com.example.Ras.RegisterFragment
 import com.example.Ras.Utils.MESS_ACTIVITY
 import com.example.Ras.Utils.USER
 import com.example.Ras.Utils.replaceFragment
+import com.example.Ras.models.User
 
 class ChatFragment : Fragment(R.layout.fragment_chat) {
 
@@ -27,13 +28,15 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
     override fun onStart() {
         super.onStart()
         status = USER.Status
-        Log.d("MyLog", "chatfr: $status")
+
+        replaceFragment(SingleChatFragment(User()))
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         when {
             status.equals("4", true) -> {
-                (activity as MessengerActivity).menuInflater.inflate(R.menu.items_admin, menu)
+                MESS_ACTIVITY
+                    .menuInflater.inflate(R.menu.items_admin, menu)
             }
             status.equals("3", true) -> {
                 MESS_ACTIVITY

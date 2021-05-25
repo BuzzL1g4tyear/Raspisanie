@@ -109,8 +109,8 @@ fun getPickedNumbers(arrayCont: ArrayList<PhoneUser>): Array<String> {
 }
 
 fun sendMessage(message: String, receivingUserID: String, typeText: String, function: () -> Unit) {
-    val refDialogUser = "$NODE_MESSAGES/${AUTH.currentUser}/$receivingUserID"
-    val refReceivingUser = "$NODE_MESSAGES/$receivingUserID/${AUTH.currentUser}"
+    val refDialogUser = "$NODE_MESSAGES/$UID/n5yyZ34IPtSXtx62x4VhpXON2Q13"
+    val refReceivingUser = "$NODE_MESSAGES/n5yyZ34IPtSXtx62x4VhpXON2Q13/$UID"
 
     val messageKey = REF_DATABASE.child(refDialogUser).push().key
 

@@ -1,6 +1,8 @@
 package com.example.Ras.UI.messUI
 
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+import com.example.Ras.CustomArrayAdapter
 import com.example.Ras.R
 import com.example.Ras.Utils.*
 import com.example.Ras.models.User
@@ -17,10 +19,34 @@ class SingleChatFragment(private val contact: User) : BaseFragment(R.layout.frag
     private lateinit var mReceivingUser: User
     private lateinit var mToolbarInfo: View
     private lateinit var mRefUser: DatabaseReference
+    private lateinit var mRefMessages: DatabaseReference
+    private lateinit var mAdapter: CustomArrayAdapter
+    private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mMessagesListener: AppValueEventListener
+    private var mListMessages = emptyList<User>()
 
     override fun onResume() {
         super.onResume()
 
+        initToolbar()
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        mRecyclerView = chat_rv
+        mAdapter = CustomArrayAdapter()
+        mRefMessages = REF_DATABASE.child(NODE_MESSAGES)
+            .child(UID)
+            .child(contact.id)
+        mRecyclerView.adapter = mAdapter
+        mMessagesListener = AppValueEventListener { task ->
+            mListMessages = task.children.map { it.getUserModel() }
+            mAdapter.setList(mListMessages)
+        }
+        mRefMessages.addValueEventListener(mMessagesListener)
+    }
+
+    private fun initToolbar() {
         mToolbarInfo = MESS_ACTIVITY.mToolbar.toolbar_info
         mToolbarInfo.visibility = View.VISIBLE
 
@@ -48,5 +74,6 @@ class SingleChatFragment(private val contact: User) : BaseFragment(R.layout.frag
         super.onPause()
         mToolbarInfo.visibility = View.GONE
         mRefUser.removeEventListener(mListenerInfoToolbar)
+        mRefMessages.removeEventListener(mMessagesListener)
     }
 }
