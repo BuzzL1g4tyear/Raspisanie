@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.Ras.MainActivity
+import com.example.Ras.R
 import com.example.Ras.models.MissingPers
 import com.example.Ras.models.PhoneUser
 import com.example.Ras.models.User
@@ -28,6 +29,7 @@ const val NODE_LESSONS = "LESSONS"
 const val NODE_MISSING = "MISSING_PERSONS"
 const val NODE_PHONES = "PHONES"
 const val NODE_MESSAGES = "MESSAGES"
+const val NODE_MEMBERS = "MEMBERS"
 const val NODE_GROUP_CHAT = "GROUP_CHAT"
 
 const val CHILD_ID = "id"
@@ -44,6 +46,8 @@ const val CHILD_ORDER = "Order"
 const val CHILD_DISEASE = "Disease"
 const val CHILD_STATEMENT = "Statement"
 const val CHILD_REASON = "Reason"
+const val USER_MEMBER = "Member"
+const val USER_CREATOR = "Creator"
 
 fun initDatabase() {
     AUTH = FirebaseAuth.getInstance()
@@ -128,6 +132,30 @@ fun sendMessage(message: String, receivingUserID: String, typeText: String, func
         .updateChildren(mapDialog)
         .addOnSuccessListener { function() }
         .addOnFailureListener { Log.d("MyLog", "sendMessage: ${it.message.toString()}") }
+}
+
+fun createGroup(
+    numGroup: String,
+    list: List<User>,
+    function: () -> Unit
+) {
+    val keyGroup = REF_DATABASE.child(NODE_GROUP_CHAT).push().key.toString()
+    val path = REF_DATABASE.child(NODE_GROUP_CHAT).child(keyGroup)
+
+    val mapData = hashMapOf<String, Any>()
+    mapData[CHILD_ID] = keyGroup
+    mapData[CHILD_FULLNAME] = numGroup
+
+    val mapMembers = hashMapOf<String, Any>()
+    list.forEach {
+        mapMembers[it.id] = USER_MEMBER
+    }
+    mapMembers[UID] = USER_CREATOR
+    mapData[NODE_MEMBERS] = mapMembers
+    path.updateChildren(mapData)
+        .addOnSuccessListener {
+            MESS_ACTIVITY.createToast(MESS_ACTIVITY.getString(R.string.groupCreated))
+        }
 }
 
 fun DataSnapshot.getUserModel(): User =

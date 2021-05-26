@@ -12,6 +12,7 @@ import com.example.Ras.UI.messUI.ChatFragment
 import com.example.Ras.UI.messUI.SingleChatFragment
 import com.example.Ras.Utils.*
 import com.example.Ras.databinding.ActivityMessengerBinding
+import com.example.Ras.models.PhoneUser
 import com.example.Ras.models.User
 import com.example.Ras.objects.AppDrawer
 import kotlinx.android.synthetic.main.activity_messenger.*
@@ -24,6 +25,7 @@ class MessengerActivity : AppCompatActivity() {
     lateinit var mToolbar: Toolbar
     lateinit var mAppDrawer: AppDrawer
     private lateinit var mBinding: ActivityMessengerBinding
+    private val mListPhones= arrayListOf<PhoneUser>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +42,6 @@ class MessengerActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 initContacts()
             }
-            Log.d("MyLog", ".id: ${User().id}")
-            Log.d("MyLog", "UID: $UID")
             initFields()
             initFunc()
         }
@@ -50,6 +50,7 @@ class MessengerActivity : AppCompatActivity() {
     private fun initFields() {
         mToolbar = toolbarMessenger as Toolbar
         mAppDrawer = AppDrawer(this, mToolbar)
+
     }
 
     private fun initFunc() {
@@ -78,7 +79,6 @@ class MessengerActivity : AppCompatActivity() {
     }
 
     fun phonePick() {
-
         val items = getPickedNumbers(arrayCont)
         val selectedList = ArrayList<Int>()
         val builder = AlertDialog.Builder(this)
@@ -102,12 +102,19 @@ class MessengerActivity : AppCompatActivity() {
 
             }
             for (k in selectedList.indices) {
+                val number = PhoneUser()//nbm
                 val onlyPhone = selectedStrings[k].removeRange(13, selectedStrings[k].length)
-                REF_DATABASE.child(NODE_PHONES).child(onlyPhone).setValue(UID)
+                number.Phone = onlyPhone.trim()
+                mListPhones.add(number)
+            }
+            mListPhones.forEach {
+                REF_DATABASE.child(NODE_PHONES)
+                    .child(it.Phone)
+                    .setValue(UID)
                     .addOnSuccessListener {
                         createToast(getString(R.string.addedData))
-                    }.addOnFailureListener {
-                        Log.d("MyLog", "phonePick: $k bad")
+                    }.addOnFailureListener { err ->
+                        Log.d("MyLog", err.message.toString())
                     }
             }
         }

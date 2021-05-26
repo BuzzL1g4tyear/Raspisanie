@@ -1,18 +1,15 @@
 package com.example.Ras.UI.messUI
 
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.example.Ras.ChangeNameFragment
-import com.example.Ras.MessengerActivity
 import com.example.Ras.R
 import com.example.Ras.RegisterFragment
 import com.example.Ras.Utils.MESS_ACTIVITY
 import com.example.Ras.Utils.USER
 import com.example.Ras.Utils.replaceFragment
-import com.example.Ras.models.User
 
 class ChatFragment : Fragment(R.layout.fragment_chat) {
 
@@ -29,7 +26,7 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
         super.onStart()
         status = USER.Status
 
-        replaceFragment(SingleChatFragment(User()))
+        //replaceFragment(SingleChatFragment(User()))
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

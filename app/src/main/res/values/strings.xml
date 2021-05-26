@@ -51,5 +51,6 @@
     <string name="register_pas">Пароль</string>
     <string name="register_status">Статус</string>
     <string name="register_btn_create">Создать пользователя</string>
+    <string name="groupCreated">Группа создана</string>
 
 </resources>

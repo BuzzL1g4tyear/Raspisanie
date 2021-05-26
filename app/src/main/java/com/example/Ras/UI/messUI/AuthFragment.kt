@@ -76,10 +76,10 @@ class AuthFragment : BaseFragment(R.layout.fragment_auth) {
         query.addListenerForSingleValueEvent(AppValueEventListener {
             if (it.key == mLogin) {
                 val options = PhoneAuthOptions.newBuilder(AUTH)
-                    .setPhoneNumber(mLogin)       // Phone number to verify
-                    .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                    .setActivity(AUTH_ACTIVITY)                 // Activity (for callback binding)
-                    .setCallbacks(mCallback)          // OnVerificationStateChangedCallbacks
+                    .setPhoneNumber(mLogin)
+                    .setTimeout(60L, TimeUnit.SECONDS)
+                    .setActivity(AUTH_ACTIVITY)
+                    .setCallbacks(mCallback)
                     .build()
                 PhoneAuthProvider.verifyPhoneNumber(options)
             } else {
