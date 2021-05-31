@@ -11,7 +11,7 @@ import com.example.Ras.Utils.asTime
 import com.example.Ras.models.User
 import kotlinx.android.synthetic.main.message_item.view.*
 
-class CustomArrayAdapter : RecyclerView.Adapter<CustomArrayAdapter.singleChatHolder>() {
+class GroupChatAdapter : RecyclerView.Adapter<GroupChatAdapter.singleChatHolder>() {
 
     private var mListMessCache = emptyList<User>()
 

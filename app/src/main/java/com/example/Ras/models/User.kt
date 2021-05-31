@@ -8,6 +8,9 @@ data class User(
     var Status: String = "",
     var FullName: String = "",
 
+    var Phone: String = "",
+    var LastMessage: String = "",
+
     var Text: String = "",
     var Type: String = "",
     var From: String = "",

@@ -7,11 +7,20 @@ import androidx.fragment.app.Fragment
 import com.example.Ras.ChangeNameFragment
 import com.example.Ras.R
 import com.example.Ras.RegisterFragment
-import com.example.Ras.Utils.MESS_ACTIVITY
-import com.example.Ras.Utils.USER
-import com.example.Ras.Utils.replaceFragment
+import com.example.Ras.Utils.*
+import com.example.Ras.models.User
 
-class ChatFragment : Fragment(R.layout.fragment_chat) {
+class MainListFragment : Fragment(R.layout.fragment_chat) {
+
+    private val mRefMainList = REF_DATABASE
+        .child(NODE_MAIN_LIST)
+        .child(UID)
+    private val mRefUsers = REF_DATABASE
+        .child(NODE_USERS)
+    private val mRefGroups = REF_DATABASE
+        .child(NODE_GROUP_CHAT)
+        .child(UID)
+    private var mList = listOf<User>()
 
     private var status: String = ""
 
@@ -20,6 +29,24 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
         activity?.title = getString(R.string.messenger)
         setHasOptionsMenu(true)
 
+        initMainList()
+    }
+
+    private fun initMainList() {
+        mRefMainList.addListenerForSingleValueEvent(AppValueEventListener { Data ->
+            mList = Data.children.map { it.getUserModel() }
+
+            mList.forEach { model ->
+                mRefUsers.child(model.id).addListenerForSingleValueEvent(AppValueEventListener {
+                    val newModel = it.getUserModel()
+
+                    mRefGroups.child(model.id)
+                        .addListenerForSingleValueEvent(AppValueEventListener {
+
+                        })
+                })
+            }
+        })
     }
 
     override fun onStart() {

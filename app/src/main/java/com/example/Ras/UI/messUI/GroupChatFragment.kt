@@ -2,25 +2,23 @@ package com.example.Ras.UI.messUI
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.example.Ras.CustomArrayAdapter
+import com.example.Ras.GroupChatAdapter
 import com.example.Ras.R
 import com.example.Ras.Utils.*
 import com.example.Ras.models.User
 import com.google.firebase.database.DatabaseReference
-import kotlinx.android.synthetic.main.activity_messenger.*
 import kotlinx.android.synthetic.main.activity_messenger.view.*
 import kotlinx.android.synthetic.main.fragment_single_chat.*
-import kotlinx.android.synthetic.main.toolbar_chat_info.*
 import kotlinx.android.synthetic.main.toolbar_chat_info.view.*
 
-class SingleChatFragment(private val contact: User) : BaseFragment(R.layout.fragment_single_chat) {
+class GroupChatFragment(private val group: User) : BaseFragment(R.layout.fragment_single_chat) {
 
     private lateinit var mListenerInfoToolbar: AppValueEventListener
     private lateinit var mReceivingUser: User
     private lateinit var mToolbarInfo: View
     private lateinit var mRefUser: DatabaseReference
     private lateinit var mRefMessages: DatabaseReference
-    private lateinit var mAdapter: CustomArrayAdapter
+    private lateinit var mAdapter: GroupChatAdapter
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mMessagesListener: AppValueEventListener
     private var mListMessages = emptyList<User>()
@@ -34,10 +32,13 @@ class SingleChatFragment(private val contact: User) : BaseFragment(R.layout.frag
 
     private fun initRecyclerView() {
         mRecyclerView = chat_rv
-        mAdapter = CustomArrayAdapter()
-        mRefMessages = REF_DATABASE.child(NODE_MESSAGES)
-            .child(UID)
-            .child(contact.id)
+        mAdapter = GroupChatAdapter()
+
+        mRefMessages = REF_DATABASE
+            .child(NODE_GROUP_CHAT)
+            .child(group.id)
+            .child(NODE_MESSAGES)
+
         mRecyclerView.adapter = mAdapter
         mMessagesListener = AppValueEventListener { task ->
             mListMessages = task.children.map { it.getUserModel() }
@@ -54,12 +55,12 @@ class SingleChatFragment(private val contact: User) : BaseFragment(R.layout.frag
             mReceivingUser = it.getUserModel()
             initInfoToolbar()
         }
-        mRefUser = REF_DATABASE.child(NODE_USERS).child(contact.id)
+        mRefUser = REF_DATABASE.child(NODE_USERS).child(group.id)
         mRefUser.addValueEventListener(mListenerInfoToolbar)
         chat_send_message.setOnClickListener {
             val message = message_chat.text.toString()
             if (message.isNotEmpty()) {
-                sendMessage(message, contact.id, TYPE_TEXT) {
+                sendGroupMessage(message, group.id, TYPE_TEXT) {
                     message_chat.setText("")
                 }
             }

@@ -9,13 +9,17 @@ import com.example.Ras.AuthorizationActivity
 import com.example.Ras.MainActivity
 import com.example.Ras.MessengerActivity
 import com.example.Ras.UI.missingUI.MissingActivity
+import com.example.Ras.Utils.AUTH_ACTIVITY
+import com.example.Ras.Utils.MESS_ACTIVITY
 import com.example.Ras.databinding.FragmentChatBinding
 
 open class BaseFragment(var layout: Int) : Fragment() {
     private lateinit var mRootView: View
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         mRootView = inflater.inflate(layout, container, false)
         return mRootView
@@ -25,13 +29,13 @@ open class BaseFragment(var layout: Int) : Fragment() {
         super.onStart()
         when (activity) {
             is AuthorizationActivity -> {
-                (activity as AuthorizationActivity).mAppDrawer.disableDrawer()
+                AUTH_ACTIVITY.mAppDrawer.disableDrawer()
             }
             is MissingActivity -> {
                 (activity as MissingActivity).mAppDrawer.disableDrawer()
             }
             is MessengerActivity -> {
-                (activity as MessengerActivity).mAppDrawer.disableDrawer()
+                MESS_ACTIVITY.mAppDrawer.disableDrawer()
             }
         }
     }

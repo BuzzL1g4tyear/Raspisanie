@@ -2,27 +2,27 @@ package com.example.Ras.Utils
 
 import android.provider.ContactsContract
 import android.util.Log
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.example.Ras.MainActivity
 import com.example.Ras.R
 import com.example.Ras.models.MissingPers
-import com.example.Ras.models.PhoneUser
 import com.example.Ras.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
+import java.util.HashMap
 
 lateinit var AUTH: FirebaseAuth
 lateinit var UID: String
 lateinit var REF_DATABASE: DatabaseReference
 lateinit var USER: User
 lateinit var MISSING: MissingPers
-lateinit var arrayCont: ArrayList<PhoneUser>
+lateinit var arrayCont: ArrayList<User>
 
 const val TYPE_TEXT = "Text"
+
+const val TYPE_GROUP = "Group"
 
 const val NODE_USERS = "USERS"
 const val NODE_LESSONS = "LESSONS"
@@ -30,6 +30,7 @@ const val NODE_MISSING = "MISSING_PERSONS"
 const val NODE_PHONES = "PHONES"
 const val NODE_MESSAGES = "MESSAGES"
 const val NODE_MEMBERS = "MEMBERS"
+const val NODE_MAIN_LIST = "MAIN_LIST"
 const val NODE_GROUP_CHAT = "GROUP_CHAT"
 
 const val CHILD_ID = "id"
@@ -90,7 +91,7 @@ fun initContacts() {
                     it.getString(it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
                 val phone =
                     it.getString(it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                val newPhoneUser = PhoneUser()
+                val newPhoneUser = User()
                 newPhoneUser.Name = fullName
                 newPhoneUser.Phone = phone.replace(Regex("[\\s,-]"), "")
                 arrayCont.add(newPhoneUser)
@@ -102,7 +103,7 @@ fun initContacts() {
     }
 }
 
-fun getPickedNumbers(arrayCont: ArrayList<PhoneUser>): Array<String> {
+fun getPickedNumbers(arrayCont: ArrayList<User>): Array<String> {
     val array: Array<String> = Array((arrayCont.size)) { arrayCont[1].toString() }
     var i = 0
     arrayCont.forEach { contact ->
@@ -112,6 +113,7 @@ fun getPickedNumbers(arrayCont: ArrayList<PhoneUser>): Array<String> {
     return array
 }
 
+//todo
 fun sendMessage(message: String, receivingUserID: String, typeText: String, function: () -> Unit) {
     val refDialogUser = "$NODE_MESSAGES/$UID/n5yyZ34IPtSXtx62x4VhpXON2Q13"
     val refReceivingUser = "$NODE_MESSAGES/n5yyZ34IPtSXtx62x4VhpXON2Q13/$UID"
@@ -136,7 +138,7 @@ fun sendMessage(message: String, receivingUserID: String, typeText: String, func
 
 fun createGroup(
     numGroup: String,
-    list: List<User>,
+    list: ArrayList<User>,
     function: () -> Unit
 ) {
     val keyGroup = REF_DATABASE.child(NODE_GROUP_CHAT).push().key.toString()
@@ -148,14 +150,75 @@ fun createGroup(
 
     val mapMembers = hashMapOf<String, Any>()
     list.forEach {
-        mapMembers[it.id] = USER_MEMBER
+        mapMembers[it.Phone] = USER_MEMBER
     }
     mapMembers[UID] = USER_CREATOR
     mapData[NODE_MEMBERS] = mapMembers
     path.updateChildren(mapData)
         .addOnSuccessListener {
             MESS_ACTIVITY.createToast(MESS_ACTIVITY.getString(R.string.groupCreated))
+            addGroupToMainList(mapData, list) {
+                function()
+            }
         }
+}
+
+fun addGroupToMainList(mapData: HashMap<String, Any>, list: List<User>, function: () -> Unit) {
+    val path = REF_DATABASE.child(NODE_MAIN_LIST)
+
+    val map = hashMapOf<String, Any>()
+
+    map[CHILD_ID] = mapData[CHILD_ID].toString()
+    map[CHILD_TYPE] = TYPE_GROUP
+
+    list.forEach {
+        path.child(it.id).child(map[CHILD_ID].toString())
+            .updateChildren(map)
+    }
+    path.child(UID).child(map[CHILD_ID].toString())
+        .updateChildren(map)
+        .addOnSuccessListener { function() }
+        .addOnFailureListener { MESS_ACTIVITY.createToast(it.message.toString()) }
+}
+
+fun saveToMainList(id: String, type: String) {
+    val refUser = "$NODE_MAIN_LIST/$UID/$id"
+    val refReceived = "$NODE_MAIN_LIST/$id/$UID"
+
+    val mapUser = hashMapOf<String,Any>()
+    val mapReceived = hashMapOf<String,Any>()
+
+    mapUser[CHILD_ID] = id
+    mapUser[CHILD_TYPE] = type
+
+    mapReceived[CHILD_ID] = UID
+    mapReceived[CHILD_TYPE] = type
+
+    val mapCommon = hashMapOf<String,Any>()
+    mapCommon[refUser] = mapUser
+    mapReceived[refReceived] = mapReceived
+
+    REF_DATABASE.updateChildren(mapCommon)
+        .addOnFailureListener { MESS_ACTIVITY.createToast(it.message.toString()) }
+}
+
+fun sendGroupMessage(message: String, groupID: String, typeText: String, function: () -> Unit) {
+    val refMessages = "$NODE_GROUP_CHAT/$groupID/$NODE_MESSAGES"
+
+    val messageKey = REF_DATABASE.child(refMessages).push().key.toString()
+
+    val mapMessage = hashMapOf<String, Any>()
+    mapMessage[CHILD_FROM] = UID
+    mapMessage[CHILD_TYPE] = typeText
+    mapMessage[CHILD_TEXT] = message
+    mapMessage[CHILD_TIME] = ServerValue.TIMESTAMP
+
+    REF_DATABASE
+        .child(refMessages)
+        .child(messageKey)
+        .updateChildren(mapMessage)
+        .addOnSuccessListener { function() }
+        .addOnFailureListener { Log.d("MyLog", "sendMessage: ${it.message.toString()}") }
 }
 
 fun DataSnapshot.getUserModel(): User =

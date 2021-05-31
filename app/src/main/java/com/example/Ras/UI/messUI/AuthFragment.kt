@@ -94,7 +94,7 @@ class AuthFragment : BaseFragment(R.layout.fragment_auth) {
         AUTH.signInWithEmailAndPassword(mLogin, mPass).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 createToast(getString(R.string.welcome))
-                (activity as AuthorizationActivity).replaceActivity(activityQ)
+                AUTH_ACTIVITY.replaceActivity(activityQ)
             } else createToast("Boom ${task.exception?.message.toString()}")
         }
     }

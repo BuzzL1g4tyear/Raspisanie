@@ -3,16 +3,14 @@ package com.example.Ras
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import com.example.Ras.UI.messUI.ChatFragment
-import com.example.Ras.UI.messUI.SingleChatFragment
+import com.example.Ras.UI.messUI.MainListFragment
+import com.example.Ras.UI.messUI.GroupChatFragment
 import com.example.Ras.Utils.*
 import com.example.Ras.databinding.ActivityMessengerBinding
-import com.example.Ras.models.PhoneUser
 import com.example.Ras.models.User
 import com.example.Ras.objects.AppDrawer
 import kotlinx.android.synthetic.main.activity_messenger.*
@@ -25,7 +23,7 @@ class MessengerActivity : AppCompatActivity() {
     lateinit var mToolbar: Toolbar
     lateinit var mAppDrawer: AppDrawer
     private lateinit var mBinding: ActivityMessengerBinding
-    private val mListPhones= arrayListOf<PhoneUser>()
+    private val mListPhones = arrayListOf<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +55,7 @@ class MessengerActivity : AppCompatActivity() {
         if (AUTH.currentUser != null) {
             setSupportActionBar(mToolbar)
             mAppDrawer.create()
-            replaceFragment(ChatFragment(), false)
+            replaceFragment(MainListFragment(), false)
         } else {
             replaceActivity(AuthorizationActivity())
         }
@@ -102,7 +100,7 @@ class MessengerActivity : AppCompatActivity() {
 
             }
             for (k in selectedList.indices) {
-                val number = PhoneUser()//nbm
+                val number = User()//nbm
                 val onlyPhone = selectedStrings[k].removeRange(13, selectedStrings[k].length)
                 number.Phone = onlyPhone.trim()
                 mListPhones.add(number)
@@ -117,8 +115,14 @@ class MessengerActivity : AppCompatActivity() {
                         Log.d("MyLog", err.message.toString())
                     }
             }
+            val numberGroup = USER.Group
+            createGroup(numberGroup, mListPhones) {
+                replaceFragment(GroupChatFragment(USER))
+            }
         }
 
         builder.show()
     }
+
+
 }

@@ -20,10 +20,6 @@ class AuthorizationActivity : AppCompatActivity() {
         mBinding = ActivityAuthorizationBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
         AUTH_ACTIVITY = this
-    }
-
-    override fun onStart() {
-        super.onStart()
         mToolbarAuth = toolbarAuth as Toolbar
         setSupportActionBar(mToolbarAuth)
         title = getString(R.string.auth_title)
@@ -37,5 +33,4 @@ class AuthorizationActivity : AppCompatActivity() {
         mAppDrawer = AppDrawer(this, mToolbarAuth)
         mAppDrawer.create()
     }
-
 }
