@@ -11,7 +11,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
-import java.util.HashMap
+import java.util.*
 
 lateinit var AUTH: FirebaseAuth
 lateinit var UID: String
@@ -19,6 +19,7 @@ lateinit var REF_DATABASE: DatabaseReference
 lateinit var USER: User
 lateinit var MISSING: MissingPers
 lateinit var arrayCont: ArrayList<User>
+private var mListPersons = listOf<User>()
 
 const val TYPE_TEXT = "Text"
 
@@ -49,6 +50,7 @@ const val CHILD_STATEMENT = "Statement"
 const val CHILD_REASON = "Reason"
 const val USER_MEMBER = "Member"
 const val USER_CREATOR = "Creator"
+const val USER_CAPITAN = "Capitan"
 
 fun initDatabase() {
     AUTH = FirebaseAuth.getInstance()
@@ -113,36 +115,17 @@ fun getPickedNumbers(arrayCont: ArrayList<User>): Array<String> {
     return array
 }
 
-//todo
-fun sendMessage(message: String, receivingUserID: String, typeText: String, function: () -> Unit) {
-    val refDialogUser = "$NODE_MESSAGES/$UID/n5yyZ34IPtSXtx62x4VhpXON2Q13"
-    val refReceivingUser = "$NODE_MESSAGES/n5yyZ34IPtSXtx62x4VhpXON2Q13/$UID"
-
-    val messageKey = REF_DATABASE.child(refDialogUser).push().key
-
-    val mapMessage = hashMapOf<String, Any>()
-    mapMessage[CHILD_FROM] = UID
-    mapMessage[CHILD_TYPE] = typeText
-    mapMessage[CHILD_TEXT] = message
-    mapMessage[CHILD_TIME] = ServerValue.TIMESTAMP
-
-    val mapDialog = hashMapOf<String, Any>()
-    mapDialog["$refDialogUser/$messageKey"] = mapMessage
-    mapDialog["$refReceivingUser/$messageKey"] = mapMessage
-
-    REF_DATABASE
-        .updateChildren(mapDialog)
-        .addOnSuccessListener { function() }
-        .addOnFailureListener { Log.d("MyLog", "sendMessage: ${it.message.toString()}") }
-}
-
 fun createGroup(
     numGroup: String,
     list: ArrayList<User>,
     function: () -> Unit
 ) {
+    var mCapitan = User()
+    var mListPersons = listOf<User>()
+
     val keyGroup = REF_DATABASE.child(NODE_GROUP_CHAT).push().key.toString()
-    val path = REF_DATABASE.child(NODE_GROUP_CHAT).child(keyGroup)
+    val pathGroup = REF_DATABASE.child(NODE_GROUP_CHAT).child(keyGroup)
+    val pathUser = REF_DATABASE.child(NODE_USERS)
 
     val mapData = hashMapOf<String, Any>()
     mapData[CHILD_ID] = keyGroup
@@ -152,9 +135,22 @@ fun createGroup(
     list.forEach {
         mapMembers[it.Phone] = USER_MEMBER
     }
+
+    pathUser.addListenerForSingleValueEvent(AppValueEventListener { Data ->
+        mListPersons = Data.children.map { it.getUserModel() }
+
+        mListPersons.forEach { person ->
+            if (person.Group == numGroup && person.Status == "2"){
+                mCapitan = person
+                mapMembers[mCapitan.id] = USER_CAPITAN
+                pathGroup.updateChildren(mapData)
+            }
+        }
+    })
+
     mapMembers[UID] = USER_CREATOR
     mapData[NODE_MEMBERS] = mapMembers
-    path.updateChildren(mapData)
+    pathGroup.updateChildren(mapData)
         .addOnSuccessListener {
             MESS_ACTIVITY.createToast(MESS_ACTIVITY.getString(R.string.groupCreated))
             addGroupToMainList(mapData, list) {
@@ -172,33 +168,12 @@ fun addGroupToMainList(mapData: HashMap<String, Any>, list: List<User>, function
     map[CHILD_TYPE] = TYPE_GROUP
 
     list.forEach {
-        path.child(it.id).child(map[CHILD_ID].toString())
+        path.child(it.Phone).child(map[CHILD_ID].toString())
             .updateChildren(map)
     }
     path.child(UID).child(map[CHILD_ID].toString())
         .updateChildren(map)
         .addOnSuccessListener { function() }
-        .addOnFailureListener { MESS_ACTIVITY.createToast(it.message.toString()) }
-}
-
-fun saveToMainList(id: String, type: String) {
-    val refUser = "$NODE_MAIN_LIST/$UID/$id"
-    val refReceived = "$NODE_MAIN_LIST/$id/$UID"
-
-    val mapUser = hashMapOf<String,Any>()
-    val mapReceived = hashMapOf<String,Any>()
-
-    mapUser[CHILD_ID] = id
-    mapUser[CHILD_TYPE] = type
-
-    mapReceived[CHILD_ID] = UID
-    mapReceived[CHILD_TYPE] = type
-
-    val mapCommon = hashMapOf<String,Any>()
-    mapCommon[refUser] = mapUser
-    mapReceived[refReceived] = mapReceived
-
-    REF_DATABASE.updateChildren(mapCommon)
         .addOnFailureListener { MESS_ACTIVITY.createToast(it.message.toString()) }
 }
 

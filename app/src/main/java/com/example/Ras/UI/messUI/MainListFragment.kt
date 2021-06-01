@@ -29,10 +29,10 @@ class MainListFragment : Fragment(R.layout.fragment_chat) {
         activity?.title = getString(R.string.messenger)
         setHasOptionsMenu(true)
 
-        initMainList()
+        initMainChat()
     }
 
-    private fun initMainList() {
+    private fun initMainChat() {
         mRefMainList.addListenerForSingleValueEvent(AppValueEventListener { Data ->
             mList = Data.children.map { it.getUserModel() }
 
@@ -52,8 +52,6 @@ class MainListFragment : Fragment(R.layout.fragment_chat) {
     override fun onStart() {
         super.onStart()
         status = USER.Status
-
-        //replaceFragment(SingleChatFragment(User()))
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
