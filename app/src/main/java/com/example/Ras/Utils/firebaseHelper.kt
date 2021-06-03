@@ -35,6 +35,7 @@ const val NODE_MAIN_LIST = "MAIN_LIST"
 const val NODE_GROUP_CHAT = "GROUP_CHAT"
 
 const val CHILD_ID = "id"
+const val CHILD_CREATOR_ID = "CreatorID"
 const val CHILD_FULLNAME = "FullName"
 const val CHILD_EMAIL = "Email"
 const val CHILD_GROUP = "Group"
@@ -116,16 +117,23 @@ fun getPickedNumbers(arrayCont: ArrayList<User>): Array<String> {
 }
 
 fun updPhones(
-    person: User
+    person: User,
+    curatorID: String
 ) {
     val pathUser = REF_DATABASE.child(NODE_USERS)
+    val pathPhones = REF_DATABASE.child(NODE_PHONES)
     val mapUser = hashMapOf<String,Any>()
+    val mapPhone = hashMapOf<String,Any>()
 
     mapUser[CHILD_ID] = person.id
     mapUser[CHILD_PHONE] = person.Phone
     mapUser[CHILD_GROUP] = person.Group
     mapUser[CHILD_STATUS] = "1"
+
+    mapPhone[CHILD_CREATOR_ID] = curatorID
+    mapPhone[CHILD_ID] = person.id
     pathUser.child(person.id).updateChildren(mapUser)
+    pathPhones.child(person.Phone).updateChildren(mapPhone)
 }
 
 fun createGroup(

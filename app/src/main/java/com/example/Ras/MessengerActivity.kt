@@ -31,7 +31,8 @@ class MessengerActivity : AppCompatActivity() {
         setContentView(mBinding.root)
         actId = 1
     }
-//todo разделить добавление юзеров и создание чата
+
+    //todo разделить добавление юзеров и создание чата
     override fun onStart() {
         super.onStart()
         MESS_ACTIVITY = this
@@ -109,9 +110,9 @@ class MessengerActivity : AppCompatActivity() {
             }
             val numberGroup = USER.Group
             mListPhones.forEach {
-                pathPhones
-                    .child(it.Phone)
-                    .setValue(UID)
+                val map = hashMapOf<String, Any>()
+                map[CHILD_CREATOR_ID] = UID
+                pathPhones.child(it.Phone).updateChildren(map)
             }
             createGroup(numberGroup, mListPhones) {
                 replaceFragment(GroupChatFragment(USER))

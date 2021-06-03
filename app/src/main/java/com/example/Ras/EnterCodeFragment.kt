@@ -21,13 +21,13 @@ class EnterCodeFragment(private val mLogin: String, val id: String) :
     }
 
     private fun verificationCode() {
-        val pathUser = REF_DATABASE.child(NODE_PHONES).child(mLogin) //nbb
+        val pathPhone = REF_DATABASE.child(NODE_PHONES).child(mLogin) //nbb
 
-        var curatorID: String
+        var curatorID = ""
         var numGroup = ""
-        pathUser
+        pathPhone
             .addListenerForSingleValueEvent(AppValueEventListener {
-                curatorID = it.value.toString()
+                curatorID = it.getUserModel().CreatorID
                 val pathCurator = REF_DATABASE.child(NODE_USERS).child(curatorID)
                 pathCurator
                     .addListenerForSingleValueEvent(AppValueEventListener { curator ->
@@ -44,7 +44,7 @@ class EnterCodeFragment(private val mLogin: String, val id: String) :
                 person.id = AUTH.currentUser?.uid.toString()
                 person.Phone = mLogin
                 person.Group = numGroup
-                updPhones(person)
+                updPhones(person,curatorID)
                 replaceFragment(MainListFragment())
             } else {
                 MESS_ACTIVITY.createToast(it.exception.toString())

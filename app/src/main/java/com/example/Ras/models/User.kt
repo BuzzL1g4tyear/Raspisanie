@@ -9,7 +9,7 @@ data class User(
     var FullName: String = "",
 
     var Phone: String = "",
-    var LastMessage: String = "",
+    var CreatorID: String = "",
 
     var Text: String = "",
     var Type: String = "",
