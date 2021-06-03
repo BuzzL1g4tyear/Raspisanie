@@ -1,6 +1,7 @@
 package com.example.Ras.UI.messUI
 
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.Ras.GroupChatAdapter
 import com.example.Ras.R
@@ -11,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_messenger.view.*
 import kotlinx.android.synthetic.main.fragment_single_chat.*
 import kotlinx.android.synthetic.main.toolbar_chat_info.view.*
 
-class GroupChatFragment(private val group: User) : BaseFragment(R.layout.fragment_single_chat) {
+class GroupChatFragment(private val group: User) : Fragment(R.layout.fragment_single_chat) {
 
     private lateinit var mListenerInfoToolbar: AppValueEventListener
     private lateinit var mReceivingUser: User

@@ -115,18 +115,17 @@ fun getPickedNumbers(arrayCont: ArrayList<User>): Array<String> {
     return array
 }
 
-fun addPhoneToUsers(
-    person: User,
-    numGroup: String
+fun updPhones(
+    person: User
 ) {
     val pathUser = REF_DATABASE.child(NODE_USERS)
     val mapUser = hashMapOf<String,Any>()
 
-    mapUser[CHILD_ID] = person.Phone
+    mapUser[CHILD_ID] = person.id
     mapUser[CHILD_PHONE] = person.Phone
-    mapUser[CHILD_GROUP] = numGroup
+    mapUser[CHILD_GROUP] = person.Group
     mapUser[CHILD_STATUS] = "1"
-    pathUser.child(person.Phone).updateChildren(mapUser)
+    pathUser.child(person.id).updateChildren(mapUser)
 }
 
 fun createGroup(

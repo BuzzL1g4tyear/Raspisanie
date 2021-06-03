@@ -52,10 +52,7 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register) {
                     dataMap[CHILD_GROUP] = group
                     dataMap[CHILD_STATUS] = statusID
                     REF_DATABASE.child(NODE_USERS).child(uId).updateChildren(dataMap)
-                } else {
-                    Log.d("MyLog", "Boom ${task.exception?.message.toString()} ")
                 }
             }
-        Log.d("MyLog", "creteUserWithEmail: ${USER.id}")
     }
 }
