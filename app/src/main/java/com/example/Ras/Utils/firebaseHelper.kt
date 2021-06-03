@@ -17,9 +17,9 @@ lateinit var AUTH: FirebaseAuth
 lateinit var UID: String
 lateinit var REF_DATABASE: DatabaseReference
 lateinit var USER: User
+private var mCapitan = User()
 lateinit var MISSING: MissingPers
 lateinit var arrayCont: ArrayList<User>
-private var mListPersons = listOf<User>()
 
 const val TYPE_TEXT = "Text"
 
@@ -115,12 +115,25 @@ fun getPickedNumbers(arrayCont: ArrayList<User>): Array<String> {
     return array
 }
 
+fun addPhoneToUsers(
+    person: User,
+    numGroup: String
+) {
+    val pathUser = REF_DATABASE.child(NODE_USERS)
+    val mapUser = hashMapOf<String,Any>()
+
+    mapUser[CHILD_ID] = person.Phone
+    mapUser[CHILD_PHONE] = person.Phone
+    mapUser[CHILD_GROUP] = numGroup
+    mapUser[CHILD_STATUS] = "1"
+    pathUser.child(person.Phone).updateChildren(mapUser)
+}
+
 fun createGroup(
     numGroup: String,
     list: ArrayList<User>,
     function: () -> Unit
 ) {
-    var mCapitan = User()
     var mListPersons = listOf<User>()
 
     val keyGroup = REF_DATABASE.child(NODE_GROUP_CHAT).push().key.toString()
@@ -140,7 +153,7 @@ fun createGroup(
         mListPersons = Data.children.map { it.getUserModel() }
 
         mListPersons.forEach { person ->
-            if (person.Group == numGroup && person.Status == "2"){
+            if (person.Group == numGroup && person.Status == "2") {
                 mCapitan = person
                 mapMembers[mCapitan.id] = USER_CAPITAN
                 pathGroup.updateChildren(mapData)
@@ -171,6 +184,8 @@ fun addGroupToMainList(mapData: HashMap<String, Any>, list: List<User>, function
         path.child(it.Phone).child(map[CHILD_ID].toString())
             .updateChildren(map)
     }
+    path.child(mCapitan.id).child(map[CHILD_ID].toString())
+        .updateChildren(map)
     path.child(UID).child(map[CHILD_ID].toString())
         .updateChildren(map)
         .addOnSuccessListener { function() }

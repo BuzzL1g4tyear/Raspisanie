@@ -3,7 +3,6 @@ package com.example.Ras.UI.messUI
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.isDigitsOnly
-import com.example.Ras.AuthorizationActivity
 import com.example.Ras.EnterCodeFragment
 import com.example.Ras.MessengerActivity
 import com.example.Ras.R
@@ -82,8 +81,6 @@ class AuthFragment : BaseFragment(R.layout.fragment_auth) {
                     .setCallbacks(mCallback)
                     .build()
                 PhoneAuthProvider.verifyPhoneNumber(options)
-            } else {
-                Log.d("MyLog", "authUserWithPhone: no")
             }
         })
     }

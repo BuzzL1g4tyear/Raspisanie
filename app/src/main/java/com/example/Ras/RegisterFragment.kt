@@ -11,8 +11,6 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register) {
     override fun onStart() {
         super.onStart()
         setSpinner()
-        Log.d("MyLog", "onStart:${USER.id} ")
-        Log.d("MyLog", "onStart:${USER.Status} ")
         MESS_ACTIVITY.title = getString(R.string.addNewUser)
         button.setOnClickListener {
             creteUserWithEmail()

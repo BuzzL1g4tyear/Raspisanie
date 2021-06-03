@@ -77,6 +77,8 @@ class MessengerActivity : AppCompatActivity() {
     }
 
     fun phonePick() {
+        val pathPhones = REF_DATABASE.child(NODE_PHONES)
+        val pathUsers = REF_DATABASE.child(NODE_USERS)
         val items = getPickedNumbers(arrayCont)
         val selectedList = ArrayList<Int>()
         val builder = AlertDialog.Builder(this)
@@ -105,17 +107,15 @@ class MessengerActivity : AppCompatActivity() {
                 number.Phone = onlyPhone.trim()
                 mListPhones.add(number)
             }
+            val numberGroup = USER.Group
             mListPhones.forEach {
-                REF_DATABASE.child(NODE_PHONES)
+
+                pathPhones
                     .child(it.Phone)
                     .setValue(UID)
-                    .addOnSuccessListener {
-                        createToast(getString(R.string.addedData))
-                    }.addOnFailureListener { err ->
-                        Log.d("MyLog", err.message.toString())
-                    }
+                addPhoneToUsers(it, numberGroup)
+
             }
-            val numberGroup = USER.Group
             createGroup(numberGroup, mListPhones) {
                 replaceFragment(GroupChatFragment(USER))
             }
@@ -123,6 +123,4 @@ class MessengerActivity : AppCompatActivity() {
 
         builder.show()
     }
-
-
 }
