@@ -37,13 +37,9 @@ class MainListFragment : Fragment(R.layout.fragment_chat) {
             mList = Data.children.map { it.getUserModel() }
 
             mList.forEach { model ->
-                mRefUsers.child(model.id).addListenerForSingleValueEvent(AppValueEventListener {
+                mRefGroups.child(model.id).addListenerForSingleValueEvent(AppValueEventListener {
                     val newModel = it.getUserModel()
-
-                    mRefGroups.child(model.id)
-                        .addListenerForSingleValueEvent(AppValueEventListener {
-
-                        })
+                    replaceFragment(GroupChatFragment(newModel))
                 })
             }
         })

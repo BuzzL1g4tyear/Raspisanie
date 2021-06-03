@@ -69,6 +69,7 @@ class GroupChatFragment(private val group: User) : Fragment(R.layout.fragment_si
     }
 
     private fun initInfoToolbar() {
+        //todo num group
         mToolbarInfo.chat_info_group.text = mReceivingUser.Group
     }
 

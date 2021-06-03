@@ -122,8 +122,8 @@ fun updPhones(
 ) {
     val pathUser = REF_DATABASE.child(NODE_USERS)
     val pathPhones = REF_DATABASE.child(NODE_PHONES)
-    val mapUser = hashMapOf<String,Any>()
-    val mapPhone = hashMapOf<String,Any>()
+    val mapUser = hashMapOf<String, Any>()
+    val mapPhone = hashMapOf<String, Any>()
 
     mapUser[CHILD_ID] = person.id
     mapUser[CHILD_PHONE] = person.Phone
@@ -142,10 +142,12 @@ fun createGroup(
     function: () -> Unit
 ) {
     var mListPersons = listOf<User>()
+    val mListPersonsID = arrayListOf<User>()
 
     val keyGroup = REF_DATABASE.child(NODE_GROUP_CHAT).push().key.toString()
     val pathGroup = REF_DATABASE.child(NODE_GROUP_CHAT).child(keyGroup)
     val pathUser = REF_DATABASE.child(NODE_USERS)
+    val pathPhones = REF_DATABASE.child(NODE_PHONES)
 
     val mapData = hashMapOf<String, Any>()
     mapData[CHILD_ID] = keyGroup
@@ -153,9 +155,13 @@ fun createGroup(
 
     val mapMembers = hashMapOf<String, Any>()
     list.forEach {
-        mapMembers[it.Phone] = USER_MEMBER
+        pathPhones.child(it.Phone).addListenerForSingleValueEvent(AppValueEventListener { person ->
+            val id = person.getUserModel().id
+            mListPersonsID.add(person.getUserModel())
+            mapMembers[id] = USER_MEMBER
+        })
     }
-
+//todo если нет айди юзера, то вставлять его номер
     pathUser.addListenerForSingleValueEvent(AppValueEventListener { Data ->
         mListPersons = Data.children.map { it.getUserModel() }
 
@@ -173,14 +179,14 @@ fun createGroup(
     pathGroup.updateChildren(mapData)
         .addOnSuccessListener {
             MESS_ACTIVITY.createToast(MESS_ACTIVITY.getString(R.string.groupCreated))
-            addGroupToMainList(mapData, list) {
+            addGroupToMainList(mapData, mListPersonsID) {
                 function()
             }
         }
 }
 
 fun addGroupToMainList(mapData: HashMap<String, Any>, list: List<User>, function: () -> Unit) {
-    val path = REF_DATABASE.child(NODE_MAIN_LIST)
+    val pathMainList = REF_DATABASE.child(NODE_MAIN_LIST)
 
     val map = hashMapOf<String, Any>()
 
@@ -188,12 +194,12 @@ fun addGroupToMainList(mapData: HashMap<String, Any>, list: List<User>, function
     map[CHILD_TYPE] = TYPE_GROUP
 
     list.forEach {
-        path.child(it.Phone).child(map[CHILD_ID].toString())
+        pathMainList.child(it.id).child(map[CHILD_ID].toString())
             .updateChildren(map)
     }
-    path.child(mCapitan.id).child(map[CHILD_ID].toString())
+    pathMainList.child(mCapitan.id).child(map[CHILD_ID].toString())
         .updateChildren(map)
-    path.child(UID).child(map[CHILD_ID].toString())
+    pathMainList.child(UID).child(map[CHILD_ID].toString())
         .updateChildren(map)
         .addOnSuccessListener { function() }
         .addOnFailureListener { MESS_ACTIVITY.createToast(it.message.toString()) }
@@ -215,7 +221,6 @@ fun sendGroupMessage(message: String, groupID: String, typeText: String, functio
         .child(messageKey)
         .updateChildren(mapMessage)
         .addOnSuccessListener { function() }
-        .addOnFailureListener { Log.d("MyLog", "sendMessage: ${it.message.toString()}") }
 }
 
 fun DataSnapshot.getUserModel(): User =
