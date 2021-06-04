@@ -2,13 +2,11 @@ package com.example.Ras
 
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.example.Ras.UI.messUI.MainListFragment
-import com.example.Ras.UI.messUI.GroupChatFragment
 import com.example.Ras.Utils.*
 import com.example.Ras.databinding.ActivityMessengerBinding
 import com.example.Ras.models.User
@@ -114,9 +112,7 @@ class MessengerActivity : AppCompatActivity() {
                 map[CHILD_CREATOR_ID] = UID
                 pathPhones.child(it.Phone).updateChildren(map)
             }
-            createGroup(numberGroup, mListPhones) {
-                replaceFragment(GroupChatFragment(USER))
-            }
+            replaceFragment(AddPhoneFragment(numberGroup,mListPhones))
         }
 
         builder.show()

@@ -53,4 +53,6 @@
     <string name="register_btn_create">Создать пользователя</string>
     <string name="groupCreated">Группа создана</string>
 
+    <string name="createGroupTitle">Создать группу</string>
+
 </resources>

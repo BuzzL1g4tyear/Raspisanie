@@ -1,7 +1,6 @@
 package com.example.Ras.Utils
 
 import android.provider.ContactsContract
-import android.util.Log
 import com.example.Ras.MainActivity
 import com.example.Ras.R
 import com.example.Ras.models.MissingPers
@@ -29,6 +28,7 @@ const val NODE_USERS = "USERS"
 const val NODE_LESSONS = "LESSONS"
 const val NODE_MISSING = "MISSING_PERSONS"
 const val NODE_PHONES = "PHONES"
+const val NODE_AUTHPHONES = "AUTHPHONES"
 const val NODE_MESSAGES = "MESSAGES"
 const val NODE_MEMBERS = "MEMBERS"
 const val NODE_MAIN_LIST = "MAIN_LIST"
@@ -120,19 +120,17 @@ fun updPhones(
     person: User,
     curatorID: String
 ) {
-    val pathUser = REF_DATABASE.child(NODE_USERS)
+    val pathAuthPhones = REF_DATABASE.child(NODE_AUTHPHONES)
     val pathPhones = REF_DATABASE.child(NODE_PHONES)
     val mapUser = hashMapOf<String, Any>()
     val mapPhone = hashMapOf<String, Any>()
 
     mapUser[CHILD_ID] = person.id
     mapUser[CHILD_PHONE] = person.Phone
-    mapUser[CHILD_GROUP] = person.Group
-    mapUser[CHILD_STATUS] = "1"
 
     mapPhone[CHILD_CREATOR_ID] = curatorID
     mapPhone[CHILD_ID] = person.id
-    pathUser.child(person.id).updateChildren(mapUser)
+    pathAuthPhones.child(person.Group).child(person.id).updateChildren(mapUser)
     pathPhones.child(person.Phone).updateChildren(mapPhone)
 }
 
@@ -161,7 +159,7 @@ fun createGroup(
             mapMembers[id] = USER_MEMBER
         })
     }
-//todo если нет айди юзера, то вставлять его номер
+
     pathUser.addListenerForSingleValueEvent(AppValueEventListener { Data ->
         mListPersons = Data.children.map { it.getUserModel() }
 
