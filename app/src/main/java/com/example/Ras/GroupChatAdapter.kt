@@ -40,7 +40,7 @@ class GroupChatAdapter : RecyclerView.Adapter<GroupChatAdapter.singleChatHolder>
         }
     }
 
-    override fun getItemCount(): Int = mListMessCache.size
+    override fun getItemCount() = mListMessCache.size
 
     fun setList(list: List<User>) {
         mListMessCache = list

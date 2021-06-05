@@ -4,6 +4,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
+import com.example.Ras.AddPhoneFragment
 import com.example.Ras.ChangeNameFragment
 import com.example.Ras.R
 import com.example.Ras.RegisterFragment
@@ -23,6 +24,7 @@ class MainListFragment : Fragment(R.layout.fragment_chat) {
     private var mList = listOf<User>()
 
     private var status: String = ""
+    private var numberGroup: String = ""
 
     override fun onResume() {
         super.onResume()
@@ -48,6 +50,7 @@ class MainListFragment : Fragment(R.layout.fragment_chat) {
     override fun onStart() {
         super.onStart()
         status = USER.Status
+        numberGroup = USER.Group
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -75,6 +78,9 @@ class MainListFragment : Fragment(R.layout.fragment_chat) {
             }
             R.id.addUser -> {
                 MESS_ACTIVITY.phonePick()
+            }
+            R.id.addGroup -> {
+                replaceFragment(AddPhoneFragment(numberGroup))
             }
         }
         return true

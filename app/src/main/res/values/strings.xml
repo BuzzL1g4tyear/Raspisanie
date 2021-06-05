@@ -54,5 +54,6 @@
     <string name="groupCreated">Группа создана</string>
 
     <string name="createGroupTitle">Создать группу</string>
+    <string name="newStudent">Добавить студентов</string>
 
 </resources>

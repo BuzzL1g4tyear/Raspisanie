@@ -18,11 +18,27 @@ class GroupChatFragment(private val group: User) : Fragment(R.layout.fragment_si
     private lateinit var mReceivingUser: User
     private lateinit var mToolbarInfo: View
     private lateinit var mRefUser: DatabaseReference
+    private lateinit var mRefMainList: DatabaseReference
     private lateinit var mRefMessages: DatabaseReference
     private lateinit var mAdapter: GroupChatAdapter
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mMessagesListener: AppValueEventListener
     private var mListMessages = emptyList<User>()
+
+    private var messID = ""
+
+    override fun onStart() {
+        super.onStart()
+        mRefMainList = REF_DATABASE
+            .child(NODE_MAIN_LIST)
+            .child(UID)
+        mRefMainList.addListenerForSingleValueEvent(AppValueEventListener { list ->
+            messID = list.children.map {
+                it.getUserModel().id
+            }.toString()
+            messID = messID.replace("[", "").replace("]", "")
+        })
+    }
 
     override fun onResume() {
         super.onResume()
@@ -69,7 +85,6 @@ class GroupChatFragment(private val group: User) : Fragment(R.layout.fragment_si
     }
 
     private fun initInfoToolbar() {
-        //todo num group
         mToolbarInfo.chat_info_group.text = mReceivingUser.Group
     }
 

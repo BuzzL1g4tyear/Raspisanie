@@ -30,7 +30,6 @@ class MessengerActivity : AppCompatActivity() {
         actId = 1
     }
 
-    //todo разделить добавление юзеров и создание чата
     override fun onStart() {
         super.onStart()
         MESS_ACTIVITY = this
@@ -77,7 +76,6 @@ class MessengerActivity : AppCompatActivity() {
 
     fun phonePick() {
         val pathPhones = REF_DATABASE.child(NODE_PHONES)
-        val pathUsers = REF_DATABASE.child(NODE_USERS)
         val items = getPickedNumbers(arrayCont)
         val selectedList = ArrayList<Int>()
         val builder = AlertDialog.Builder(this)
@@ -106,13 +104,11 @@ class MessengerActivity : AppCompatActivity() {
                 number.Phone = onlyPhone.trim()
                 mListPhones.add(number)
             }
-            val numberGroup = USER.Group
             mListPhones.forEach {
                 val map = hashMapOf<String, Any>()
                 map[CHILD_CREATOR_ID] = UID
                 pathPhones.child(it.Phone).updateChildren(map)
             }
-            replaceFragment(AddPhoneFragment(numberGroup,mListPhones))
         }
 
         builder.show()

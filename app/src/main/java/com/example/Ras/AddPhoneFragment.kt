@@ -7,7 +7,8 @@ import com.example.Ras.Utils.*
 import com.example.Ras.models.User
 import kotlinx.android.synthetic.main.fragment_add_phone.*
 
-class AddPhoneFragment(var numberGroup: String,var mListPhones: ArrayList<User>,) : Fragment(R.layout.fragment_add_phone) {
+class AddPhoneFragment(private var numberGroup: String) :
+    Fragment(R.layout.fragment_add_phone) {
 
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: AddPhoneAdapter
@@ -23,7 +24,7 @@ class AddPhoneFragment(var numberGroup: String,var mListPhones: ArrayList<User>,
 
         initRecyclerView()
         create_group_auth_phone.setOnClickListener {
-            createGroup(numberGroup, mListPhones) {
+            createGroup(numberGroup, listItems) {
                 replaceFragment(GroupChatFragment(USER))
             }
         }
@@ -44,6 +45,6 @@ class AddPhoneFragment(var numberGroup: String,var mListPhones: ArrayList<User>,
     }
 
     companion object {
-        val listItems = mutableListOf<User>()
+        val listItems = arrayListOf<User>()
     }
 }
