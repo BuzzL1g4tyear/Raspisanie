@@ -41,6 +41,7 @@ import java.util.Locale;
 
 import static com.example.Ras.Utils.FirebaseHelperKt.NODE_LESSONS;
 import static com.example.Ras.Utils.FirebaseHelperKt.initDatabase;
+import static com.example.Ras.Utils.FirebaseHelperKt.initUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     private void initFunc() {
         mAppDrawer.create();
         initDatabase();
+        initUser(() -> null);
     }
 
     private void initFields() {

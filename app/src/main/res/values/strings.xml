@@ -20,7 +20,7 @@
     <string name="order">Приказ</string>
     <string name="petition">Заявление</string>
     <string name="disease">Болезнь</string>
-    <string name="disrespectful">Не уважительная причина</string>
+    <string name="disrespectful">Неуважительная причина</string>
     <string name="image">image</string>
     <!--    auth activity-->
     <string name="auth_title">Авторизация</string>
@@ -55,5 +55,4 @@
 
     <string name="createGroupTitle">Создать группу</string>
     <string name="newStudent">Добавить студентов</string>
-
 </resources>

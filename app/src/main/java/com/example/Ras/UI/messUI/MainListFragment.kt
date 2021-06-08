@@ -16,8 +16,6 @@ class MainListFragment : Fragment(R.layout.fragment_chat) {
     private val mRefMainList = REF_DATABASE
         .child(NODE_MAIN_LIST)
         .child(UID)
-    private val mRefUsers = REF_DATABASE
-        .child(NODE_USERS)
     private val mRefGroups = REF_DATABASE
         .child(NODE_GROUP_CHAT)
         .child(UID)
