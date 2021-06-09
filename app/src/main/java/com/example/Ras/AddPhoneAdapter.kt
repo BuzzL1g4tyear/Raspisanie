@@ -6,8 +6,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.Ras.Utils.MESS_ACTIVITY
-import com.example.Ras.Utils.createToast
 import com.example.Ras.models.User
 import kotlinx.android.synthetic.main.phone_item.view.*
 

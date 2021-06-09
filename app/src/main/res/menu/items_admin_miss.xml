@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
-        android:id="@+id/calendar_picker"
+        android:id="@+id/calendar_picker_admin"
         android:icon="@drawable/ic_calendar_24"
         android:orderInCategory="1"
         android:title="@string/pickDay"
         app:showAsAction="ifRoom" />
-
 </menu>

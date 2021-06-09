@@ -52,6 +52,7 @@
     <string name="register_status">Статус</string>
     <string name="register_btn_create">Создать пользователя</string>
     <string name="groupCreated">Группа создана</string>
+    <string name="pickDay">День</string>
 
     <string name="createGroupTitle">Создать группу</string>
     <string name="newStudent">Добавить студентов</string>

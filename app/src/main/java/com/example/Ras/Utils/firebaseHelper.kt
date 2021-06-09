@@ -69,14 +69,7 @@ inline fun initUser(crossinline function: () -> Unit) {
         })
 }
 
-inline fun initMissingPers(crossinline function: () -> Unit) {
-    REF_DATABASE.child(NODE_MISSING).child(MainActivity.date)
-        .child(USER.Group)
-        .addListenerForSingleValueEvent(AppValueEventListener {
-            MISSING = it.getValue(MissingPers::class.java) ?: MissingPers()
-            function()
-        })
-}
+
 
 fun initContacts() {
     if (checkPermission(READ_CONT)) {
