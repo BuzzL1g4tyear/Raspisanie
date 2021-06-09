@@ -6,12 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.Ras.AuthorizationActivity
-import com.example.Ras.MainActivity
 import com.example.Ras.MessengerActivity
 import com.example.Ras.UI.missingUI.MissingActivity
 import com.example.Ras.Utils.AUTH_ACTIVITY
 import com.example.Ras.Utils.MESS_ACTIVITY
-import com.example.Ras.databinding.FragmentChatBinding
 
 open class BaseFragment(var layout: Int) : Fragment() {
     private lateinit var mRootView: View

@@ -28,7 +28,6 @@ class AdminMissingAdapter : RecyclerView.Adapter<AdminMissingAdapter.AdminMissin
     }
 
     override fun onBindViewHolder(holder: AdminMissingHolder, position: Int) {
-
         listMissItems[position].Disease.forEach {
             holder.itemSurname.text = it //0.
             holder.itemGroup.text = listMissItems[position].Group

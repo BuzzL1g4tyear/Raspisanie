@@ -4,10 +4,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
-import com.example.Ras.AddPhoneFragment
-import com.example.Ras.ChangeNameFragment
-import com.example.Ras.R
-import com.example.Ras.RegisterFragment
+import com.example.Ras.*
 import com.example.Ras.Utils.*
 import com.example.Ras.models.User
 
@@ -79,6 +76,9 @@ class MainListFragment : Fragment(R.layout.fragment_chat) {
             }
             R.id.addGroup -> {
                 replaceFragment(AddPhoneFragment(numberGroup))
+            }
+            R.id.updUser -> {
+                replaceFragment(UpdUserFragment())
             }
         }
         return true

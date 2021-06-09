@@ -5,7 +5,12 @@
     <item
         android:id="@+id/createUser"
         android:icon="@drawable/ic_person_add_24"
-        android:title=""
+        android:title="@string/newPersonal"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/updUser"
+        android:icon="@drawable/ic_mode_edit_24"
+        android:title="@string/editPersonal"
         app:showAsAction="ifRoom" />
 
 </menu>
