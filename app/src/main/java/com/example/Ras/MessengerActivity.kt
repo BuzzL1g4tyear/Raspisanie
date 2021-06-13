@@ -2,6 +2,7 @@ package com.example.Ras
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -21,6 +22,8 @@ class MessengerActivity : AppCompatActivity() {
     lateinit var mToolbar: Toolbar
     lateinit var mAppDrawer: AppDrawer
     private lateinit var mBinding: ActivityMessengerBinding
+    private var timeBackPress: Long = 0
+    private lateinit var backToast: Toast
     private val mListPhones = arrayListOf<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +32,18 @@ class MessengerActivity : AppCompatActivity() {
         setContentView(mBinding.root)
         actId = 1
     }
-
+    override fun onBackPressed() {
+        if (timeBackPress + 2000 > System.currentTimeMillis()) {
+            backToast.cancel()
+            super.onBackPressed()
+            return
+        } else {
+            backToast =
+                Toast.makeText(baseContext, "Для выхода нажмите ещё раз", Toast.LENGTH_SHORT)
+            backToast.show()
+        }
+        timeBackPress = System.currentTimeMillis()
+    }
     override fun onStart() {
         super.onStart()
         MESS_ACTIVITY = this

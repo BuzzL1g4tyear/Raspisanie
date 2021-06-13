@@ -5,6 +5,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.jsoup.nodes.Element;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -12,19 +13,19 @@ import java.util.regex.Pattern;
 
 import static com.example.Ras.Utils.FirebaseHelperKt.NODE_LESSONS;
 
-public class Sender {
+public class Sender implements Serializable {
 
     public String id;
 
     public String numbGroup;
-    public List<String> lessonsOfTheDay;
+    public ArrayList<String> lessonsOfTheDay;
 
     DatabaseReference dt_lessons = FirebaseDatabase.getInstance().getReference();
 
     public Sender() {
     }
 
-    public Sender(String id, String numbGroup, List<String> lessonsOfTheDay) {
+    public Sender(String id, String numbGroup, ArrayList<String> lessonsOfTheDay) {
         this.id = id;
         this.numbGroup = numbGroup;
         this.lessonsOfTheDay = lessonsOfTheDay;
@@ -48,7 +49,7 @@ public class Sender {
         final int rowsToSkip = 3;
         final int groupRowIndex = 1;
 
-        List<String> lessons;
+        ArrayList<String> lessons;
         String groups;
 
         if (days.size() > 3) {

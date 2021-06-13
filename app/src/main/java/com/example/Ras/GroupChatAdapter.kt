@@ -5,7 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.Ras.Utils.DiffUtilCallback
 import com.example.Ras.Utils.UID
 import com.example.Ras.Utils.asTime
 import com.example.Ras.models.User
@@ -13,7 +15,8 @@ import kotlinx.android.synthetic.main.message_item.view.*
 
 class GroupChatAdapter : RecyclerView.Adapter<GroupChatAdapter.singleChatHolder>() {
 
-    private var mListMessCache = emptyList<User>()
+    private var mListMessCache = mutableListOf<User>()
+    private lateinit var mDiffResult: DiffUtil.DiffResult
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): singleChatHolder {
         val view = LayoutInflater
@@ -42,9 +45,22 @@ class GroupChatAdapter : RecyclerView.Adapter<GroupChatAdapter.singleChatHolder>
 
     override fun getItemCount() = mListMessCache.size
 
-    fun setList(list: List<User>) {
-        mListMessCache = list
-        notifyDataSetChanged()
+    fun addItem(item: User, toBottom: Boolean) {
+        if (toBottom) {
+            if (!mListMessCache.contains(item)) {
+                mListMessCache.add(item)
+                notifyItemChanged(mListMessCache.size)
+            }
+        } else {
+            if (!mListMessCache.contains(item)) {
+                mListMessCache.add(item)
+                mListMessCache.sortBy {
+                    it.TimeStamp.toString()
+                }
+                notifyItemChanged(0)
+            }
+        }
+
     }
 
     class singleChatHolder(view: View) : RecyclerView.ViewHolder(view) {

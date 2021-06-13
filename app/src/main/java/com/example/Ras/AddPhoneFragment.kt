@@ -3,6 +3,7 @@ package com.example.Ras
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.Ras.UI.messUI.GroupChatFragment
+import com.example.Ras.UI.messUI.MainListFragment
 import com.example.Ras.Utils.*
 import com.example.Ras.models.User
 import kotlinx.android.synthetic.main.fragment_add_phone.*
@@ -25,7 +26,7 @@ class AddPhoneFragment(private var numberGroup: String) :
         initRecyclerView()
         create_group_auth_phone.setOnClickListener {
             createGroup(numberGroup, listItems) {
-                replaceFragment(GroupChatFragment(USER))
+                replaceFragment(MainListFragment())
             }
         }
     }

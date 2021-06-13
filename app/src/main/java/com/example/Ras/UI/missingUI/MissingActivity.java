@@ -2,6 +2,7 @@ package com.example.Ras.UI.missingUI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,6 +21,9 @@ public class MissingActivity extends AppCompatActivity {
 
     public AppDrawer mAppDrawer = null;
     Toolbar toolbar_Missing;
+    private Toast backToast;
+    private long timeBackPress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +31,18 @@ public class MissingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_missing);
         setActId(2);
     }
-
+    @Override
+    public void onBackPressed() {
+        if (timeBackPress + 2000 > System.currentTimeMillis()) {
+            backToast.cancel();
+            super.onBackPressed();
+            return;
+        } else {
+            backToast = Toast.makeText(getBaseContext(), "Для выхода нажмите ещё раз", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        timeBackPress = System.currentTimeMillis();
+    } 
     // TODO: chip - picture
     @Override
     protected void onStart() {

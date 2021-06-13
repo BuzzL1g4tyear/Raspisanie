@@ -53,10 +53,12 @@
     <string name="register_btn_create">Создать пользователя</string>
     <string name="groupCreated">Группа создана</string>
     <string name="pickDay">День</string>
+    <string name="shareDay">Поделиться данными</string>
 
     <string name="users">Пользователи</string>
     <string name="createGroupTitle">Создать группу</string>
     <string name="newStudent">Добавить студентов</string>
     <string name="newPersonal">Добавить куратора, старосту</string>
     <string name="editPersonal">Редактировать куратора, старосту</string>
+
 </resources>

@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.Ras.Utils.MESS_ACTIVITY
+import com.example.Ras.Utils.replaceFragment
 import com.example.Ras.models.MissingPers
 import com.example.Ras.models.User
 import kotlinx.android.synthetic.main.user_item.view.*
@@ -22,8 +24,11 @@ class UpdUserAdapter : RecyclerView.Adapter<UpdUserAdapter.UpdUserHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UpdUserHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.user_item, parent, false)
-
-        return UpdUserHolder(view)
+        val holder = UpdUserHolder(view)
+        holder.itemView.setOnClickListener {
+            MESS_ACTIVITY.replaceFragment(EditUserFragment(listItems[holder.adapterPosition]))
+        }
+        return holder
     }
 
     override fun onBindViewHolder(holder: UpdUserHolder, position: Int) {

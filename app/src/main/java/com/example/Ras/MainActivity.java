@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +39,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 
 import static com.example.Ras.Utils.FirebaseHelperKt.NODE_LESSONS;
 import static com.example.Ras.Utils.FirebaseHelperKt.initDatabase;
@@ -71,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        initDatabase();
+        initUser(() -> null);
         initFields();
         dt_lessons = FirebaseDatabase.getInstance().getReference();
         Thread thread = new Thread(runnable);
@@ -94,8 +100,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFunc() {
         mAppDrawer.create();
-        initDatabase();
-        initUser(() -> null);
     }
 
     private void initFields() {
@@ -142,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 Sender sender = temp.get(position);
                 Intent intent = new Intent(MainActivity.this, ShowActivity.class);
                 intent.putExtra(Constant.GROUP, sender.numbGroup);
-                intent.putExtra(Constant.LESSONS, String.valueOf(sender.lessonsOfTheDay));
+                intent.putStringArrayListExtra(Constant.LESSONS, sender.lessonsOfTheDay);
                 startActivity(intent);
             }
         });

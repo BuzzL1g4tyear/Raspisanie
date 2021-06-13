@@ -7,4 +7,11 @@
         android:orderInCategory="1"
         android:title="@string/pickDay"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/share_list_admin"
+        android:icon="@drawable/ic_share"
+        android:orderInCategory="2"
+        android:title="@string/shareDay"
+        app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"
+        app:showAsAction="ifRoom" />
 </menu>

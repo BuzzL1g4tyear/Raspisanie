@@ -1,13 +1,13 @@
 package com.example.Ras
 
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.Ras.UI.messUI.BaseFragment
 import com.example.Ras.Utils.*
 import com.example.Ras.models.User
 import kotlinx.android.synthetic.main.fragment_upd_user.*
 
-class UpdUserFragment : Fragment(R.layout.fragment_upd_user) {
+class UpdUserFragment : BaseFragment(R.layout.fragment_upd_user) {
     private val mRefUsers = REF_DATABASE.child(NODE_USERS)
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: UpdUserAdapter
@@ -42,6 +42,7 @@ class UpdUserFragment : Fragment(R.layout.fragment_upd_user) {
         val swipeDelete = object : AppSwipeCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 mAdapter.deleteItem(viewHolder.adapterPosition)
+
             }
         }
         val touchHelper = ItemTouchHelper(swipeDelete)

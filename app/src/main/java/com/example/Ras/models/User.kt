@@ -11,6 +11,9 @@ data class User(
     var Phone: String = "",
     var CreatorID: String = "",
 
+    var Cause: String = "",
+    var Surname: String = "",
+
     var choice:Boolean = false,
 
     var Text: String = "",

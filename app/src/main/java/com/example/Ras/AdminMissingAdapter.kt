@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.Ras.Utils.asTime
-import com.example.Ras.models.MissingPers
+import com.example.Ras.models.User
 import kotlinx.android.synthetic.main.miss_person_item.view.*
 
 class AdminMissingAdapter : RecyclerView.Adapter<AdminMissingAdapter.AdminMissingHolder>() {
 
-    private var listMissItems = mutableListOf<MissingPers>()
+    private var listItems = mutableListOf<User>()
 
     class AdminMissingHolder(view: View) : RecyclerView.ViewHolder(view) {
         val itemGroup: TextView = view.group_item
@@ -28,18 +28,16 @@ class AdminMissingAdapter : RecyclerView.Adapter<AdminMissingAdapter.AdminMissin
     }
 
     override fun onBindViewHolder(holder: AdminMissingHolder, position: Int) {
-        listMissItems[position].Disease.forEach {
-            holder.itemSurname.text = it //0.
-            holder.itemGroup.text = listMissItems[position].Group
-            holder.itemTime.text = listMissItems[position].TimeStamp.toString().asTime()
-            holder.itemCause.text = "Болезнь"
-        }
+            holder.itemSurname.text = listItems[position].Surname //0.
+            holder.itemGroup.text = listItems[position].Group
+            holder.itemTime.text = listItems[position].TimeStamp.toString().asTime()
+            holder.itemCause.text = listItems[position].Cause
     }
 
-    override fun getItemCount() = listMissItems.size
+    override fun getItemCount() = listItems.size
 
-    fun updateListItems(item: MissingPers) {
-        listMissItems.add(item)
-        notifyItemInserted(listMissItems.size)
+    fun updateListItems(item: User) {
+        listItems.add(item)
+        notifyItemInserted(listItems.size)
     }
 }

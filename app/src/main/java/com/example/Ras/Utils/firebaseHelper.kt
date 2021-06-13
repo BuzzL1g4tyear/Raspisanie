@@ -46,6 +46,7 @@ const val CHILD_FROM = "From"
 const val CHILD_TIME = "TimeStamp"
 const val CHILD_STATUS = "Status"
 const val CHILD_ORDER = "Order"
+const val CHILD_CAUSE = "Cause"
 const val CHILD_DISEASE = "Disease"
 const val CHILD_STATEMENT = "Statement"
 const val CHILD_REASON = "Reason"
@@ -195,6 +196,8 @@ fun addGroupToMainList(mapData: HashMap<String, Any>, list: List<User>, function
         .addOnSuccessListener { function() }
         .addOnFailureListener { MESS_ACTIVITY.createToast(it.message.toString()) }
 }
+
+//fun delete
 
 fun sendGroupMessage(message: String, groupID: String, typeText: String, function: () -> Unit) {
     val refMessages = "$NODE_GROUP_CHAT/$groupID/$NODE_MESSAGES"

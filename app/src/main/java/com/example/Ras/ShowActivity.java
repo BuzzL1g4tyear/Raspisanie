@@ -2,16 +2,19 @@ package com.example.Ras;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ShowActivity extends AppCompatActivity {
 
-    TextView textViewGroup, textViewLessons, textViewDate;
+    private ArrayList<String> listLessons = null;
+    private RecyclerView mRecyclerView;
+    private ShowAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,20 +22,25 @@ public class ShowActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show);
 
         Toolbar toolbarShow = findViewById(R.id.toolbarShow);
-        textViewGroup = findViewById(R.id.textViewGroup);
-        textViewLessons = findViewById(R.id.textViewLessons);
-        textViewDate = findViewById(R.id.textViewDate);
+        mRecyclerView = findViewById(R.id.lessons_rv);
+        mAdapter = new ShowAdapter();
 
-        textViewDate.setText(MainActivity.showingDate);
         setSupportActionBar(toolbarShow);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         Intent intent = getIntent();
         if (intent != null) {
-            textViewGroup.setText(intent.getStringExtra(Constant.GROUP));
-            textViewLessons.setText(intent.getStringExtra(Constant.LESSONS));
+            listLessons = intent.getStringArrayListExtra(Constant.LESSONS);
             setTitle(getResources().getString(R.string.Group) + " " + intent.getStringExtra(Constant.GROUP));
         }
-
+        for (int i = 0;i<=listLessons.size()-1;i++) {
+            mAdapter.updateListItems(listLessons.get(i));
+        }
+        mRecyclerView.setAdapter(mAdapter);
     }
 }

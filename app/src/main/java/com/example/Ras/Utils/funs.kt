@@ -46,6 +46,22 @@ fun Fragment.replaceFragment(fragment: Fragment) {
             fragment
         )?.commit()
 }
+fun Fragment.replaceFragment(fragment: Fragment, addStack: Boolean = true) {
+    if (addStack) {
+        this.fragmentManager?.beginTransaction()
+            ?.addToBackStack(null)
+            ?.replace(
+                R.id.data_container,
+                fragment
+            )?.commit()
+    } else{
+        this.fragmentManager?.beginTransaction()
+            ?.replace(
+                R.id.data_container,
+                fragment
+            )?.commit()
+    }
+}
 
 fun String.asTime(): String {
     val time = Date(this.toLong())

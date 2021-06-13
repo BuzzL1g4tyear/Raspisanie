@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.Ras.Utils.FirebaseHelperKt.CHILD_CAUSE;
 import static com.example.Ras.Utils.FirebaseHelperKt.CHILD_DISEASE;
 import static com.example.Ras.Utils.FirebaseHelperKt.CHILD_GROUP;
 import static com.example.Ras.Utils.FirebaseHelperKt.CHILD_ORDER;
@@ -148,10 +149,9 @@ public class CapitanMissingFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(requireContext(), "ok", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), getString(R.string.addedData), Toast.LENGTH_SHORT).show();
                     }
                 });
-
     }
 
     private void getChipsText() {

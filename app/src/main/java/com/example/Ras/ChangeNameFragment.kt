@@ -11,7 +11,7 @@ class ChangeNameFragment : Fragment(R.layout.fragment_change_name) {
 
     override fun onStart() {
         super.onStart()
-        (activity as MessengerActivity).mAppDrawer.disableDrawer()
+        MESS_ACTIVITY.mAppDrawer.disableDrawer()
         setHasOptionsMenu(true)
         val fullNameList = USER.FullName.split(" ")
         when {
@@ -30,7 +30,7 @@ class ChangeNameFragment : Fragment(R.layout.fragment_change_name) {
 
     override fun onStop() {
         super.onStop()
-        (activity as MessengerActivity).mAppDrawer.enableDrawer()
+        MESS_ACTIVITY.mAppDrawer.enableDrawer()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

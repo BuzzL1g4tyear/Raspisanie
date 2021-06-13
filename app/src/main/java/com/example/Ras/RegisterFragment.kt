@@ -1,6 +1,5 @@
 package com.example.Ras
 
-import android.util.Log
 import android.widget.ArrayAdapter
 import com.example.Ras.UI.messUI.BaseFragment
 import com.example.Ras.Utils.*
