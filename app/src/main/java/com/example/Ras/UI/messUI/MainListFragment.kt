@@ -75,7 +75,7 @@ class MainListFragment : Fragment(R.layout.fragment_chat) {
                 MESS_ACTIVITY.phonePick()
             }
             R.id.addGroup -> {
-                replaceFragment(AddPhoneFragment(numberGroup))
+                replaceFragment(AddPhoneFragment(numberGroup, id = group.id))
             }
             R.id.updUser -> {
                 replaceFragment(UpdUserFragment())

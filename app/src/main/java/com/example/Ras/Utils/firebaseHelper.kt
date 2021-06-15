@@ -71,7 +71,6 @@ inline fun initUser(crossinline function: () -> Unit) {
 }
 
 
-
 fun initContacts() {
     if (checkPermission(READ_CONT)) {
         arrayCont = arrayListOf()
@@ -126,6 +125,31 @@ fun updPhones(
     mapPhone[CHILD_ID] = person.id
     pathAuthPhones.child(person.Group).child(person.id).updateChildren(mapUser)
     pathPhones.child(person.Phone).updateChildren(mapPhone)
+}
+
+fun addToGroup(
+    id: String,
+    list: ArrayList<User>,
+    function: () -> Unit
+) {
+    val mRefGroupMembers = REF_DATABASE.child(NODE_GROUP_CHAT).child(id)
+    val pathPhones = REF_DATABASE.child(NODE_PHONES)
+    val mapMembers = hashMapOf<String, Any>()
+    val mListPersonsID = arrayListOf<User>()
+
+    list.forEach {
+        pathPhones.child(it.Phone).addListenerForSingleValueEvent(AppValueEventListener { person ->
+            val mId = person.getUserModel().id
+            mListPersonsID.add(person.getUserModel())
+            mapMembers[mId] = USER_MEMBER
+        })
+    }
+        mRefGroupMembers.updateChildren(mapMembers)
+        .addOnSuccessListener {
+//            addGroupToMainList(mapData, mListPersonsID) {
+//                function()
+//            }
+        }
 }
 
 fun createGroup(

@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.AbsListView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.Ras.*
 import com.example.Ras.Utils.*
 import com.example.Ras.models.User
@@ -19,7 +20,6 @@ class GroupChatFragment(private val group: User) : Fragment(R.layout.fragment_si
 
     private lateinit var mToolbarInfo: View
     private lateinit var mRefUser: DatabaseReference
-    private lateinit var mRefMainList: DatabaseReference
     private lateinit var mRefMessages: DatabaseReference
     private lateinit var mAdapter: GroupChatAdapter
     private lateinit var mRecyclerView: RecyclerView
@@ -27,24 +27,15 @@ class GroupChatFragment(private val group: User) : Fragment(R.layout.fragment_si
     private var mCountMessages = 10
     private var status: String = ""
     private var numberGroup: String = ""
-    private var messID = ""
     private var mIsScrolling = false
     private var mSmoothScrollToPosition = true
-    private var mListListeners = mutableListOf<AppChildEventListener>()
+    private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
 
     override fun onStart() {
         super.onStart()
         status = USER.Status
         numberGroup = USER.Group
-        mRefMainList = REF_DATABASE
-            .child(NODE_MAIN_LIST)
-            .child(UID)
-        mRefMainList.addListenerForSingleValueEvent(AppValueEventListener { list ->
-            messID = list.children.map {
-                it.getUserModel().id
-            }.toString()
-            messID = messID.replace("[", "").replace("]", "")
-        })
+
     }
 
     override fun onResume() {
@@ -55,6 +46,7 @@ class GroupChatFragment(private val group: User) : Fragment(R.layout.fragment_si
     }
 
     private fun initRecyclerView() {
+        mSwipeRefreshLayout = swipe_layout
         mRecyclerView = chat_rv
         mAdapter = GroupChatAdapter()
 
@@ -65,14 +57,16 @@ class GroupChatFragment(private val group: User) : Fragment(R.layout.fragment_si
 
         mRecyclerView.adapter = mAdapter
         mMessagesListener = AppChildEventListener {
-            mAdapter.addItem(it.getUserModel(), mSmoothScrollToPosition)
-            if (mSmoothScrollToPosition) {
-                mRecyclerView.smoothScrollToPosition(mAdapter.itemCount)
+            mAdapter.addItem(it.getUserModel(), mSmoothScrollToPosition) {
+                if (mSmoothScrollToPosition) {
+                    mRecyclerView.smoothScrollToPosition(mAdapter.itemCount)
+                }
+                mSwipeRefreshLayout.isRefreshing = false
             }
+
         }
 
         mRefMessages.limitToLast(mCountMessages).addChildEventListener(mMessagesListener)
-        mListListeners.add(mMessagesListener)
 
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -89,21 +83,24 @@ class GroupChatFragment(private val group: User) : Fragment(R.layout.fragment_si
                 }
             }
         })
+        mSwipeRefreshLayout.setOnRefreshListener {
+            updateData()
+        }
     }
 
     private fun updateData() {
         mSmoothScrollToPosition = false
         mIsScrolling = false
         mCountMessages += 10
+        mRefMessages.removeEventListener(mMessagesListener)
         mRefMessages.limitToLast(mCountMessages).addChildEventListener(mMessagesListener)
-        mListListeners.add(mMessagesListener)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         when {
             status.equals("3", true) -> {
                 MESS_ACTIVITY
-                    .menuInflater.inflate(R.menu.items_curator, menu)
+                    .menuInflater.inflate(R.menu.items_curator_chat, menu)
             }
             status.equals("", true) -> {
 
@@ -127,8 +124,8 @@ class GroupChatFragment(private val group: User) : Fragment(R.layout.fragment_si
             R.id.addGroup -> {
                 replaceFragment(AddPhoneFragment(numberGroup))
             }
-            R.id.updUser -> {
-                replaceFragment(UpdUserFragment())
+            R.id.addPersonToGroup -> {
+                replaceFragment(AddPhoneFragment(numberGroup, false, group.id))
             }
         }
         return true
@@ -154,8 +151,7 @@ class GroupChatFragment(private val group: User) : Fragment(R.layout.fragment_si
     override fun onPause() {
         super.onPause()
         mToolbarInfo.visibility = View.GONE
-        mListListeners.forEach {
-            mRefMessages.removeEventListener(it)
-        }
+
+        mRefMessages.removeEventListener(mMessagesListener)
     }
 }

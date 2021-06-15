@@ -65,6 +65,6 @@ fun Fragment.replaceFragment(fragment: Fragment, addStack: Boolean = true) {
 
 fun String.asTime(): String {
     val time = Date(this.toLong())
-    val timeFormat = SimpleDateFormat("HH:MM", Locale.getDefault())
+    val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
     return timeFormat.format(time)
 }

@@ -11,6 +11,7 @@ import com.example.Ras.Utils.DiffUtilCallback
 import com.example.Ras.Utils.UID
 import com.example.Ras.Utils.asTime
 import com.example.Ras.models.User
+import com.google.android.gms.tasks.OnSuccessListener
 import kotlinx.android.synthetic.main.message_item.view.*
 
 class GroupChatAdapter : RecyclerView.Adapter<GroupChatAdapter.singleChatHolder>() {
@@ -45,22 +46,24 @@ class GroupChatAdapter : RecyclerView.Adapter<GroupChatAdapter.singleChatHolder>
 
     override fun getItemCount() = mListMessCache.size
 
-    fun addItem(item: User, toBottom: Boolean) {
+    fun addItem(
+        item: User,
+        toBottom: Boolean,
+        onSuccess: () -> Unit
+    ) {
         if (toBottom) {
             if (!mListMessCache.contains(item)) {
                 mListMessCache.add(item)
-                notifyItemChanged(mListMessCache.size)
+                notifyItemInserted(mListMessCache.size)
             }
         } else {
             if (!mListMessCache.contains(item)) {
                 mListMessCache.add(item)
-                mListMessCache.sortBy {
-                    it.TimeStamp.toString()
-                }
-                notifyItemChanged(0)
+                mListMessCache.sortBy { it.TimeStamp.toString() }
+                notifyItemInserted(0)
             }
         }
-
+        onSuccess()
     }
 
     class singleChatHolder(view: View) : RecyclerView.ViewHolder(view) {
