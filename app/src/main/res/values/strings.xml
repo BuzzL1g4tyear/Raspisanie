@@ -58,6 +58,7 @@
     <string name="users">Пользователи</string>
     <string name="createGroupTitle">Создать группу</string>
     <string name="newStudent">Добавить студентов</string>
+    <string name="newStudentToGroup">Добавить студентов в группу</string>
     <string name="newPersonal">Добавить куратора, старосту</string>
     <string name="editPersonal">Редактировать куратора, старосту</string>
 

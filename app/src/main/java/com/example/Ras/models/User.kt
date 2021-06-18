@@ -14,10 +14,15 @@ data class User(
     var Cause: String = "",
     var Surname: String = "",
 
-    var choice:Boolean = false,
+    var choice: Boolean = false,
 
     var Text: String = "",
     var Type: String = "",
     var From: String = "",
     var TimeStamp: Any = ""
-)
+
+) {
+    override fun equals(other: Any?): Boolean {
+        return (other as User).id == id
+    }
+}

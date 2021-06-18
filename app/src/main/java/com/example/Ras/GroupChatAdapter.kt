@@ -46,22 +46,25 @@ class GroupChatAdapter : RecyclerView.Adapter<GroupChatAdapter.singleChatHolder>
 
     override fun getItemCount() = mListMessCache.size
 
-    fun addItem(
+    fun addItemToBottom(
         item: User,
-        toBottom: Boolean,
         onSuccess: () -> Unit
     ) {
-        if (toBottom) {
-            if (!mListMessCache.contains(item)) {
-                mListMessCache.add(item)
-                notifyItemInserted(mListMessCache.size)
-            }
-        } else {
-            if (!mListMessCache.contains(item)) {
-                mListMessCache.add(item)
-                mListMessCache.sortBy { it.TimeStamp.toString() }
-                notifyItemInserted(0)
-            }
+        if (!mListMessCache.contains(item)) {
+            mListMessCache.add(item)
+            notifyItemInserted(mListMessCache.size)
+        }
+        onSuccess()
+    }
+
+    fun addItemToTop(
+        item: User,
+        onSuccess: () -> Unit
+    ) {
+        if (!mListMessCache.contains(item)) {
+            mListMessCache.add(item)
+            mListMessCache.sortBy { it.TimeStamp.toString() }
+            notifyItemInserted(0)
         }
         onSuccess()
     }

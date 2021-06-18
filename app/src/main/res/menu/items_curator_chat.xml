@@ -18,7 +18,7 @@
                 android:id="@+id/addPersonToGroup"
                 android:icon="@drawable/ic_group_add"
                 android:orderInCategory="2"
-                android:title="@string/createGroupTitle"
+                android:title="@string/newStudentToGroup"
                 app:showAsAction="never" />
         </menu>
 

@@ -132,23 +132,20 @@ fun addToGroup(
     list: ArrayList<User>,
     function: () -> Unit
 ) {
-    val mRefGroupMembers = REF_DATABASE.child(NODE_GROUP_CHAT).child(id)
-    val pathPhones = REF_DATABASE.child(NODE_PHONES)
+    val mRefGroupMembers = REF_DATABASE.child(NODE_GROUP_CHAT).child(id).child(NODE_MEMBERS)
+
     val mapMembers = hashMapOf<String, Any>()
-    val mListPersonsID = arrayListOf<User>()
 
     list.forEach {
-        pathPhones.child(it.Phone).addListenerForSingleValueEvent(AppValueEventListener { person ->
-            val mId = person.getUserModel().id
-            mListPersonsID.add(person.getUserModel())
-            mapMembers[mId] = USER_MEMBER
-        })
+        mapMembers[it.id] = USER_MEMBER
     }
-        mRefGroupMembers.updateChildren(mapMembers)
+
+    mRefGroupMembers.updateChildren(mapMembers)
         .addOnSuccessListener {
-//            addGroupToMainList(mapData, mListPersonsID) {
-//                function()
-//            }
+            function()
+        }
+        .addOnFailureListener {
+            MESS_ACTIVITY.createToast(it.message.toString())
         }
 }
 
@@ -221,8 +218,6 @@ fun addGroupToMainList(mapData: HashMap<String, Any>, list: List<User>, function
         .addOnFailureListener { MESS_ACTIVITY.createToast(it.message.toString()) }
 }
 
-//fun delete
-
 fun sendGroupMessage(message: String, groupID: String, typeText: String, function: () -> Unit) {
     val refMessages = "$NODE_GROUP_CHAT/$groupID/$NODE_MESSAGES"
 
@@ -232,6 +227,7 @@ fun sendGroupMessage(message: String, groupID: String, typeText: String, functio
     mapMessage[CHILD_FROM] = UID
     mapMessage[CHILD_TYPE] = typeText
     mapMessage[CHILD_TEXT] = message
+    mapMessage[CHILD_ID] = messageKey
     mapMessage[CHILD_TIME] = ServerValue.TIMESTAMP
 
     REF_DATABASE

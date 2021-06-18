@@ -15,7 +15,6 @@ class MainListFragment : Fragment(R.layout.fragment_chat) {
         .child(UID)
     private val mRefGroups = REF_DATABASE
         .child(NODE_GROUP_CHAT)
-        .child(UID)
     private var mList = listOf<User>()
 
     private var status: String = ""
@@ -25,7 +24,7 @@ class MainListFragment : Fragment(R.layout.fragment_chat) {
         super.onResume()
         activity?.title = getString(R.string.messenger)
         setHasOptionsMenu(true)
-
+        AddPhoneFragment.listItems.clear()
         initMainChat()
     }
 
@@ -36,7 +35,7 @@ class MainListFragment : Fragment(R.layout.fragment_chat) {
             mList.forEach { model ->
                 mRefGroups.child(model.id).addListenerForSingleValueEvent(AppValueEventListener {
                     val newModel = it.getUserModel()
-                    replaceFragment(GroupChatFragment(newModel),false)
+                    replaceFragment(GroupChatFragment(newModel), false)
                 })
             }
         })
@@ -75,7 +74,7 @@ class MainListFragment : Fragment(R.layout.fragment_chat) {
                 MESS_ACTIVITY.phonePick()
             }
             R.id.addGroup -> {
-                replaceFragment(AddPhoneFragment(numberGroup, id = group.id))
+                replaceFragment(AddPhoneFragment(numberGroup))
             }
             R.id.updUser -> {
                 replaceFragment(UpdUserFragment())

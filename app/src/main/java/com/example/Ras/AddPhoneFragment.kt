@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.fragment_add_phone.*
 class AddPhoneFragment(
     private var numberGroup: String,
     private val isAdd: Boolean = true,
-    private val id: String =""
+    private val id: String = ""
 ) :
     Fragment(R.layout.fragment_add_phone) {
 

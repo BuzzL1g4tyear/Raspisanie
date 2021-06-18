@@ -1,11 +1,13 @@
 package com.example.Ras.UI.messUI
 
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.AbsListView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.Ras.*
@@ -30,17 +32,18 @@ class GroupChatFragment(private val group: User) : Fragment(R.layout.fragment_si
     private var mIsScrolling = false
     private var mSmoothScrollToPosition = true
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var mLayoutManager: LinearLayoutManager
 
     override fun onStart() {
         super.onStart()
         status = USER.Status
         numberGroup = USER.Group
-
     }
 
     override fun onResume() {
         super.onResume()
         setHasOptionsMenu(true)
+        mLayoutManager = LinearLayoutManager(this.context)
         initToolbar()
         initRecyclerView()
     }
@@ -49,21 +52,27 @@ class GroupChatFragment(private val group: User) : Fragment(R.layout.fragment_si
         mSwipeRefreshLayout = swipe_layout
         mRecyclerView = chat_rv
         mAdapter = GroupChatAdapter()
-
+        mRecyclerView.layoutManager = mLayoutManager
         mRefMessages = REF_DATABASE
             .child(NODE_GROUP_CHAT)
             .child(group.id)
             .child(NODE_MESSAGES)
 
         mRecyclerView.adapter = mAdapter
+        mRecyclerView.setHasFixedSize(true)
+        mRecyclerView.isNestedScrollingEnabled = false
         mMessagesListener = AppChildEventListener {
-            mAdapter.addItem(it.getUserModel(), mSmoothScrollToPosition) {
-                if (mSmoothScrollToPosition) {
+            val message = it.getUserModel()
+
+            if (mSmoothScrollToPosition) {
+                mAdapter.addItemToBottom(message) {
                     mRecyclerView.smoothScrollToPosition(mAdapter.itemCount)
                 }
-                mSwipeRefreshLayout.isRefreshing = false
+            } else {
+                mAdapter.addItemToTop(message) {
+                    mSwipeRefreshLayout.isRefreshing = false
+                }
             }
-
         }
 
         mRefMessages.limitToLast(mCountMessages).addChildEventListener(mMessagesListener)
@@ -78,7 +87,7 @@ class GroupChatFragment(private val group: User) : Fragment(R.layout.fragment_si
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (mIsScrolling && dy < 0) {
+                if (mIsScrolling && dy < 0 && mLayoutManager.findFirstVisibleItemPosition() <= 3) {
                     updateData()
                 }
             }
