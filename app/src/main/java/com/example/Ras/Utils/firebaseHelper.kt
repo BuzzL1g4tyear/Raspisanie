@@ -135,14 +135,20 @@ fun addToGroup(
     val mRefGroupMembers = REF_DATABASE.child(NODE_GROUP_CHAT).child(id).child(NODE_MEMBERS)
 
     val mapMembers = hashMapOf<String, Any>()
+    val mapData = hashMapOf<String, Any>()
 
     list.forEach {
         mapMembers[it.id] = USER_MEMBER
     }
 
+    mapData[CHILD_ID] = id
+    mapData[NODE_MEMBERS] = mapMembers
+
     mRefGroupMembers.updateChildren(mapMembers)
         .addOnSuccessListener {
-            function()
+            addGroupToMainList(mapData, list, true) {
+                function()
+            }
         }
         .addOnFailureListener {
             MESS_ACTIVITY.createToast(it.message.toString())
@@ -198,7 +204,12 @@ fun createGroup(
         }
 }
 
-fun addGroupToMainList(mapData: HashMap<String, Any>, list: List<User>, function: () -> Unit) {
+fun addGroupToMainList(
+    mapData: HashMap<String, Any>,
+    list: List<User>,
+    isAdd: Boolean = false,
+    function: () -> Unit
+) {
     val pathMainList = REF_DATABASE.child(NODE_MAIN_LIST)
 
     val map = hashMapOf<String, Any>()
@@ -206,16 +217,23 @@ fun addGroupToMainList(mapData: HashMap<String, Any>, list: List<User>, function
     map[CHILD_ID] = mapData[CHILD_ID].toString()
     map[CHILD_TYPE] = TYPE_GROUP
 
-    list.forEach {
-        pathMainList.child(it.id).child(map[CHILD_ID].toString())
+    if (!isAdd) {
+        list.forEach {
+            pathMainList.child(it.id).child(map[CHILD_ID].toString())
+                .updateChildren(map)
+        }
+        pathMainList.child(mCapitan.id).child(map[CHILD_ID].toString())
             .updateChildren(map)
+        pathMainList.child(UID).child(map[CHILD_ID].toString())
+            .updateChildren(map)
+            .addOnSuccessListener { function() }
+            .addOnFailureListener { MESS_ACTIVITY.createToast(it.message.toString()) }
+    } else {
+        list.forEach {
+            pathMainList.child(it.id).child(map[CHILD_ID].toString())
+                .updateChildren(map)
+        }
     }
-    pathMainList.child(mCapitan.id).child(map[CHILD_ID].toString())
-        .updateChildren(map)
-    pathMainList.child(UID).child(map[CHILD_ID].toString())
-        .updateChildren(map)
-        .addOnSuccessListener { function() }
-        .addOnFailureListener { MESS_ACTIVITY.createToast(it.message.toString()) }
 }
 
 fun sendGroupMessage(message: String, groupID: String, typeText: String, function: () -> Unit) {
