@@ -21,14 +21,13 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_user_email"
             style="@style/inputText"
-            android:inputType="textEmailAddress" />
+            android:editable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_user_Group_InputLayout"
         style="@style/inputTextLayout"
         android:layout_marginLeft="16dp"
-
         android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
         android:hint="@string/Group"

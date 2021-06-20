@@ -34,7 +34,7 @@ class ChangeNameFragment : Fragment(R.layout.fragment_change_name) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        (activity as MessengerActivity).menuInflater.inflate(R.menu.item_confirm, menu)
+        MESS_ACTIVITY.menuInflater.inflate(R.menu.item_confirm, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

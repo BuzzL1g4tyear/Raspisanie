@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.Ras.UI.messUI.AuthFragment
 import com.example.Ras.Utils.AUTH_ACTIVITY
+import com.example.Ras.Utils.replaceFragment
 import com.example.Ras.databinding.ActivityAuthorizationBinding
 import com.example.Ras.objects.AppDrawer
 import kotlinx.android.synthetic.main.activity_authorization.*
@@ -23,9 +24,7 @@ class AuthorizationActivity : AppCompatActivity() {
         mToolbarAuth = toolbarAuth as Toolbar
         setSupportActionBar(mToolbarAuth)
         title = getString(R.string.auth_title)
-        supportFragmentManager.beginTransaction()
-            .add(R.id.data_container, AuthFragment())
-            .commit()
+        replaceFragment(AuthFragment())
         initFields()
     }
 

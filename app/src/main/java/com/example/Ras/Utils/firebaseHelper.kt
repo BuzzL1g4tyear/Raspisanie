@@ -197,7 +197,6 @@ fun createGroup(
     mapData[NODE_MEMBERS] = mapMembers
     pathGroup.updateChildren(mapData)
         .addOnSuccessListener {
-            MESS_ACTIVITY.createToast(MESS_ACTIVITY.getString(R.string.groupCreated))
             addGroupToMainList(mapData, mListPersonsID) {
                 function()
             }
@@ -232,6 +231,7 @@ fun addGroupToMainList(
         list.forEach {
             pathMainList.child(it.id).child(map[CHILD_ID].toString())
                 .updateChildren(map)
+            function()
         }
     }
 }

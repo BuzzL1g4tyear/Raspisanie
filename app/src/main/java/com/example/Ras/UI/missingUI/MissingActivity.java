@@ -2,6 +2,7 @@ package com.example.Ras.UI.missingUI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,13 +25,13 @@ public class MissingActivity extends AppCompatActivity {
     private Toast backToast;
     private long timeBackPress;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_missing);
         setActId(2);
     }
+
     @Override
     public void onBackPressed() {
         if (timeBackPress + 2000 > System.currentTimeMillis()) {
@@ -42,8 +43,8 @@ public class MissingActivity extends AppCompatActivity {
             backToast.show();
         }
         timeBackPress = System.currentTimeMillis();
-    } 
-    // TODO: chip - picture
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -53,14 +54,16 @@ public class MissingActivity extends AppCompatActivity {
 
     private void checkUser() {
         if (AUTH.getCurrentUser() != null) {
-            initUser(() -> null);
+            initUser(() -> {
+                Log.d("MyLog", "checkUser: " + USER.getId());
+                toolbar_Missing = findViewById(R.id.toolbarMissing);
+                setSupportActionBar(toolbar_Missing);
+                mAppDrawer = new AppDrawer(this, toolbar_Missing);
+                mAppDrawer.create();
+                return null;
+            });
             Fragment fragmentCapitan = new CapitanMissingFragment();
             Fragment fragmentAdmin = new AdminMissingFragment();
-
-            toolbar_Missing = findViewById(R.id.toolbarMissing);
-            setSupportActionBar(toolbar_Missing);
-            mAppDrawer = new AppDrawer(this, toolbar_Missing);
-            mAppDrawer.create();
 
             if (USER.getStatus().equals("2")) {
                 getSupportFragmentManager().beginTransaction()

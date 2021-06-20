@@ -31,9 +31,11 @@ class AddPhoneFragment(
             if (isAdd) {
                 createGroup(numberGroup, listItems) {
                     replaceFragment(MainListFragment())
+                    createToast(getString(R.string.groupCreated))
                 }
             } else {
                 addToGroup(id, listItems) {
+                    replaceFragment(MainListFragment())
                     createToast(getString(R.string.changedData))
                 }
             }

@@ -1,6 +1,5 @@
 package com.example.Ras.UI.messUI
 
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.isDigitsOnly
 import com.example.Ras.EnterCodeFragment
@@ -29,7 +28,7 @@ class AuthFragment : BaseFragment(R.layout.fragment_auth) {
             override fun onVerificationCompleted(p0: PhoneAuthCredential) {
                 AUTH.signInWithCredential(p0).addOnCompleteListener() {
                     if (it.isSuccessful) {
-                        createToast("welcome")
+                        createToast(getString(R.string.welcome))
                     }
                 }
             }

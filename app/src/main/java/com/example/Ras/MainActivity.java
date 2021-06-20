@@ -5,7 +5,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,10 +38,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
 
 import static com.example.Ras.Utils.FirebaseHelperKt.NODE_LESSONS;
 import static com.example.Ras.Utils.FirebaseHelperKt.initDatabase;
@@ -77,7 +72,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initDatabase();
-        initUser(() -> null);
+        initUser(() -> {
+            mAppDrawer = new AppDrawer(this, toolbarDate);
+            initFunc();
+            return null;
+        });
         initFields();
         dt_lessons = FirebaseDatabase.getInstance().getReference();
         Thread thread = new Thread(runnable);
@@ -85,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
         date = SetDate();
         if (showingDate.isEmpty()) {
             showingDate = date;
-
             textViewText.setVisibility(View.INVISIBLE);
             textViewPickedDate.setVisibility(View.INVISIBLE);
         } else if (!date.equals(showingDate)) {
@@ -93,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
             textViewPickedDate.setVisibility(View.VISIBLE);
             textViewPickedDate.setText(showingDate);
         }
-
-        initFunc();
         textViewToday.setText(date);
     }
 
@@ -115,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
         temp = new ArrayList<>();
         toolbarDate = findViewById(R.id.toolbar);
         setSupportActionBar(toolbarDate);
-        mAppDrawer = new AppDrawer(this, toolbarDate);
     }
 
     @Override
@@ -204,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     listAdapter.clear();
                     listAdapter.notifyDataSetChanged();
-//todo picture
+
                 }
             }
 
