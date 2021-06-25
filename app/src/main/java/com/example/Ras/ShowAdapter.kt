@@ -27,7 +27,7 @@ class ShowAdapter : RecyclerView.Adapter<ShowAdapter.ShowHolder>() {
     override fun getItemCount() = listItems.size
 
     override fun onBindViewHolder(holder: ShowHolder, position: Int) {
-        holder.itemLesson.text = listItems[position]
+        holder.itemLesson.text = "${position + 1}. ${listItems[position]}"
     }
 
     fun updateListItems(item: String) {

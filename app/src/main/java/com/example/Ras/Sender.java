@@ -34,7 +34,9 @@ public class Sender implements Serializable {
     public static String dateFromSite(ArrayList<ArrayList<Element>> days) {
         String dateFromSite;
 
-        if (days.size() > 3) {
+        if (days.size() > 2) {
+            dateFromSite = days.get(3).get(0).text();
+        } else if (days.size() > 3) {
             dateFromSite = days.get(4).get(0).text();
         } else {
             dateFromSite = days.get(0).get(0).text();

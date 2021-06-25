@@ -1,8 +1,6 @@
 package com.example.Ras.Utils
 
 import android.provider.ContactsContract
-import com.example.Ras.MainActivity
-import com.example.Ras.R
 import com.example.Ras.models.MissingPers
 import com.example.Ras.models.User
 import com.google.firebase.auth.FirebaseAuth
@@ -70,6 +68,9 @@ inline fun initUser(crossinline function: () -> Unit) {
         })
 }
 
+fun deleteUser() {
+
+}
 
 fun initContacts() {
     if (checkPermission(READ_CONT)) {

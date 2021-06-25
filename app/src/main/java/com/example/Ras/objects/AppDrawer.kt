@@ -5,12 +5,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.Ras.*
+import com.example.Ras.AuthorizationActivity
+import com.example.Ras.MainActivity
+import com.example.Ras.MessengerActivity
+import com.example.Ras.R
 import com.example.Ras.UI.missingUI.MissingActivity
 import com.example.Ras.Utils.AUTH
 import com.example.Ras.Utils.USER
 import com.example.Ras.Utils.replaceActivity
-import com.example.Ras.Utils.replaceFragment
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer

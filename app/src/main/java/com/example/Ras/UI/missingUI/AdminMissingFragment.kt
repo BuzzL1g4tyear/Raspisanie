@@ -135,6 +135,7 @@ class AdminMissingFragment : Fragment(R.layout.fragment_admin_missing) {
             val dateFormat = SimpleDateFormat("dd:MM:yyyy", Locale.getDefault())
             c.set(year, monthOfYear, dayOfMonth)
             date = dateFormat.format(c.time)
+            mListPer = mutableListOf()
             initMissingPers(date)
             b1.visibility = View.VISIBLE
             b1.isClickable = true

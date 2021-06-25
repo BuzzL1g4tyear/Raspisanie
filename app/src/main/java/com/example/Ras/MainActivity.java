@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!snapshot.child(NODE_LESSONS).hasChild(dateFromSite)) {
                     Thread thread = new Thread(runnable1);
                     thread.start();
-                    Toast.makeText(MainActivity.this, "Sent", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Расписание отправленно", Toast.LENGTH_SHORT).show();
                 } else if (isShow[0]) {
                     Toast.makeText(MainActivity.this, getString(R.string.noDay), Toast.LENGTH_SHORT).show();
                     isShow[0] = true;
